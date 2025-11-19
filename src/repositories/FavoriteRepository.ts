@@ -1,0 +1,2 @@
+// FavoriteRepository - extends BaseRepository
+
