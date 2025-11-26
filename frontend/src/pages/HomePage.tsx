@@ -2,42 +2,120 @@ import { Link } from 'react-router-dom'
 
 export default function HomePage() {
   return (
-    <div className="bg-gray-50">
+    <div className="bg-[#faf3f4]">
+
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary to-pink-600 text-white py-20">
-        <div className="container mx-auto px-6 text-center">
-          <h1 className="text-5xl font-bold mb-4">
-            Plan Your Perfect Pakistani Wedding
-          </h1>
-          <p className="text-xl mb-8">
-            Connect with the best wedding vendors across Pakistan
-          </p>
-          <Link
-            to="/vendors"
-            className="bg-white text-primary px-8 py-3 rounded-lg text-lg font-semibold hover:bg-gray-100 inline-block"
-          >
-            Browse Vendors
-          </Link>
+      <section className="py-24">
+        <div className="container mx-auto px-10 grid md:grid-cols-2 items-center">
+
+          <div>
+            <h1 className="text-6xl font-extrabold text-black mb-6 leading-tight">
+              Plan Your Perfect <br /> Pakistani Wedding
+            </h1>
+
+            <p className="text-lg text-gray-600 mb-10 max-w-xl">
+              Connect with 1000+ verified vendors, manage your budget,
+              and create unforgettable memories.
+            </p>
+
+            <div className="flex gap-5">
+              <Link
+                to="/vendors"
+                className="bg-pink-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-pink-700"
+              >
+                Find Vendors
+              </Link>
+
+              <button
+                className="border-2 border-pink-600 text-pink-600 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-pink-50"
+              >
+                View Budget Planner
+              </button>
+            </div>
+
+          </div>
+
+          <div></div>
+
         </div>
       </section>
 
-      {/* Categories Section */}
-      <section className="py-16">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-12">
-            Wedding Services
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {['Photographers', 'Caterers', 'Venues', 'Decorators', 'Makeup Artists', 'Music & Entertainment'].map((category) => (
-              <div key={category} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
-                <h3 className="text-xl font-semibold mb-2">{category}</h3>
-                <p className="text-gray-600">Find the best {category.toLowerCase()} for your special day</p>
-              </div>
-            ))}
-          </div>
+
+      {/* ================= BIG SEARCH BAR SECTION ================= */}
+      <section className="max-w-7xl mx-auto px-4 py-20">
+        <div className="rounded-2xl shadow-xl p-6 flex flex-col md:flex-row gap-4">
+
+          <input
+            type="text"
+            placeholder="Search for vendors, services, venues..."
+            className="flex-1 h-14 px-4 rounded-xl border bg-white focus:outline-none focus:ring-2 focus:ring-pink-500"
+          />
+
+          <input
+            type="text"
+            placeholder="Location"
+            className="md:w-72 h-14 px-4 rounded-xl border bg-white focus:outline-none focus:ring-2 focus:ring-pink-500"
+          />
+
+          <button className="bg-[#C62F65] hover:bg-[#b32759] text-white px-8 h-14 rounded-xl font-semibold">
+            Search
+          </button>
+
         </div>
       </section>
+
+
+      {/* ================== BLACK FOOTER STYLE SECTION ================== */}
+      <section className="bg-[#121212] text-white py-16 mt-20">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
+
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Company</h3>
+            <ul className="space-y-2 text-gray-400">
+              <li>About Us</li>
+              <li>Careers</li>
+              <li>Press</li>
+              <li>Blog</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Services</h3>
+            <ul className="space-y-2 text-gray-400">
+              <li>Find Vendors</li>
+              <li>Budget Planner</li>
+              <li>Checklists</li>
+              <li>Inspiration</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Support</h3>
+            <ul className="space-y-2 text-gray-400">
+              <li>Help Center</li>
+              <li>Contact Us</li>
+              <li>FAQs</li>
+              <li>Terms of Service</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Connect</h3>
+            <ul className="space-y-2 text-gray-400">
+              <li>Facebook</li>
+              <li>Instagram</li>
+              <li>Twitter</li>
+              <li>Pinterest</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div className="border-t border-gray-700 mt-10 pt-6 text-center text-gray-500 text-sm">
+          © 2025 PakWedding. All rights reserved. Made with ❤️ in Pakistan.
+        </div>
+      </section>
+
     </div>
   )
 }
-
