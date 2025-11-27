@@ -1,93 +1,61 @@
 import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { fetchVendors, Vendor } from '../../services/vendorService'
+
+type UiVendor = Vendor & {
+  rating?: number
+  reviews?: number
+  startingPrice?: string
+}
 
 export default function BrowseVendorsPage() {
-  // Sample vendor data - replace with actual API call
-  const vendors = [
+  const [vendors, setVendors] = useState<UiVendor[]>([])
+  const [loading, setLoading] = useState(false)
+
+  // Fallback sample data if API returns no vendors yet
+  const fallbackVendors: UiVendor[] = [
     {
-      id: '1',
-      name: 'Elite Photography Studio',
-      category: 'Photography',
+      _id: '1',
+      business_name: 'Elite Photography Studio',
+      service_category: 'Photography',
       rating: 4.9,
       reviews: 250,
-      location: 'Lahore, Pakistan',
-      phone: '+92 300 1234567',
-      verified: true,
-      topRated: true,
-      quickResponse: true,
+      business_address: 'Lahore, Pakistan',
+      phone_number: '+92 300 1234567',
+      contact_person: '',
+      email: '',
       startingPrice: 'Rs. 50,000',
-      image: 'https://via.placeholder.com/400x300?text=Elite+Photography'
     },
-    {
-      id: '2',
-      name: 'Royal Catering Services',
-      category: 'Catering',
-      rating: 4.8,
-      reviews: 180,
-      location: 'Karachi, Pakistan',
-      phone: '+92 300 2345678',
-      verified: true,
-      topRated: false,
-      quickResponse: true,
-      startingPrice: 'Rs. 80,000',
-      image: 'https://via.placeholder.com/400x300?text=Royal+Catering'
-    },
-    {
-      id: '3',
-      name: 'Dream Wedding Venue',
-      category: 'Venue',
-      rating: 4.7,
-      reviews: 320,
-      location: 'Islamabad, Pakistan',
-      phone: '+92 300 3456789',
-      verified: true,
-      topRated: true,
-      quickResponse: false,
-      startingPrice: 'Rs. 150,000',
-      image: 'https://via.placeholder.com/400x300?text=Dream+Venue'
-    },
-    {
-      id: '4',
-      name: 'Bridal Makeup by Sarah',
-      category: 'Makeup',
-      rating: 4.9,
-      reviews: 145,
-      location: 'Lahore, Pakistan',
-      phone: '+92 300 4567890',
-      verified: true,
-      topRated: true,
-      quickResponse: true,
-      startingPrice: 'Rs. 25,000',
-      image: 'https://via.placeholder.com/400x300?text=Bridal+Makeup'
-    },
-    {
-      id: '5',
-      name: 'Melody Music Band',
-      category: 'Entertainment',
-      rating: 4.6,
-      reviews: 95,
-      location: 'Karachi, Pakistan',
-      phone: '+92 300 5678901',
-      verified: true,
-      topRated: false,
-      quickResponse: true,
-      startingPrice: 'Rs. 60,000',
-      image: 'https://via.placeholder.com/400x300?text=Melody+Music'
-    },
-    {
-      id: '6',
-      name: 'Floral Decorations Co.',
-      category: 'Decoration',
-      rating: 4.8,
-      reviews: 210,
-      location: 'Lahore, Pakistan',
-      phone: '+92 300 6789012',
-      verified: true,
-      topRated: true,
-      quickResponse: true,
-      startingPrice: 'Rs. 40,000',
-      image: 'https://via.placeholder.com/400x300?text=Floral+Decor'
-    }
   ]
+
+  useEffect(() => {
+    const load = async () => {
+      setLoading(true)
+      try {
+        const data = await fetchVendors()
+        if (data.length) {
+          // Map API vendors to UI fields while keeping existing design
+          setVendors(
+            data.map((v) => ({
+              ...v,
+              rating: v.rating ?? 4.8,
+              reviews: v.total_bookings ?? 0,
+              startingPrice: 'Rs. 50,000',
+            }))
+          )
+        } else {
+          setVendors(fallbackVendors)
+        }
+      } catch {
+        // If API fails, fall back to sample list so page still works
+        setVendors(fallbackVendors)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    load()
+  }, [])
 
   return (
     <div className="bg-white min-h-screen">
@@ -134,8 +102,8 @@ export default function BrowseVendorsPage() {
       </div>
 
       {/* Results + Sort */}
-      <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-gray-600 text-sm mb-6">
-        <p>Showing 24 results</p>
+        <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-gray-600 text-sm mb-6">
+        <p>{loading ? 'Loading vendors...' : `Showing ${vendors.length} results`}</p>
         <div className="flex items-center gap-2">
           <span>Sort by:</span>
           <button className="border border-gray-200 px-4 py-2 rounded-lg shadow-sm hover:bg-gray-50">
@@ -148,11 +116,26 @@ export default function BrowseVendorsPage() {
       <div className="container mx-auto px-6 pb-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
           {vendors.map((vendor) => (
-            <div key={vendor.id} className="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100">
-              <div className="bg-gray-100 h-48 w-full" />
+            <div key={vendor._id || vendor.id} className="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100">
+              <div className="bg-gray-100 h-48 w-full overflow-hidden">
+                {vendor.image_url ? (
+                  <img 
+                    src={vendor.image_url.startsWith('http') ? vendor.image_url : `http://localhost:8000${vendor.image_url}`}
+                    alt={vendor.business_name}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = 'none'
+                    }}
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-gray-400">
+                    No Image
+                  </div>
+                )}
+              </div>
               <div className="p-6">
-                <p className="text-sm font-semibold text-gray-500 mb-2">{vendor.category}</p>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{vendor.name}</h3>
+                <p className="text-sm font-semibold text-gray-500 mb-2">{vendor.service_category}</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">{vendor.business_name}</h3>
                 <div className="flex items-center gap-3 text-sm text-gray-600 mb-3">
                   <span className="flex items-center gap-1">
                     <svg className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
@@ -161,13 +144,13 @@ export default function BrowseVendorsPage() {
                     {vendor.rating} ({vendor.reviews} reviews)
                   </span>
                   <span>•</span>
-                  <span>{vendor.location}</span>
+                  <span>{vendor.business_address}</span>
                 </div>
                 <div className="text-pink-600 font-semibold text-lg mb-4">
                   Starting from {vendor.startingPrice}
                 </div>
                 <Link
-                  to={`/vendors/${vendor.id}`}
+                  to={`/vendors/${vendor._id || vendor.id}`}
                   className="inline-flex items-center gap-2 text-pink-600 font-semibold hover:underline"
                 >
                   View Profile →

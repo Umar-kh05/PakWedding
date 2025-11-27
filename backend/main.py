@@ -3,7 +3,8 @@ FastAPI main application entry point
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.routes import auth, users, vendors, bookings, admin, services
+from fastapi.staticfiles import StaticFiles
+from app.api.routes import auth, users, vendors, bookings, admin, services, uploads
 from app.core.config import settings
 
 app = FastAPI(
@@ -15,7 +16,7 @@ app = FastAPI(
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # React dev server
+    allow_origins=["http://localhost:3000", "http://localhost:5173"],  # React dev server (Vite default: 5173)
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -28,6 +29,7 @@ app.include_router(vendors.router, prefix="/api/vendors", tags=["Vendors"])
 app.include_router(bookings.router, prefix="/api/bookings", tags=["Bookings"])
 app.include_router(services.router, prefix="/api/services", tags=["Services"])
 app.include_router(admin.router, prefix="/api/admin", tags=["Admin"])
+app.include_router(uploads.router, prefix="/api/uploads", tags=["Uploads"])
 
 @app.get("/")
 async def root():

@@ -16,7 +16,7 @@ export default function LoginPage() {
 
     try {
       const formData = new FormData()
-      formData.append('username', email)
+      formData.append('username', email)  // OAuth2PasswordRequestForm expects 'username' field
       formData.append('password', password)
 
       const response = await api.post('/auth/login', formData, {

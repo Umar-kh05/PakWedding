@@ -19,6 +19,8 @@ class VendorBase(BaseModel):
     description: Optional[str] = None
     rating: float = 0.0
     total_bookings: int = 0
+    image_url: Optional[str] = None  # Main vendor image
+    gallery_images: Optional[List[str]] = []  # Gallery images
 
 
 class VendorCreate(VendorBase):
@@ -33,6 +35,8 @@ class VendorUpdate(BaseModel):
     phone_number: Optional[str] = None
     business_address: Optional[str] = None
     description: Optional[str] = None
+    image_url: Optional[str] = None
+    gallery_images: Optional[List[str]] = None
 
 
 class VendorInDB(VendorBase):

@@ -32,6 +32,7 @@ async def login(
     user_service: UserService = Depends(get_user_service)
 ):
     """Login and get access token"""
+    # OAuth2PasswordRequestForm uses 'username' field, but we use email
     user = await user_service.authenticate_user(form_data.username, form_data.password)
     if not user:
         raise HTTPException(
