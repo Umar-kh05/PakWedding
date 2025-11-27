@@ -10,10 +10,20 @@ export default function BookingPage() {
 
   // Sample data - replace with API call to fetch vendor details
   const vendorName = 'Elite Photography Studio'
-  const packagePrice = packageName === 'Basic' ? 'Rs. 50,000' : 
-                       packageName === 'Standard' ? 'Rs. 100,000' : 
-                       packageName === 'Premium' ? 'Rs. 200,000' : 'Rs. 100,000'
-  const selectedPackage = packageName || 'Standard'
+  const serviceOptions = [
+    { name: 'Standard Package', price: 'Rs. 100,000' },
+    { name: 'Premium Package', price: 'Rs. 200,000' },
+    { name: 'Basic Package', price: 'Rs. 50,000' },
+  ]
+
+  const initialService =
+    serviceOptions.find((service) =>
+      service.name.toLowerCase().startsWith((packageName || '').toLowerCase())
+    ) || serviceOptions[0]
+
+  const [selectedService, setSelectedService] = useState(initialService)
+  const selectedPackage = selectedService.name
+  const packagePrice = selectedService.price
 
   const [formData, setFormData] = useState({
     eventDate: '',
@@ -50,7 +60,7 @@ export default function BookingPage() {
       // Replace with actual API call
       const bookingData = {
         vendor_id: vendorId,
-        package_name: packageName,
+        package_name: selectedPackage,
         event_date: formData.eventDate,
         event_type: formData.eventType,
         venue_location: formData.venueLocation,
@@ -124,9 +134,30 @@ export default function BookingPage() {
 
           {/* Service Information Section */}
           <div className="bg-purple-50 rounded-lg p-4 mb-8">
-            <div className="font-bold text-gray-900 text-lg mb-1">{vendorName}</div>
-            <div className="text-pink-600 font-semibold">
-              {selectedPackage} Package - {packagePrice}
+            <div className="font-bold text-gray-900 text-lg mb-3">{vendorName}</div>
+
+            {/* Service selector */}
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-wrap gap-3">
+                {serviceOptions.map((service) => (
+                  <button
+                    key={service.name}
+                    type="button"
+                    onClick={() => setSelectedService(service)}
+                    className={`px-5 py-2 rounded-full text-sm font-semibold transition-colors ${
+                      selectedService.name === service.name
+                        ? 'bg-pink-600 text-white shadow'
+                        : 'bg-white text-gray-700 border border-gray-200 hover:border-pink-400'
+                    }`}
+                  >
+                    {service.name.replace(' Package', '')}
+                  </button>
+                ))}
+              </div>
+
+              <div className="text-pink-600 font-semibold">
+                {selectedPackage} - {packagePrice}
+              </div>
             </div>
           </div>
 

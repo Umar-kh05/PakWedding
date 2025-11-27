@@ -26,6 +26,7 @@ function App() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/vendor/register" element={<VendorRegisterPage />} />
             <Route path="/vendors" element={<BrowseVendorsPage />} />
+            <Route path="/services" element={<BookingPage />} />
             <Route path="/vendors/:id" element={<VendorProfilePage />} />
             <Route path="/dashboard" element={<UserDashboard />} />
             <Route path="/vendor/dashboard" element={<VendorDashboard />} />
