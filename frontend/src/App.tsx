@@ -12,6 +12,7 @@ import VendorDashboard from './pages/vendor/VendorDashboard'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import BookingPage from './pages/bookings/BookingPage'
 import BookingHistoryPage from './pages/bookings/BookingHistoryPage'
+import BudgetPlannerPage from './pages/BudgetPlannerPage'
 
 const queryClient = new QueryClient()
 
@@ -33,6 +34,7 @@ function App() {
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/bookings/new" element={<BookingPage />} />
             <Route path="/bookings/history" element={<BookingHistoryPage />} />
+            <Route path="/budget-planner" element={<BudgetPlannerPage />} />
           </Routes>
         </Layout>
       </Router>

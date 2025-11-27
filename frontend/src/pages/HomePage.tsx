@@ -26,11 +26,12 @@ export default function HomePage() {
                 Find Vendors
               </Link>
 
-              <button
+              <Link
+                to="/budget-planner"
                 className="border-2 border-pink-600 text-pink-600 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-pink-50"
               >
                 View Budget Planner
-              </button>
+              </Link>
             </div>
 
           </div>
