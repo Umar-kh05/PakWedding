@@ -39,60 +39,86 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
-        <h2 className="text-3xl font-bold text-center mb-6">Welcome Back!</h2>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4">
+      <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8">
+        <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">Welcome Back!</h2>
         
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-gray-700 mb-2">Email Address</label>
+            <label className="block text-gray-700 font-medium mb-2">Email Address</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+              placeholder="Enter your email"
               required
             />
           </div>
 
           <div>
-            <label className="block text-gray-700 mb-2">Password</label>
+            <div className="flex items-center justify-between mb-2">
+              <label className="block text-gray-700 font-medium">Password</label>
+              <Link to="/forgot-password" className="text-sm text-pink-600 hover:text-pink-700">
+                Forgot password?
+              </Link>
+            </div>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+              placeholder="Enter your password"
               required
             />
           </div>
 
           <button
             type="submit"
-            className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-opacity-90"
+            className="w-full bg-pink-600 hover:bg-pink-700 text-white py-3 rounded-lg font-semibold transition-colors"
           >
             Login
           </button>
         </form>
 
-        <div className="mt-6 text-center">
-          <p className="text-gray-600">
-            Don't have an account?{' '}
-            <Link to="/register" className="text-primary font-semibold">
-              Sign Up
-            </Link>
-          </p>
-          <p className="text-gray-600 mt-2">
-            Are you a vendor?{' '}
-            <Link to="/vendor/register" className="text-primary font-semibold">
-              Vendor Signup
-            </Link>
-          </p>
+        <div className="mt-6 space-y-4">
+          <div className="text-center">
+            <p className="text-gray-500 text-sm mb-3">OR</p>
+            <div className="flex flex-col gap-2">
+              <Link
+                to="/vendor/register"
+                className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-center text-sm transition-colors"
+              >
+                Login as Vendor
+              </Link>
+              <Link
+                to="/admin/login"
+                className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-center text-sm transition-colors"
+              >
+                Login as Admin
+              </Link>
+            </div>
+          </div>
+          <div className="text-center space-y-2">
+            <p className="text-gray-600 text-sm">
+              Don't have an account?{' '}
+              <Link to="/register" className="text-pink-600 font-semibold hover:text-pink-700">
+                Sign Up
+              </Link>
+            </p>
+            <p className="text-gray-600 text-sm">
+              Are you a vendor?{' '}
+              <Link to="/vendor/register" className="text-pink-600 font-semibold hover:text-pink-700">
+                Vendor Signup
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>

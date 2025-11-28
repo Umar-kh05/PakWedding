@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.api.routes import auth, users, vendors, bookings, admin, services, uploads
 from app.core.config import settings
+from app.core.database import Database
 
 app = FastAPI(
     title="PakWedding Portal API",
@@ -21,6 +22,17 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Database connection events
+@app.on_event("startup")
+async def startup_event():
+    """Initialize database connection on startup"""
+    await Database.connect_db()
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    """Close database connection on shutdown"""
+    await Database.close_db()
 
 # Include routers
 app.include_router(auth.router, prefix="/api/auth", tags=["Authentication"])

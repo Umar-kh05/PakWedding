@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Layout from './components/Layout'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/auth/LoginPage'
+import AdminLoginPage from './pages/auth/AdminLoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
 import VendorRegisterPage from './pages/auth/VendorRegisterPage'
 import BrowseVendorsPage from './pages/vendors/BrowseVendorsPage'
@@ -24,6 +25,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/admin/login" element={<AdminLoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/vendor/register" element={<VendorRegisterPage />} />
             <Route path="/vendors" element={<BrowseVendorsPage />} />

@@ -5,7 +5,7 @@ Following Dependency Inversion Principle
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from app.core.database import get_db
-from app.core.security import TokenGenerator
+from app.core.security import decode_token
 from app.repositories.user_repository import UserRepository
 from app.repositories.vendor_repository import VendorRepository
 from app.repositories.booking_repository import BookingRepository
@@ -62,7 +62,7 @@ async def get_current_user(
         headers={"WWW-Authenticate": "Bearer"},
     )
     
-    payload = TokenGenerator.decode_token(token)
+    payload = decode_token(token)
     if payload is None:
         raise credentials_exception
     

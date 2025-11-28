@@ -7,7 +7,7 @@ from datetime import datetime
 from app.repositories.vendor_repository import VendorRepository
 from app.repositories.user_repository import UserRepository
 from app.models.vendor import VendorCreate, VendorUpdate
-from app.core.security import PasswordHasher
+from app.core.security import hash_password
 
 
 class VendorService:
@@ -16,7 +16,6 @@ class VendorService:
     def __init__(self, vendor_repository: VendorRepository, user_repository: UserRepository):
         self.vendor_repo = vendor_repository
         self.user_repo = user_repository
-        self.password_hasher = PasswordHasher()
     
     async def register_vendor(self, vendor_data: VendorCreate) -> dict:
         """Register a new vendor"""
@@ -26,7 +25,7 @@ class VendorService:
             "full_name": vendor_data.contact_person,
             "phone_number": vendor_data.phone_number,
             "role": "vendor",
-            "hashed_password": self.password_hasher.hash_password(vendor_data.password),
+            "hashed_password": hash_password(vendor_data.password),
             "is_active": True,
             "created_at": datetime.utcnow(),
             "updated_at": datetime.utcnow()

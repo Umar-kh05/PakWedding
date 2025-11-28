@@ -6,7 +6,7 @@ from typing import Optional, List
 from datetime import datetime
 from app.repositories.user_repository import UserRepository
 from app.models.user import UserCreate, UserUpdate, UserResponse
-from app.core.security import PasswordHasher
+from app.core.security import hash_password, verify_password
 
 
 class UserService:
@@ -14,7 +14,6 @@ class UserService:
     
     def __init__(self, user_repository: UserRepository):
         self.user_repo = user_repository
-        self.password_hasher = PasswordHasher()
     
     async def create_user(self, user_data: UserCreate) -> dict:
         """Create a new user"""
@@ -24,7 +23,7 @@ class UserService:
             raise ValueError("User with this email already exists")
         
         # Hash password
-        hashed_password = self.password_hasher.hash_password(user_data.password)
+        hashed_password = hash_password(user_data.password)
         
         # Create user document
         user_dict = user_data.model_dump(exclude={"password"})
@@ -59,7 +58,7 @@ class UserService:
         if not user:
             return None
         
-        if not self.password_hasher.verify_password(password, user["hashed_password"]):
+        if not verify_password(password, user["hashed_password"]):
             return None
         
         return user

@@ -4,25 +4,26 @@ Following Single Responsibility Principle - represents User entity
 """
 from typing import Optional
 from datetime import datetime
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, field_serializer
 from bson import ObjectId
 
 
 class PyObjectId(ObjectId):
-    """Custom ObjectId type for Pydantic"""
+    """Custom ObjectId type for Pydantic v2"""
     @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-    
-    @classmethod
-    def validate(cls, v):
-        if not ObjectId.is_valid(v):
+    def __get_pydantic_core_schema__(cls, source_type, handler):
+        from pydantic_core import core_schema
+
+        def validate(value) -> ObjectId:
+            if isinstance(value, ObjectId):
+                return value
+            if isinstance(value, str):
+                if ObjectId.is_valid(value):
+                    return ObjectId(value)
+                raise ValueError("Invalid ObjectId string")
             raise ValueError("Invalid ObjectId")
-        return ObjectId(v)
-    
-    @classmethod
-    def __modify_schema__(cls, field_schema):
-        field_schema.update(type="string")
+
+        return core_schema.no_info_plain_validator_function(validate)
 
 
 class UserBase(BaseModel):
@@ -36,6 +37,12 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     """Schema for creating a new user"""
     password: str
+    
+    @classmethod
+    def model_validate(cls, obj):
+        if isinstance(obj, dict) and 'password' in obj:
+            obj['password'] = obj['password'][:72]
+        return super().model_validate(obj)
 
 
 class UserUpdate(BaseModel):
@@ -51,11 +58,14 @@ class UserInDB(UserBase):
     is_active: bool = True
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
+
+    @field_serializer('id')
+    def serialize_id(self, value: PyObjectId) -> str:
+        return str(value)
     
     class Config:
         populate_by_name = True
         arbitrary_types_allowed = True
-        json_encoders = {ObjectId: str}
 
 
 class UserResponse(UserBase):
