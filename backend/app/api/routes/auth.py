@@ -58,3 +58,17 @@ async def login(
         }
     }
 
+
+@router.post("/check-email")
+async def check_email(
+    email_data: dict,
+    user_service: UserService = Depends(get_user_service)
+):
+    """Check if email already exists"""
+    email = email_data.get("email")
+    if not email:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email is required")
+        
+    user = await user_service.get_user_by_email(email)
+    return {"exists": user is not None}
+

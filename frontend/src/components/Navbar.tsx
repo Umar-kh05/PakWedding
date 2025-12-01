@@ -89,18 +89,18 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <Link
-                to="/login"
+          <Link
+            to="/login"
                 className="border-2 border-pink-600 text-pink-600 px-5 py-1.5 rounded-md hover:bg-pink-50 transition-colors"
-              >
-                Login
-              </Link>
-              <Link
+          >
+            Login
+          </Link>
+          <Link
                 to="/register"
                 className="bg-pink-600 hover:bg-pink-700 text-white px-5 py-1.5 rounded-md transition-colors"
-              >
-                Sign Up
-              </Link>
+          >
+            Sign Up
+          </Link>
             </>
           )}
         </div>

@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     
     # Database
     DATABASE_URL: str = "mongodb://localhost:27017"
-    DATABASE_NAME: str = "pakwedding"
+    DATABASE_NAME: str = "PakWeddingDB"
     
     # Security
     SECRET_KEY: str = "your-secret-key-change-in-production"

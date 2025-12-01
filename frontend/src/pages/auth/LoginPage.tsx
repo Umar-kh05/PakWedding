@@ -24,7 +24,7 @@ export default function LoginPage() {
       })
 
       setAuth(response.data.user, response.data.access_token)
-      
+
       // Redirect based on role
       if (response.data.user.role === 'vendor') {
         navigate('/vendor/dashboard')
@@ -42,7 +42,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8">
         <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">Welcome Back!</h2>
-        
+
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm">
             {error}
@@ -112,12 +112,7 @@ export default function LoginPage() {
                 Sign Up
               </Link>
             </p>
-            <p className="text-gray-600 text-sm">
-              Are you a vendor?{' '}
-              <Link to="/vendor/register" className="text-pink-600 font-semibold hover:text-pink-700">
-                Vendor Signup
-              </Link>
-            </p>
+
           </div>
         </div>
       </div>
