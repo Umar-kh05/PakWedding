@@ -32,7 +32,18 @@ class UserService:
         user_dict["created_at"] = datetime.utcnow()
         user_dict["updated_at"] = datetime.utcnow()
         
-        return await self.user_repo.create(user_dict)
+        user = await self.user_repo.create(user_dict)
+        
+        # Convert _id to id for response
+        if "_id" in user:
+            user["id"] = str(user["_id"])
+            del user["_id"]
+        
+        # Remove sensitive fields from response
+        user.pop("hashed_password", None)
+        user.pop("updated_at", None)
+        
+        return user
     
     async def get_user_by_id(self, user_id: str) -> Optional[dict]:
         """Get user by ID"""

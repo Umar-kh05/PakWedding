@@ -133,7 +133,7 @@ export default function VendorProfilePage() {
           <div className="mb-8">
             <img 
               src={vendor.image_url.startsWith('http') ? vendor.image_url : `http://localhost:8000${vendor.image_url}`}
-              alt={vendor.name}
+              alt={displayName}
               className="w-full h-96 object-cover rounded-xl"
               onError={(e) => {
                 (e.target as HTMLImageElement).style.display = 'none'

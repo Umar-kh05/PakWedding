@@ -13,8 +13,16 @@ class Database:
     @classmethod
     async def connect_db(cls):
         """Connect to MongoDB"""
+        # For MongoDB Atlas with mongodb+srv://, SSL is handled automatically
+        # Don't set tls=True explicitly as it can conflict with SRV records
         cls.client = AsyncIOMotorClient(settings.DATABASE_URL)
-        print(f"Connected to MongoDB at {settings.DATABASE_URL}")
+        # Test the connection
+        try:
+            await cls.client.admin.command('ping')
+            print(f"Connected to MongoDB successfully")
+        except Exception as e:
+            print(f"MongoDB connection error: {e}")
+            raise
     
     @classmethod
     async def close_db(cls):

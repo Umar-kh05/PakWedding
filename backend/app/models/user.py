@@ -29,7 +29,7 @@ class PyObjectId(ObjectId):
 class UserBase(BaseModel):
     """Base user schema"""
     email: EmailStr
-    full_name: str
+    full_name: Optional[str] = None
     phone_number: Optional[str] = None
     role: str = "user"  # user, vendor, admin
 
