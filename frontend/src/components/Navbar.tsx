@@ -7,12 +7,12 @@ export default function Navbar() {
   const isActive = (path: string) => location.pathname === path
 
   return (
-    <nav className="bg-white shadow-sm">
+    <nav className="bg-gradient-to-r from-white via-pink-50/30 to-white border-b border-pink-100/50 shadow-md backdrop-blur-sm">
       <div className="container mx-auto px-10 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link
           to="/"
-          className="text-2xl font-bold text-pink-600 flex items-center gap-2 hover:text-pink-700 transition-colors"
+          className="text-2xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-2 hover:from-pink-700 hover:to-purple-700 transition-all"
         >
           💍 PakWedding
         </Link>
