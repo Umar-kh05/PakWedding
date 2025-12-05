@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { fetchVendors, Vendor } from '../../services/vendorService'
 import BookingModal from '../../components/BookingModal'
 import { useAuthStore } from '../../store/authStore'
+import { getRandomVendorImages, getVendorImagesByCategory, pakistaniVendorImages } from '../../config/vendorImages'
 
 type UiVendor = Vendor & {
   rating?: number
@@ -27,25 +28,53 @@ export default function BrowseVendorsPage() {
   const [sortBy, setSortBy] = useState<string>('popular')
   const [activeFilters, setActiveFilters] = useState<string[]>([])
 
-  // Fallback sample data if API returns no vendors yet
-  const fallbackVendors: UiVendor[] = [
-    {
-      _id: '1',
-      business_name: 'Elite Photography Studio',
-      service_category: 'Photography',
-      rating: 4.9,
-      reviews: 250,
-      business_address: 'Lahore, Pakistan',
-      phone_number: '+92 300 1234567',
-      contact_person: '',
-      email: '',
-      startingPrice: 'Rs. 50,000',
-    },
-  ]
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1)
+  const vendorsPerPage = 12
 
-  // Get unique categories and locations from vendors
-  const categories = Array.from(new Set(vendors.map(v => v.service_category).filter(Boolean)))
-  const locations = Array.from(new Set(vendors.map(v => v.business_address).filter(Boolean)))
+  // Get all vendor images for fallback when vendor doesn't have image
+  const allVendorImages = getRandomVendorImages(34)
+
+  // Generate sample vendors from Cloudinary images to show more content
+  // Memoize to prevent recreation on every render
+  const sampleVendors = useMemo(() => {
+    const cities = ['Lahore', 'Karachi', 'Islamabad', 'Rawalpindi', 'Faisalabad', 'Multan', 'Peshawar', 'Gujranwala', 'Sialkot']
+    
+    return pakistaniVendorImages.map((img, index) => {
+      const city = cities[index % cities.length]
+      const price = 30000 + (index % 10) * 10000 // Varying prices
+      
+      return {
+        _id: `sample-${img.id}`,
+        id: `sample-${img.id}`,
+        business_name: img.name,
+        service_category: img.category,
+        business_address: `${city}, Pakistan`,
+        phone_number: `+92 300 ${Math.floor(1000000 + index * 123456)}`,
+        contact_person: 'Manager',
+        email: `contact@${img.name.toLowerCase().replace(/\s+/g, '')}.com`,
+        rating: 4.0 + (index % 10) * 0.1, // Ratings from 4.0 to 4.9
+        reviews: 20 + (index % 50) * 5, // Reviews from 20 to 270
+        startingPrice: `Rs. ${price.toLocaleString()}`,
+        image_url: img.url,
+      }
+    })
+  }, [])
+
+  // Get unique categories and locations from all vendors (including samples)
+  // This ensures categories are available even before API vendors load
+  // Use useMemo to make it reactive to vendors changes
+  const allVendorsForCategories = useMemo(() => {
+    return vendors.length > 0 ? vendors : sampleVendors
+  }, [vendors, sampleVendors])
+  
+  const categories = useMemo(() => {
+    return Array.from(new Set(allVendorsForCategories.map(v => v.service_category).filter(Boolean))).sort()
+  }, [allVendorsForCategories])
+  
+  const locations = useMemo(() => {
+    return Array.from(new Set(allVendorsForCategories.map(v => v.business_address).filter(Boolean))).sort()
+  }, [allVendorsForCategories])
 
   useEffect(() => {
     const load = async () => {
@@ -54,28 +83,50 @@ export default function BrowseVendorsPage() {
         const data = await fetchVendors()
         console.log('Fetched vendors:', data)
         if (data && data.length > 0) {
+          // Filter out unwanted vendors (Rasheed and Ghauri)
+          const filteredData = data.filter(v => {
+            const name = v.business_name?.toLowerCase() || ''
+            return !name.includes('rasheed') && !name.includes('ghauri')
+          })
+          
           // Map API vendors to UI fields while keeping existing design
-          const mappedVendors = data.map((v) => ({
-            ...v,
-            _id: v._id || v.id || '',
-            id: v.id || v._id || '',
-            rating: v.rating ?? 4.8,
-            reviews: v.total_bookings ?? 0,
-            startingPrice: 'Rs. 50,000',
-          }))
-          setVendors(mappedVendors)
-          setFilteredVendors(mappedVendors)
+          // Map API vendors and assign images if missing
+          const mappedVendors = filteredData.map((v, index) => {
+            // If vendor doesn't have image, assign one from our collection
+            let imageUrl = v.image_url
+            if (!imageUrl) {
+              const categoryImages = getVendorImagesByCategory(v.service_category)
+              if (categoryImages.length > 0) {
+                imageUrl = categoryImages[index % categoryImages.length].url
+              } else {
+                imageUrl = allVendorImages[index % allVendorImages.length].url
+              }
+            }
+            return {
+              ...v,
+              _id: v._id || v.id || '',
+              id: v.id || v._id || '',
+              rating: v.rating ?? 4.8,
+              reviews: v.total_bookings ?? 0,
+              startingPrice: 'Rs. 50,000',
+              image_url: imageUrl,
+            }
+          })
+          // Combine API vendors with sample vendors for better display
+          const combinedVendors = [...mappedVendors, ...sampleVendors]
+          setVendors(combinedVendors)
+          setFilteredVendors(combinedVendors)
         } else {
-          // Only show fallback if no vendors found
-          console.log('No vendors found, showing fallback')
-          setVendors(fallbackVendors)
-          setFilteredVendors(fallbackVendors)
+          // If no API vendors, show sample vendors
+          console.log('No API vendors found, showing sample vendors')
+          setVendors(sampleVendors)
+          setFilteredVendors(sampleVendors)
         }
       } catch (err) {
         console.error('Error fetching vendors:', err)
-        // If API fails, fall back to sample list so page still works
-        setVendors(fallbackVendors)
-        setFilteredVendors(fallbackVendors)
+        // On error, show sample vendors so page still works
+        setVendors(sampleVendors)
+        setFilteredVendors(sampleVendors)
       } finally {
         setLoading(false)
       }
@@ -98,9 +149,11 @@ export default function BrowseVendorsPage() {
       )
     }
 
-    // Category filter
+    // Category filter (case-insensitive)
     if (selectedCategory) {
-      filtered = filtered.filter(v => v.service_category === selectedCategory)
+      filtered = filtered.filter(v => 
+        v.service_category?.toLowerCase() === selectedCategory.toLowerCase()
+      )
     }
 
     // Location filter
@@ -123,6 +176,8 @@ export default function BrowseVendorsPage() {
     }
 
     setFilteredVendors(filtered)
+    // Reset to page 1 when filters change
+    setCurrentPage(1)
 
     // Update active filters display
     const filters: string[] = []
@@ -133,14 +188,24 @@ export default function BrowseVendorsPage() {
     setActiveFilters(filters)
   }, [searchQuery, selectedCategory, selectedLocation, priceRange, minRating, sortBy, vendors])
 
-  const handleRemoveFilter = (filter: string) => {
-    if (filter.includes('Rating')) {
+  const handleRemoveFilter = (filter: string, e?: React.MouseEvent) => {
+    e?.stopPropagation()
+    e?.preventDefault()
+    
+    // Check if it's a rating filter (format: "4+ Rating" or "4.5+ Rating")
+    if (filter.includes('Rating') || filter.match(/\d\+/)) {
       setMinRating(0)
-    } else if (categories.includes(filter)) {
+    } 
+    // Check if it's a category filter - check if filter exactly matches any category
+    else if (categories.includes(filter)) {
       setSelectedCategory('')
-    } else if (locations.some(loc => loc.includes(filter))) {
+    } 
+    // Check if it's a location filter - check if any location is in the filter string
+    else if (locations.some(loc => filter.includes(loc) || loc.includes(filter))) {
       setSelectedLocation('')
-    } else if (filter.includes('Rs.')) {
+    } 
+    // Check if it's a price filter
+    else if (filter.includes('Rs.') || filter.includes('Price') || filter.includes('price')) {
       setPriceRange('')
     }
   }
@@ -151,15 +216,20 @@ export default function BrowseVendorsPage() {
   }
 
   return (
-    <div className="bg-gradient-to-b from-gray-50 to-white min-h-screen">
+    <div className="bg-gradient-to-b from-pink-50/30 via-white to-pink-50/20 min-h-screen">
       {/* Header Section */}
-      <div className="container mx-auto px-6 py-12">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-pink-600 to-gray-900 bg-clip-text text-transparent mb-3">
-          Find Your Perfect Wedding Vendors
-        </h1>
-        <p className="text-gray-700 font-medium mb-8">
-          Browse through 1000+ verified vendors across Pakistan
-        </p>
+      <div className="container mx-auto px-6 py-12 relative">
+        {/* Decorative background */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-pink-200/20 rounded-full blur-3xl -z-0"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-200/20 rounded-full blur-3xl -z-0"></div>
+        <div className="relative z-10">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-pink-600 to-gray-900 bg-clip-text text-transparent mb-3">
+            Find Your Perfect Wedding Vendors
+          </h1>
+          <p className="text-gray-700 font-medium mb-8">
+            Browse through 1000+ verified vendors across Pakistan
+          </p>
+        </div>
 
         {/* Search Bar */}
         <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4 mb-6">
@@ -236,8 +306,10 @@ export default function BrowseVendorsPage() {
                 >
                   {filter}
                   <button
-                    onClick={() => handleRemoveFilter(filter)}
-                    className="hover:text-pink-600 font-bold"
+                    type="button"
+                    onClick={(e) => handleRemoveFilter(filter, e)}
+                    className="hover:text-pink-600 font-bold cursor-pointer"
+                    aria-label={`Remove ${filter} filter`}
                   >
                     ×
                   </button>
@@ -250,7 +322,9 @@ export default function BrowseVendorsPage() {
 
       {/* Results + Sort */}
         <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-gray-700 text-sm mb-6">
-        <p className="font-semibold">{loading ? 'Loading vendors...' : `Showing ${filteredVendors.length} of ${vendors.length} results`}</p>
+        <p className="font-semibold">
+          {loading ? 'Loading vendors...' : `Showing ${Math.min((currentPage - 1) * vendorsPerPage + 1, filteredVendors.length)}-${Math.min(currentPage * vendorsPerPage, filteredVendors.length)} of ${filteredVendors.length} results`}
+        </p>
       </div>
 
       {/* Vendors Grid */}
@@ -261,13 +335,16 @@ export default function BrowseVendorsPage() {
             <p className="text-gray-600">Try adjusting your search or filters</p>
           </div>
         ) : (
+          <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-            {filteredVendors.map((vendor) => (
+            {filteredVendors
+              .slice((currentPage - 1) * vendorsPerPage, currentPage * vendorsPerPage)
+              .map((vendor) => (
             <div
               key={vendor._id || vendor.id}
-              className="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-xl hover:scale-105 hover:border-pink-300 group"
+              className="bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-pink-100 transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:border-pink-400 group"
             >
-              <div className="bg-gray-100 h-48 w-full overflow-hidden relative">
+              <div className="bg-gradient-to-br from-pink-100 to-purple-100 h-48 w-full overflow-hidden relative">
                 {vendor.image_url ? (
                   <img 
                     src={vendor.image_url.startsWith('http') ? vendor.image_url : `http://localhost:8000${vendor.image_url}`}
@@ -304,8 +381,8 @@ export default function BrowseVendorsPage() {
                   )}
                 </div>
               </div>
-              <div className="p-6">
-                <p className="text-sm font-semibold text-gray-500 mb-2">{vendor.service_category}</p>
+              <div className="p-6 bg-gradient-to-br from-white to-pink-50/30">
+                <p className="text-sm font-semibold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-2">{vendor.service_category}</p>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">{vendor.business_name}</h3>
                 <div className="flex items-center gap-3 text-sm text-gray-600 mb-3">
                   <span className="flex items-center gap-1">
@@ -343,6 +420,65 @@ export default function BrowseVendorsPage() {
             </div>
           ))}
           </div>
+          
+          {/* Pagination */}
+          {filteredVendors.length > vendorsPerPage && (
+            <div className="flex justify-center items-center gap-3 mt-8">
+              <button 
+                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                disabled={currentPage === 1}
+                className={`w-10 h-10 rounded-lg border border-gray-200 transition-all ${
+                  currentPage === 1 
+                    ? 'text-gray-300 cursor-not-allowed' 
+                    : 'text-gray-500 hover:bg-gray-50 hover:border-pink-300'
+                }`}
+              >
+                ←
+              </button>
+              {Array.from({ length: Math.ceil(filteredVendors.length / vendorsPerPage) }, (_, i) => i + 1)
+                .filter(page => {
+                  // Show first page, last page, current page, and pages around current
+                  const totalPages = Math.ceil(filteredVendors.length / vendorsPerPage)
+                  if (totalPages <= 5) return true
+                  if (page === 1 || page === totalPages) return true
+                  if (Math.abs(page - currentPage) <= 1) return true
+                  return false
+                })
+                .map((page, index, array) => {
+                  // Add ellipsis if there's a gap
+                  const showEllipsisBefore = index > 0 && page - array[index - 1] > 1
+                  return (
+                    <div key={page} className="flex items-center gap-1">
+                      {showEllipsisBefore && (
+                        <span className="px-2 text-gray-400">...</span>
+                      )}
+                      <button
+                        onClick={() => setCurrentPage(page)}
+                        className={`w-10 h-10 rounded-lg transition-all ${
+                          page === currentPage
+                            ? 'bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow-lg'
+                            : 'border-2 border-gray-200 text-gray-600 hover:border-pink-300 hover:bg-pink-50'
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    </div>
+                  )
+                })}
+              <button 
+                onClick={() => setCurrentPage(prev => Math.min(Math.ceil(filteredVendors.length / vendorsPerPage), prev + 1))}
+                disabled={currentPage >= Math.ceil(filteredVendors.length / vendorsPerPage)}
+                className={`w-10 h-10 rounded-lg border border-gray-200 transition-all ${
+                  currentPage >= Math.ceil(filteredVendors.length / vendorsPerPage)
+                    ? 'text-gray-300 cursor-not-allowed'
+                    : 'text-gray-500 hover:bg-gray-50 hover:border-pink-300'
+                }`}
+              >
+                →
+              </button>
+            </div>
+          )}
+          </>
         )}
 
         {/* Booking Modal */}
@@ -360,22 +496,6 @@ export default function BrowseVendorsPage() {
             }}
           />
         )}
-
-        {/* Pagination */}
-        <div className="flex justify-center items-center gap-3">
-          <button className="w-10 h-10 rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50">←</button>
-          {[1, 2, 3, 4, 5].map((page) => (
-            <button
-              key={page}
-              className={`w-10 h-10 rounded-lg ${
-                page === 2 ? 'bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow-lg' : 'border-2 border-gray-200 text-gray-600 hover:border-pink-300 hover:bg-pink-50'
-              }`}
-            >
-              {page}
-            </button>
-          ))}
-          <button className="w-10 h-10 rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50">→</button>
-        </div>
       </div>
     </div>
   )

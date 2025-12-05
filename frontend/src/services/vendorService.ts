@@ -16,8 +16,11 @@ export type Vendor = {
   description?: string
 }
 
-export async function fetchVendors(category?: string) {
-  const params = category ? { category } : undefined
+export async function fetchVendors(category?: string, limit: number = 200) {
+  const params: any = { limit }
+  if (category) {
+    params.category = category
+  }
   const { data } = await api.get<Vendor[]>('/vendors', { params })
   return data
 }

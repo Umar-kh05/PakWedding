@@ -24,32 +24,32 @@ export default function HomePage() {
 
   const showcaseImages = [
     {
-      image: '/images/venue-decor.png',
+      image: 'https://res.cloudinary.com/dsk2eyecb/image/upload/v1764965365/homepage/homepage/homepage-venue-decor.jpg',
       title: 'Beautiful Venues',
       description: 'Find stunning venues perfect for your celebration'
     },
     {
-      image: '/images/decorator.png',
+      image: 'https://res.cloudinary.com/dsk2eyecb/image/upload/v1764965382/homepage/homepage/homepage-decorator.png',
       title: 'Elegant Decorations',
       description: 'Create the perfect ambiance for your special day'
     },
     {
-      image: '/images/catering.png',
+      image: 'https://res.cloudinary.com/dsk2eyecb/image/upload/v1764965383/homepage/homepage/homepage-catering.jpg',
       title: 'Delicious Catering',
       description: 'Treat your guests to exquisite cuisine'
     },
     {
-      image: '/images/dream-settings.png',
+      image: 'https://res.cloudinary.com/dsk2eyecb/image/upload/v1764965389/homepage/homepage/homepage-dream-settings.png',
       title: 'Dream Settings',
       description: 'Make your wedding vision come to life'
     },
     {
-      image: '/images/perfect-details.png',
+      image: 'https://res.cloudinary.com/dsk2eyecb/image/upload/v1764965397/homepage/homepage/homepage-perfect-details.png',
       title: 'Perfect Details',
       description: 'Every detail crafted to perfection'
     },
     {
-      image: '/images/memorable-experiences.png',
+      image: 'https://res.cloudinary.com/dsk2eyecb/image/upload/v1764965410/homepage/homepage/homepage-memorable-experiences.png',
       title: 'Memorable Experiences',
       description: 'Create unforgettable moments for your guests'
     }
@@ -64,9 +64,9 @@ export default function HomePage() {
   }, [])
 
   return (
-    <div className="bg-gradient-to-b from-gray-50 to-white">
+    <div className="bg-gradient-to-b from-pink-50/30 via-white to-pink-50/20">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-pink-50 via-purple-50/30 to-pink-50 pt-20 pb-32 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-pink-100 via-purple-50 to-pink-100 pt-20 pb-32 overflow-hidden">
         {/* Decorative background elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-20 right-10 w-96 h-96 bg-purple-200/20 rounded-full blur-3xl"></div>
@@ -113,15 +113,15 @@ export default function HomePage() {
 
               {/* Stats */}
               <div className="grid grid-cols-3 gap-8 pt-6">
-                <div className="text-center p-4 rounded-xl bg-white/50 backdrop-blur-sm border border-pink-100/50 hover:shadow-lg transition-all">
+                <div className="text-center p-4 rounded-xl bg-gradient-to-br from-pink-50 to-white backdrop-blur-sm border-2 border-pink-200 hover:border-pink-400 hover:shadow-xl transition-all">
                   <div className="text-4xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">1000+</div>
                   <div className="text-sm text-gray-700 font-semibold mt-1">Vendors</div>
                 </div>
-                <div className="text-center p-4 rounded-xl bg-white/50 backdrop-blur-sm border border-pink-100/50 hover:shadow-lg transition-all">
+                <div className="text-center p-4 rounded-xl bg-gradient-to-br from-pink-50 to-white backdrop-blur-sm border-2 border-pink-200 hover:border-pink-400 hover:shadow-xl transition-all">
                   <div className="text-4xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">5000+</div>
                   <div className="text-sm text-gray-700 font-semibold mt-1">Happy Couples</div>
                 </div>
-                <div className="text-center p-4 rounded-xl bg-white/50 backdrop-blur-sm border border-pink-100/50 hover:shadow-lg transition-all">
+                <div className="text-center p-4 rounded-xl bg-gradient-to-br from-pink-50 to-white backdrop-blur-sm border-2 border-pink-200 hover:border-pink-400 hover:shadow-xl transition-all">
                   <div className="text-4xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">50+</div>
                   <div className="text-sm text-gray-700 font-semibold mt-1">Cities</div>
                 </div>
@@ -132,7 +132,7 @@ export default function HomePage() {
             <div className="relative">
               <div className="relative rounded-3xl overflow-hidden shadow-2xl ring-4 ring-pink-200/50">
                 <img
-                  src="/images/hero-couple.png"
+                  src="https://res.cloudinary.com/dsk2eyecb/image/upload/v1764965356/homepage/homepage/homepage-hero-couple.jpg"
                   alt="Wedding Couple"
                   className="w-full h-auto object-cover"
                 />
@@ -146,7 +146,7 @@ export default function HomePage() {
       </section>
 
       {/* Visual Showcase */}
-      <section className="py-24 bg-gradient-to-b from-white via-gray-50/50 to-white relative">
+      <section className="py-24 bg-gradient-to-b from-pink-50/40 via-white to-pink-50/30 relative">
         {/* Subtle pattern overlay */}
         <div className="absolute inset-0 opacity-[0.02] bg-[radial-gradient(circle_at_1px_1px,_rgb(0,0,0)_1px,_transparent_0)] [background-size:40px_40px]"></div>
         <div className="container mx-auto px-6 relative z-10">
@@ -172,15 +172,17 @@ export default function HomePage() {
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-pink-900/20 to-transparent"></div>
                 <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="text-2xl font-bold text-white mb-2">
+                  <h3 className="text-2xl font-bold text-white mb-2 drop-shadow-lg">
                     {item.title}
                   </h3>
-                  <p className="text-pink-200 text-sm">
+                  <p className="text-pink-200 text-sm font-medium drop-shadow-md">
                     {item.description}
                   </p>
                 </div>
+                {/* Pink accent overlay on hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-pink-500/0 to-purple-500/0 group-hover:from-pink-500/10 group-hover:to-purple-500/10 transition-all duration-500"></div>
               </div>
             ))}
           </div>
@@ -257,7 +259,7 @@ export default function HomePage() {
       </section>
 
       {/* How It Works */}
-      <section className="py-24 bg-gradient-to-b from-white to-gray-50/30 relative">
+      <section className="py-24 bg-gradient-to-b from-white via-pink-50/30 to-white relative">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-5xl font-extrabold bg-gradient-to-r from-gray-900 via-purple-600 to-gray-900 bg-clip-text text-transparent mb-4">
@@ -354,7 +356,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-b from-white via-gray-50/50 to-white relative">
+      <section className="py-24 bg-gradient-to-b from-pink-50/40 via-white to-pink-50/30 relative">
         <div className="container mx-auto px-6">
           <div className="max-w-5xl mx-auto bg-gradient-to-r from-pink-600 via-purple-600 to-pink-600 rounded-3xl p-16 text-center shadow-2xl relative overflow-hidden ring-4 ring-pink-200/50">
             {/* Background Pattern */}

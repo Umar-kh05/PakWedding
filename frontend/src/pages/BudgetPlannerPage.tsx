@@ -94,7 +94,7 @@ export default function BudgetPlannerPage() {
   const remainingAllocated = totalBudget ? totalBudget * (1 - totalAllocated) : 0
 
   return (
-    <div className="bg-gradient-to-b from-gray-50 to-white min-h-screen py-10 px-4">
+    <div className="bg-gradient-to-b from-pink-50/30 via-white to-pink-50/20 min-h-screen py-10 px-4">
       <div className="max-w-5xl mx-auto space-y-6">
         <div className="text-center mb-8">
           <h1 className="text-5xl font-extrabold bg-gradient-to-r from-gray-900 via-pink-600 to-gray-900 bg-clip-text text-transparent mb-4">

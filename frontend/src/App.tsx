@@ -13,6 +13,9 @@ import VendorDashboard from './pages/vendor/VendorDashboard'
 import VendorBookingsPage from './pages/vendor/VendorBookingsPage'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import AddVendorPage from './pages/admin/AddVendorPage'
+import VendorApprovalsPage from './pages/admin/VendorApprovalsPage'
+import UserManagementPage from './pages/admin/UserManagementPage'
+import ReviewModerationPage from './pages/admin/ReviewModerationPage'
 import BookingPage from './pages/bookings/BookingPage'
 import BookingHistoryPage from './pages/bookings/BookingHistoryPage'
 import BudgetPlannerPage from './pages/BudgetPlannerPage'
@@ -40,6 +43,9 @@ function App() {
             <Route path="/vendor/bookings" element={<VendorBookingsPage />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/vendors/add" element={<AddVendorPage />} />
+            <Route path="/admin/vendors" element={<VendorApprovalsPage />} />
+            <Route path="/admin/users" element={<UserManagementPage />} />
+            <Route path="/admin/reviews" element={<ReviewModerationPage />} />
             <Route path="/bookings/new" element={<BookingPage />} />
             <Route path="/bookings/history" element={<BookingHistoryPage />} />
             <Route path="/budget-planner" element={<BudgetPlannerPage />} />
