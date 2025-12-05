@@ -10,6 +10,7 @@ import BrowseVendorsPage from './pages/vendors/BrowseVendorsPage'
 import VendorProfilePage from './pages/vendors/VendorProfilePage'
 import UserDashboard from './pages/user/UserDashboard'
 import VendorDashboard from './pages/vendor/VendorDashboard'
+import VendorBookingsPage from './pages/vendor/VendorBookingsPage'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import AddVendorPage from './pages/admin/AddVendorPage'
 import BookingPage from './pages/bookings/BookingPage'
@@ -34,6 +35,7 @@ function App() {
             <Route path="/vendors/:id" element={<VendorProfilePage />} />
             <Route path="/dashboard" element={<UserDashboard />} />
             <Route path="/vendor/dashboard" element={<VendorDashboard />} />
+            <Route path="/vendor/bookings" element={<VendorBookingsPage />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/vendors/add" element={<AddVendorPage />} />
             <Route path="/bookings/new" element={<BookingPage />} />

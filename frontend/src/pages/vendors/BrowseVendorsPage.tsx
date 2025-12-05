@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { fetchVendors, Vendor } from '../../services/vendorService'
+import BookingModal from '../../components/BookingModal'
+import { useAuthStore } from '../../store/authStore'
 
 type UiVendor = Vendor & {
   rating?: number
@@ -11,6 +13,9 @@ type UiVendor = Vendor & {
 export default function BrowseVendorsPage() {
   const [vendors, setVendors] = useState<UiVendor[]>([])
   const [loading, setLoading] = useState(false)
+  const [selectedVendor, setSelectedVendor] = useState<UiVendor | null>(null)
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false)
+  const { user } = useAuthStore()
 
   // Fallback sample data if API returns no vendors yet
   const fallbackVendors: UiVendor[] = [
@@ -122,13 +127,16 @@ export default function BrowseVendorsPage() {
       <div className="container mx-auto px-6 pb-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
           {vendors.map((vendor) => (
-            <div key={vendor._id || vendor.id} className="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100">
-              <div className="bg-gray-100 h-48 w-full overflow-hidden">
+            <div
+              key={vendor._id || vendor.id}
+              className="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-xl hover:scale-105 hover:border-pink-300 group"
+            >
+              <div className="bg-gray-100 h-48 w-full overflow-hidden relative">
                 {vendor.image_url ? (
                   <img 
                     src={vendor.image_url.startsWith('http') ? vendor.image_url : `http://localhost:8000${vendor.image_url}`}
                     alt={vendor.business_name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                     onError={(e) => {
                       (e.target as HTMLImageElement).style.display = 'none'
                     }}
@@ -138,6 +146,27 @@ export default function BrowseVendorsPage() {
                     No Image
                   </div>
                 )}
+                {/* Hover overlay with Book button */}
+                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                  {user ? (
+                    <button
+                      onClick={() => {
+                        setSelectedVendor(vendor)
+                        setIsBookingModalOpen(true)
+                      }}
+                      className="bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 rounded-lg font-semibold transform translate-y-4 group-hover:translate-y-0 transition-all duration-300"
+                    >
+                      Book Now
+                    </button>
+                  ) : (
+                    <Link
+                      to="/login"
+                      className="bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 rounded-lg font-semibold transform translate-y-4 group-hover:translate-y-0 transition-all duration-300"
+                    >
+                      Login to Book
+                    </Link>
+                  )}
+                </div>
               </div>
               <div className="p-6">
                 <p className="text-sm font-semibold text-gray-500 mb-2">{vendor.service_category}</p>
@@ -155,16 +184,45 @@ export default function BrowseVendorsPage() {
                 <div className="text-pink-600 font-semibold text-lg mb-4">
                   Starting from {vendor.startingPrice}
                 </div>
-                <Link
-                  to={`/vendors/${vendor._id || vendor.id}`}
-                  className="inline-flex items-center gap-2 text-pink-600 font-semibold hover:underline"
-                >
-                  View Profile →
-                </Link>
+                <div className="flex gap-3">
+                  <Link
+                    to={`/vendors/${vendor._id || vendor.id}`}
+                    className="inline-flex items-center gap-2 text-pink-600 font-semibold hover:underline flex-1"
+                  >
+                    View Profile →
+                  </Link>
+                  {user && (
+                    <button
+                      onClick={() => {
+                        setSelectedVendor(vendor)
+                        setIsBookingModalOpen(true)
+                      }}
+                      className="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-colors"
+                    >
+                      Book
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           ))}
         </div>
+
+        {/* Booking Modal */}
+        {selectedVendor && (
+          <BookingModal
+            vendorId={selectedVendor._id || selectedVendor.id || ''}
+            vendorName={selectedVendor.business_name}
+            isOpen={isBookingModalOpen}
+            onClose={() => {
+              setIsBookingModalOpen(false)
+              setSelectedVendor(null)
+            }}
+            onSuccess={() => {
+              alert('Booking request submitted successfully! The vendor will review and respond.')
+            }}
+          />
+        )}
 
         {/* Pagination */}
         <div className="flex justify-center items-center gap-3">

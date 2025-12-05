@@ -14,7 +14,40 @@ class VendorRepository(BaseRepository):
     
     async def get_by_user_id(self, user_id: str):
         """Get vendor by user ID"""
-        return await self.find_one({"user_id": user_id})
+        from bson import ObjectId
+        
+        # Try multiple formats
+        # 1. Try as ObjectId first (most common case)
+        try:
+            user_obj_id = ObjectId(user_id)
+            vendor = await self.find_one({"user_id": user_obj_id})
+            if vendor:
+                return vendor
+        except:
+            pass
+        
+        # 2. Try as string
+        vendor = await self.find_one({"user_id": user_id})
+        if vendor:
+            return vendor
+        
+        # 3. Try direct MongoDB query with ObjectId
+        try:
+            user_obj_id = ObjectId(user_id)
+            vendor_doc = await self.collection.find_one({"user_id": user_obj_id})
+            if vendor_doc:
+                vendor_doc["_id"] = str(vendor_doc["_id"])
+                return vendor_doc
+        except:
+            pass
+        
+        # 4. Try direct MongoDB query with string
+        vendor_doc = await self.collection.find_one({"user_id": user_id})
+        if vendor_doc:
+            vendor_doc["_id"] = str(vendor_doc["_id"])
+            return vendor_doc
+        
+        return None
     
     async def get_by_category(self, category: str, skip: int = 0, limit: int = 100):
         """Get vendors by service category"""
