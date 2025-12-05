@@ -33,20 +33,26 @@ export default function BrowseVendorsPage() {
       setLoading(true)
       try {
         const data = await fetchVendors()
-        if (data.length) {
+        console.log('Fetched vendors:', data)
+        if (data && data.length > 0) {
           // Map API vendors to UI fields while keeping existing design
           setVendors(
             data.map((v) => ({
               ...v,
+              _id: v._id || v.id || '',
+              id: v.id || v._id || '',
               rating: v.rating ?? 4.8,
               reviews: v.total_bookings ?? 0,
               startingPrice: 'Rs. 50,000',
             }))
           )
         } else {
+          // Only show fallback if no vendors found
+          console.log('No vendors found, showing fallback')
           setVendors(fallbackVendors)
         }
-      } catch {
+      } catch (err) {
+        console.error('Error fetching vendors:', err)
         // If API fails, fall back to sample list so page still works
         setVendors(fallbackVendors)
       } finally {

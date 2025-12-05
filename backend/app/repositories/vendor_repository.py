@@ -18,7 +18,11 @@ class VendorRepository(BaseRepository):
     
     async def get_by_category(self, category: str, skip: int = 0, limit: int = 100):
         """Get vendors by service category"""
-        return await self.find_many({"service_category": category, "is_approved": True}, skip, limit)
+        return await self.find_many(
+            {"service_category": category, "is_approved": True, "is_active": True}, 
+            skip, 
+            limit
+        )
     
     async def get_pending_approvals(self, skip: int = 0, limit: int = 100):
         """Get vendors pending approval"""

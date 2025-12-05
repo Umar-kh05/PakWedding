@@ -1,11 +1,24 @@
 import axios from 'axios'
 import { useAuthStore } from '../store/authStore'
 
+// Use proxy in development, direct URL in production
+const getBaseURL = () => {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL
+  }
+  // In development, use proxy if available, otherwise direct URL
+  if (import.meta.env.DEV) {
+    return '/api' // Use Vite proxy
+  }
+  return 'http://localhost:8000/api'
+}
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api',
+  baseURL: getBaseURL(),
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 10000, // 10 seconds timeout
 })
 
 // Add token to requests
