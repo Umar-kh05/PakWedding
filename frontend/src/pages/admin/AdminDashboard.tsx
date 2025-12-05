@@ -46,24 +46,33 @@ export default function AdminDashboard() {
         {/* Action Buttons */}
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-xl font-bold text-gray-900 mb-4">Admin Actions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Link
+              to="/admin/vendors/add"
+              className="bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg text-center font-medium transition-colors flex items-center justify-center gap-2"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              Add New Vendor
+            </Link>
             <Link
               to="/admin/vendors"
               className="bg-pink-600 hover:bg-pink-700 text-white px-4 py-3 rounded-lg text-center font-medium transition-colors"
             >
-              Open Vendor Approvals
+              Vendor Approvals
             </Link>
             <Link
               to="/admin/users"
               className="bg-pink-600 hover:bg-pink-700 text-white px-4 py-3 rounded-lg text-center font-medium transition-colors"
             >
-              Open User Management
+              User Management
             </Link>
             <Link
               to="/admin/reviews"
               className="bg-pink-600 hover:bg-pink-700 text-white px-4 py-3 rounded-lg text-center font-medium transition-colors"
             >
-              Open Review Moderation
+              Review Moderation
             </Link>
           </div>
         </div>

@@ -62,7 +62,7 @@ export default function VendorDashboard() {
               to="/vendor/bookings"
               className="bg-pink-600 hover:bg-pink-700 text-white px-4 py-3 rounded-lg text-center font-medium transition-colors"
             >
-              View Bookings
+              Manage Bookings
             </Link>
             <Link
               to="/vendor/packages"

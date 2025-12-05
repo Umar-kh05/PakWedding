@@ -21,6 +21,19 @@ class BookingService:
         booking_dict["created_at"] = datetime.utcnow()
         booking_dict["updated_at"] = datetime.utcnow()
         
+        # Ensure vendor_id and user_id are stored as ObjectId for MongoDB
+        from bson import ObjectId
+        if "vendor_id" in booking_dict and booking_dict["vendor_id"]:
+            try:
+                booking_dict["vendor_id"] = ObjectId(booking_dict["vendor_id"])
+            except:
+                pass  # Keep as string if conversion fails
+        if "user_id" in booking_dict and booking_dict["user_id"]:
+            try:
+                booking_dict["user_id"] = ObjectId(booking_dict["user_id"])
+            except:
+                pass  # Keep as string if conversion fails
+        
         return await self.booking_repo.create(booking_dict)
     
     async def get_booking_by_id(self, booking_id: str) -> Optional[dict]:
@@ -52,6 +65,20 @@ class BookingService:
         """Confirm a booking (vendor action)"""
         return await self.booking_repo.update(booking_id, {
             "status": BookingStatus.CONFIRMED,
+            "updated_at": datetime.utcnow()
+        })
+    
+    async def approve_booking(self, booking_id: str) -> Optional[dict]:
+        """Approve a booking (vendor action)"""
+        return await self.booking_repo.update(booking_id, {
+            "status": BookingStatus.APPROVED,
+            "updated_at": datetime.utcnow()
+        })
+    
+    async def reject_booking(self, booking_id: str) -> Optional[dict]:
+        """Reject a booking (vendor action)"""
+        return await self.booking_repo.update(booking_id, {
+            "status": BookingStatus.REJECTED,
             "updated_at": datetime.utcnow()
         })
 

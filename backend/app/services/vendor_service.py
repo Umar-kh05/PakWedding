@@ -48,7 +48,9 @@ class VendorService:
     
     async def get_vendors_by_category(self, category: str, skip: int = 0, limit: int = 100):
         """Get vendors by category"""
-        return await self.vendor_repo.get_by_category(category, skip, limit)
+        vendors = await self.vendor_repo.get_by_category(category, skip, limit)
+        # Ensure is_active filter is also applied
+        return [v for v in vendors if v.get("is_active", True)]
     
     async def update_vendor(self, vendor_id: str, vendor_data: VendorUpdate) -> Optional[dict]:
         """Update vendor"""
@@ -63,4 +65,34 @@ class VendorService:
     async def get_pending_approvals(self, skip: int = 0, limit: int = 100):
         """Get vendors pending approval"""
         return await self.vendor_repo.get_pending_approvals(skip, limit)
+    
+    async def create_vendor_as_admin(self, vendor_data: VendorCreate) -> dict:
+        """Create a vendor as admin (auto-approved)"""
+        # Check if user with this email already exists
+        existing_user = await self.user_repo.get_by_email(vendor_data.email)
+        if existing_user:
+            raise ValueError("User with this email already exists")
+        
+        # Create user account first
+        user_dict = {
+            "email": vendor_data.email,
+            "full_name": vendor_data.contact_person,
+            "phone_number": vendor_data.phone_number,
+            "role": "vendor",
+            "hashed_password": hash_password(vendor_data.password),
+            "is_active": True,
+            "created_at": datetime.utcnow(),
+            "updated_at": datetime.utcnow()
+        }
+        user = await self.user_repo.create(user_dict)
+        
+        # Create vendor profile (auto-approved)
+        vendor_dict = vendor_data.model_dump(exclude={"password"})
+        vendor_dict["user_id"] = user["_id"]
+        vendor_dict["is_approved"] = True  # Auto-approved when created by admin
+        vendor_dict["is_active"] = True
+        vendor_dict["created_at"] = datetime.utcnow()
+        vendor_dict["updated_at"] = datetime.utcnow()
+        
+        return await self.vendor_repo.create(vendor_dict)
 

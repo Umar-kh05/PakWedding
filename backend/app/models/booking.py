@@ -11,6 +11,8 @@ from enum import Enum
 class BookingStatus(str, Enum):
     """Booking status enumeration"""
     PENDING = "pending"
+    APPROVED = "approved"
+    REJECTED = "rejected"
     CONFIRMED = "confirmed"
     CANCELLED = "cancelled"
     COMPLETED = "completed"
@@ -20,16 +22,27 @@ class BookingBase(BaseModel):
     """Base booking schema"""
     user_id: str
     vendor_id: str
-    service_id: str
+    service_id: Optional[str] = None  # Optional - can book vendor directly
     event_date: datetime
     event_location: str
     guest_count: Optional[int] = None
     special_requirements: Optional[str] = None
-    total_amount: float
+    total_amount: float = Field(gt=0, description="Total amount must be greater than 0")
+
+
+class BookingCreateRequest(BaseModel):
+    """Schema for creating a booking (user_id is set by backend)"""
+    vendor_id: str
+    service_id: Optional[str] = None
+    event_date: datetime
+    event_location: str
+    guest_count: Optional[int] = None
+    special_requirements: Optional[str] = None
+    total_amount: float = Field(gt=0, description="Total amount must be greater than 0")
 
 
 class BookingCreate(BookingBase):
-    """Schema for creating a booking"""
+    """Schema for creating a booking (with user_id)"""
     pass
 
 

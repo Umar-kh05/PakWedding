@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.api.routes import auth, users, vendors, bookings, admin, services, uploads
+from app.api.routes import vendor_bookings
 from app.core.config import settings
 from app.core.database import Database
 
@@ -42,6 +43,7 @@ app.include_router(bookings.router, prefix="/api/bookings", tags=["Bookings"])
 app.include_router(services.router, prefix="/api/services", tags=["Services"])
 app.include_router(admin.router, prefix="/api/admin", tags=["Admin"])
 app.include_router(uploads.router, prefix="/api/uploads", tags=["Uploads"])
+app.include_router(vendor_bookings.router, prefix="/api/vendor", tags=["Vendor Bookings"])
 
 @app.get("/")
 async def root():
