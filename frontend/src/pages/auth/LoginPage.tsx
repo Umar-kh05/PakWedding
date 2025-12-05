@@ -56,7 +56,7 @@ export default function LoginPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-pink-600"
               placeholder="Enter your email"
               required
             />
@@ -65,7 +65,7 @@ export default function LoginPage() {
           <div>
             <div className="flex items-center justify-between mb-2">
               <label className="block text-gray-700 font-medium">Password</label>
-              <Link to="/forgot-password" className="text-sm text-pink-600 hover:text-pink-700">
+              <Link to="/forgot-password" className="text-sm bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent font-semibold hover:from-pink-700 hover:to-purple-700">
                 Forgot password?
               </Link>
             </div>
@@ -73,7 +73,7 @@ export default function LoginPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-pink-600"
               placeholder="Enter your password"
               required
             />
@@ -81,7 +81,7 @@ export default function LoginPage() {
 
           <button
             type="submit"
-            className="w-full bg-pink-600 hover:bg-pink-700 text-white py-3 rounded-lg font-semibold transition-colors"
+            className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white py-3 rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl"
           >
             Login
           </button>
@@ -108,7 +108,7 @@ export default function LoginPage() {
           <div className="text-center space-y-2">
             <p className="text-gray-600 text-sm">
               Don't have an account?{' '}
-              <Link to="/register" className="text-pink-600 font-semibold hover:text-pink-700">
+              <Link to="/register" className="bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent font-semibold hover:from-pink-700 hover:to-purple-700">
                 Sign Up
               </Link>
             </p>

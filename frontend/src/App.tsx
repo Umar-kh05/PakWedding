@@ -16,6 +16,8 @@ import AddVendorPage from './pages/admin/AddVendorPage'
 import BookingPage from './pages/bookings/BookingPage'
 import BookingHistoryPage from './pages/bookings/BookingHistoryPage'
 import BudgetPlannerPage from './pages/BudgetPlannerPage'
+import ContactPage from './pages/ContactPage'
+import AboutPage from './pages/AboutPage'
 
 const queryClient = new QueryClient()
 
@@ -41,6 +43,8 @@ function App() {
             <Route path="/bookings/new" element={<BookingPage />} />
             <Route path="/bookings/history" element={<BookingHistoryPage />} />
             <Route path="/budget-planner" element={<BudgetPlannerPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/about" element={<AboutPage />} />
           </Routes>
         </Layout>
       </Router>

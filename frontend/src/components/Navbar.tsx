@@ -22,7 +22,7 @@ export default function Navbar() {
           <li>
             <Link 
               to="/" 
-              className={`hover:text-pink-600 transition-colors ${isActive('/') ? 'text-pink-600 border-b-2 border-pink-600 pb-1' : ''}`}
+              className={`hover:text-pink-600 transition-colors font-semibold ${isActive('/') ? 'text-pink-600 border-b-2 border-pink-600 pb-1' : ''}`}
             >
               Home
             </Link>
@@ -30,7 +30,7 @@ export default function Navbar() {
           <li>
             <Link 
               to="/vendors" 
-              className={`hover:text-pink-600 transition-colors ${isActive('/vendors') ? 'text-pink-600 border-b-2 border-pink-600 pb-1' : ''}`}
+              className={`hover:text-pink-600 transition-colors font-semibold ${isActive('/vendors') ? 'text-pink-600 border-b-2 border-pink-600 pb-1' : ''}`}
             >
               Vendors
             </Link>
@@ -38,7 +38,7 @@ export default function Navbar() {
           <li>
             <Link 
               to="/services" 
-              className={`hover:text-pink-600 transition-colors ${isActive('/services') ? 'text-pink-600 border-b-2 border-pink-600 pb-1' : ''}`}
+              className={`hover:text-pink-600 transition-colors font-semibold ${isActive('/services') ? 'text-pink-600 border-b-2 border-pink-600 pb-1' : ''}`}
             >
               Services
             </Link>
@@ -46,7 +46,7 @@ export default function Navbar() {
           <li>
             <Link 
               to="/budget-planner" 
-              className={`hover:text-pink-600 transition-colors ${isActive('/budget-planner') ? 'text-pink-600 border-b-2 border-pink-600 pb-1' : ''}`}
+              className={`hover:text-pink-600 transition-colors font-semibold ${isActive('/budget-planner') ? 'text-pink-600 border-b-2 border-pink-600 pb-1' : ''}`}
             >
               Budget Planner
             </Link>
@@ -54,7 +54,7 @@ export default function Navbar() {
           <li>
             <Link 
               to="/about" 
-              className={`hover:text-pink-600 transition-colors ${isActive('/about') ? 'text-pink-600 border-b-2 border-pink-600 pb-1' : ''}`}
+              className={`hover:text-pink-600 transition-colors font-semibold ${isActive('/about') ? 'text-pink-600 border-b-2 border-pink-600 pb-1' : ''}`}
             >
               About
             </Link>
@@ -62,7 +62,7 @@ export default function Navbar() {
           <li>
             <Link 
               to="/contact" 
-              className={`hover:text-pink-600 transition-colors ${isActive('/contact') ? 'text-pink-600 border-b-2 border-pink-600 pb-1' : ''}`}
+              className={`hover:text-pink-600 transition-colors font-semibold ${isActive('/contact') ? 'text-pink-600 border-b-2 border-pink-600 pb-1' : ''}`}
             >
               Contact
             </Link>
@@ -76,7 +76,7 @@ export default function Navbar() {
               <span className="text-gray-700 text-sm">{user.full_name}</span>
               <Link
                 to={user.role === 'vendor' ? '/vendor/dashboard' : user.role === 'admin' ? '/admin/dashboard' : '/dashboard'}
-                className="text-pink-600 hover:text-pink-700 text-sm"
+                className="text-pink-600 hover:text-pink-700 font-semibold text-sm transition-colors"
               >
                 Dashboard
               </Link>
@@ -91,13 +91,13 @@ export default function Navbar() {
             <>
           <Link
             to="/login"
-                className="border-2 border-pink-600 text-pink-600 px-5 py-1.5 rounded-md hover:bg-pink-50 transition-colors"
+                className="border-2 border-pink-600 text-pink-600 px-5 py-1.5 rounded-md hover:bg-pink-50 transition-all font-semibold"
           >
             Login
           </Link>
           <Link
                 to="/register"
-                className="bg-pink-600 hover:bg-pink-700 text-white px-5 py-1.5 rounded-md transition-colors"
+                className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-5 py-1.5 rounded-md transition-all shadow-md hover:shadow-lg font-semibold"
           >
             Sign Up
           </Link>

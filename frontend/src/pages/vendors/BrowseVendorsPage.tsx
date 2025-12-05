@@ -12,10 +12,20 @@ type UiVendor = Vendor & {
 
 export default function BrowseVendorsPage() {
   const [vendors, setVendors] = useState<UiVendor[]>([])
+  const [filteredVendors, setFilteredVendors] = useState<UiVendor[]>([])
   const [loading, setLoading] = useState(false)
   const [selectedVendor, setSelectedVendor] = useState<UiVendor | null>(null)
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false)
   const { user } = useAuthStore()
+  
+  // Search and filter states
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState<string>('')
+  const [selectedLocation, setSelectedLocation] = useState<string>('')
+  const [priceRange, setPriceRange] = useState<string>('')
+  const [minRating, setMinRating] = useState<number>(0)
+  const [sortBy, setSortBy] = useState<string>('popular')
+  const [activeFilters, setActiveFilters] = useState<string[]>([])
 
   // Fallback sample data if API returns no vendors yet
   const fallbackVendors: UiVendor[] = [
@@ -33,6 +43,10 @@ export default function BrowseVendorsPage() {
     },
   ]
 
+  // Get unique categories and locations from vendors
+  const categories = Array.from(new Set(vendors.map(v => v.service_category).filter(Boolean)))
+  const locations = Array.from(new Set(vendors.map(v => v.business_address).filter(Boolean)))
+
   useEffect(() => {
     const load = async () => {
       setLoading(true)
@@ -41,25 +55,27 @@ export default function BrowseVendorsPage() {
         console.log('Fetched vendors:', data)
         if (data && data.length > 0) {
           // Map API vendors to UI fields while keeping existing design
-          setVendors(
-            data.map((v) => ({
-              ...v,
-              _id: v._id || v.id || '',
-              id: v.id || v._id || '',
-              rating: v.rating ?? 4.8,
-              reviews: v.total_bookings ?? 0,
-              startingPrice: 'Rs. 50,000',
-            }))
-          )
+          const mappedVendors = data.map((v) => ({
+            ...v,
+            _id: v._id || v.id || '',
+            id: v.id || v._id || '',
+            rating: v.rating ?? 4.8,
+            reviews: v.total_bookings ?? 0,
+            startingPrice: 'Rs. 50,000',
+          }))
+          setVendors(mappedVendors)
+          setFilteredVendors(mappedVendors)
         } else {
           // Only show fallback if no vendors found
           console.log('No vendors found, showing fallback')
           setVendors(fallbackVendors)
+          setFilteredVendors(fallbackVendors)
         }
       } catch (err) {
         console.error('Error fetching vendors:', err)
         // If API fails, fall back to sample list so page still works
         setVendors(fallbackVendors)
+        setFilteredVendors(fallbackVendors)
       } finally {
         setLoading(false)
       }
@@ -68,65 +84,185 @@ export default function BrowseVendorsPage() {
     load()
   }, [])
 
+  // Filter and search logic
+  useEffect(() => {
+    let filtered = [...vendors]
+
+    // Search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase()
+      filtered = filtered.filter(v =>
+        v.business_name.toLowerCase().includes(query) ||
+        v.service_category.toLowerCase().includes(query) ||
+        v.business_address.toLowerCase().includes(query)
+      )
+    }
+
+    // Category filter
+    if (selectedCategory) {
+      filtered = filtered.filter(v => v.service_category === selectedCategory)
+    }
+
+    // Location filter
+    if (selectedLocation) {
+      filtered = filtered.filter(v => v.business_address.includes(selectedLocation))
+    }
+
+    // Rating filter
+    if (minRating > 0) {
+      filtered = filtered.filter(v => (v.rating || 0) >= minRating)
+    }
+
+    // Sort
+    if (sortBy === 'popular') {
+      filtered.sort((a, b) => (b.reviews || 0) - (a.reviews || 0))
+    } else if (sortBy === 'rating') {
+      filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0))
+    } else if (sortBy === 'name') {
+      filtered.sort((a, b) => a.business_name.localeCompare(b.business_name))
+    }
+
+    setFilteredVendors(filtered)
+
+    // Update active filters display
+    const filters: string[] = []
+    if (selectedCategory) filters.push(selectedCategory)
+    if (selectedLocation) filters.push(selectedLocation)
+    if (minRating > 0) filters.push(`${minRating}+ Rating`)
+    if (priceRange) filters.push(priceRange)
+    setActiveFilters(filters)
+  }, [searchQuery, selectedCategory, selectedLocation, priceRange, minRating, sortBy, vendors])
+
+  const handleRemoveFilter = (filter: string) => {
+    if (filter.includes('Rating')) {
+      setMinRating(0)
+    } else if (categories.includes(filter)) {
+      setSelectedCategory('')
+    } else if (locations.some(loc => loc.includes(filter))) {
+      setSelectedLocation('')
+    } else if (filter.includes('Rs.')) {
+      setPriceRange('')
+    }
+  }
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    // Search is handled by useEffect
+  }
+
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-gradient-to-b from-gray-50 to-white min-h-screen">
       {/* Header Section */}
       <div className="container mx-auto px-6 py-12">
-        <h1 className="text-4xl font-bold text-gray-900 mb-3">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-pink-600 to-gray-900 bg-clip-text text-transparent mb-3">
           Find Your Perfect Wedding Vendors
         </h1>
-        <p className="text-gray-600 mb-8">
+        <p className="text-gray-700 font-medium mb-8">
           Browse through 1000+ verified vendors across Pakistan
         </p>
 
         {/* Search Bar */}
-        <div className="flex flex-col md:flex-row gap-4">
+        <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4 mb-6">
           <input
             type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search vendors by name, category, or location..."
-            className="flex-1 h-14 px-5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-pink-500"
+            className="flex-1 h-14 px-5 rounded-xl border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-pink-600"
           />
-          <button className="bg-pink-600 hover:bg-pink-700 text-white h-14 px-12 rounded-xl font-semibold">
+          <button 
+            type="submit"
+            className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white h-14 px-12 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
+          >
             Search
           </button>
-          <input
-            type="text"
-            placeholder="Add filter"
-            className="w-full md:w-60 h-14 px-5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-pink-500"
-          />
+        </form>
+
+        {/* Filters */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            className="h-14 px-5 rounded-xl border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-pink-600 bg-white"
+          >
+            <option value="">All Categories</option>
+            {categories.map(cat => (
+              <option key={cat} value={cat}>{cat}</option>
+            ))}
+          </select>
+
+          <select
+            value={selectedLocation}
+            onChange={(e) => setSelectedLocation(e.target.value)}
+            className="h-14 px-5 rounded-xl border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-pink-600 bg-white"
+          >
+            <option value="">All Locations</option>
+            {locations.map(loc => (
+              <option key={loc} value={loc}>{loc}</option>
+            ))}
+          </select>
+
+          <select
+            value={minRating}
+            onChange={(e) => setMinRating(Number(e.target.value))}
+            className="h-14 px-5 rounded-xl border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-pink-600 bg-white"
+          >
+            <option value="0">All Ratings</option>
+            <option value="4">4+ Stars</option>
+            <option value="4.5">4.5+ Stars</option>
+            <option value="5">5 Stars</option>
+          </select>
+
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="h-14 px-5 rounded-xl border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-pink-600 bg-white"
+          >
+            <option value="popular">Most Popular</option>
+            <option value="rating">Highest Rated</option>
+            <option value="name">Name (A-Z)</option>
+          </select>
         </div>
 
         {/* Active Filters */}
-        <div className="mt-6">
-          <span className="text-sm font-semibold text-gray-700 mr-3">Active Filters:</span>
-          <div className="inline-flex flex-wrap gap-3">
-            {['Photography', 'Lahore', 'Rs. 50k-100k', '4+ Rating'].map((filter) => (
-              <span
-                key={filter}
-                className="bg-purple-50 text-gray-700 px-4 py-2 rounded-full text-sm font-medium"
-              >
-                {filter} ×
-              </span>
-            ))}
+        {activeFilters.length > 0 && (
+          <div className="mt-6">
+            <span className="text-sm font-semibold text-gray-700 mr-3">Active Filters:</span>
+            <div className="inline-flex flex-wrap gap-3">
+              {activeFilters.map((filter) => (
+                <span
+                  key={filter}
+                  className="bg-gradient-to-r from-pink-100 to-purple-100 text-gray-800 px-4 py-2 rounded-full text-sm font-medium border border-pink-200 flex items-center gap-2"
+                >
+                  {filter}
+                  <button
+                    onClick={() => handleRemoveFilter(filter)}
+                    className="hover:text-pink-600 font-bold"
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Results + Sort */}
-        <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-gray-600 text-sm mb-6">
-        <p>{loading ? 'Loading vendors...' : `Showing ${vendors.length} results`}</p>
-        <div className="flex items-center gap-2">
-          <span>Sort by:</span>
-          <button className="border border-gray-200 px-4 py-2 rounded-lg shadow-sm hover:bg-gray-50">
-            Most Popular ▼
-          </button>
-        </div>
+        <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-gray-700 text-sm mb-6">
+        <p className="font-semibold">{loading ? 'Loading vendors...' : `Showing ${filteredVendors.length} of ${vendors.length} results`}</p>
       </div>
 
       {/* Vendors Grid */}
       <div className="container mx-auto px-6 pb-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-          {vendors.map((vendor) => (
+        {filteredVendors.length === 0 && !loading ? (
+          <div className="text-center py-16">
+            <p className="text-2xl font-bold text-gray-400 mb-4">No vendors found</p>
+            <p className="text-gray-600">Try adjusting your search or filters</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+            {filteredVendors.map((vendor) => (
             <div
               key={vendor._id || vendor.id}
               className="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-xl hover:scale-105 hover:border-pink-300 group"
@@ -154,14 +290,14 @@ export default function BrowseVendorsPage() {
                         setSelectedVendor(vendor)
                         setIsBookingModalOpen(true)
                       }}
-                      className="bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 rounded-lg font-semibold transform translate-y-4 group-hover:translate-y-0 transition-all duration-300"
+                      className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-semibold transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg"
                     >
                       Book Now
                     </button>
                   ) : (
                     <Link
                       to="/login"
-                      className="bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 rounded-lg font-semibold transform translate-y-4 group-hover:translate-y-0 transition-all duration-300"
+                      className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-semibold transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg"
                     >
                       Login to Book
                     </Link>
@@ -181,13 +317,13 @@ export default function BrowseVendorsPage() {
                   <span>•</span>
                   <span>{vendor.business_address}</span>
                 </div>
-                <div className="text-pink-600 font-semibold text-lg mb-4">
+                <div className="bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent font-bold text-lg mb-4">
                   Starting from {vendor.startingPrice}
                 </div>
                 <div className="flex gap-3">
                   <Link
                     to={`/vendors/${vendor._id || vendor.id}`}
-                    className="inline-flex items-center gap-2 text-pink-600 font-semibold hover:underline flex-1"
+                    className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent font-semibold hover:underline flex-1"
                   >
                     View Profile →
                   </Link>
@@ -197,7 +333,7 @@ export default function BrowseVendorsPage() {
                         setSelectedVendor(vendor)
                         setIsBookingModalOpen(true)
                       }}
-                      className="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-colors"
+                      className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-all shadow-md"
                     >
                       Book
                     </button>
@@ -206,7 +342,8 @@ export default function BrowseVendorsPage() {
               </div>
             </div>
           ))}
-        </div>
+          </div>
+        )}
 
         {/* Booking Modal */}
         {selectedVendor && (
@@ -231,7 +368,7 @@ export default function BrowseVendorsPage() {
             <button
               key={page}
               className={`w-10 h-10 rounded-lg ${
-                page === 2 ? 'bg-pink-600 text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'
+                page === 2 ? 'bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow-lg' : 'border-2 border-gray-200 text-gray-600 hover:border-pink-300 hover:bg-pink-50'
               }`}
             >
               {page}

@@ -75,28 +75,28 @@ export default function UserDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Link
               to="/vendors"
-              className="bg-pink-600 hover:bg-pink-700 text-white font-semibold py-6 rounded-xl text-center text-lg transition-colors shadow-lg"
+              className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-semibold py-6 rounded-xl text-center text-lg transition-all shadow-lg hover:shadow-xl"
             >
               Find Vendors
             </Link>
 
             <Link
               to="/bookings/history"
-              className="bg-pink-600 hover:bg-pink-700 text-white font-semibold py-6 rounded-xl text-center text-lg transition-colors shadow-lg"
+              className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-semibold py-6 rounded-xl text-center text-lg transition-all shadow-lg hover:shadow-xl"
             >
               View Bookings
             </Link>
 
             <Link
               to="/budget-planner"
-              className="bg-pink-600 hover:bg-pink-700 text-white font-semibold py-6 rounded-xl text-center text-lg transition-colors shadow-lg"
+              className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-semibold py-6 rounded-xl text-center text-lg transition-all shadow-lg hover:shadow-xl"
             >
               Budget Planner
             </Link>
 
             <Link
               to="/checklist"
-              className="bg-pink-600 hover:bg-pink-700 text-white font-semibold py-6 rounded-xl text-center text-lg transition-colors shadow-lg"
+              className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-semibold py-6 rounded-xl text-center text-lg transition-all shadow-lg hover:shadow-xl"
             >
               Checklist
             </Link>
