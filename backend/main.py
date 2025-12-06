@@ -1,9 +1,11 @@
 """
 FastAPI main application entry point
 """
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 from app.api.routes import auth, users, vendors, bookings, admin, services, uploads
 from app.api.routes import vendor_bookings
 from app.core.config import settings
@@ -14,6 +16,26 @@ app = FastAPI(
     description="Wedding planning portal backend with vendor management",
     version="1.0.0"
 )
+
+# Add validation error handler for better error messages
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    """Handle Pydantic validation errors with detailed messages"""
+    errors = exc.errors()
+    error_details = []
+    for error in errors:
+        field = ".".join(str(loc) for loc in error.get("loc", []))
+        message = error.get("msg", "Validation error")
+        error_details.append(f"{field}: {message}")
+    
+    error_message = "; ".join(error_details)
+    print(f"[VALIDATION ERROR] {error_message}")
+    print(f"[VALIDATION ERROR] Full error: {errors}")
+    
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content={"detail": error_message, "errors": errors}
+    )
 
 # CORS middleware
 app.add_middleware(

@@ -1,7 +1,7 @@
 import api from './api'
 
 export type Vendor = {
-  _id: string
+  _id?: string
   id?: string
   business_name: string
   contact_person: string
@@ -14,6 +14,9 @@ export type Vendor = {
   image_url?: string
   gallery_images?: string[]
   description?: string
+  is_approved?: boolean
+  is_active?: boolean
+  created_at?: string
 }
 
 export async function fetchVendors(category?: string, limit: number = 200) {

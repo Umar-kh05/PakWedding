@@ -137,7 +137,7 @@ export default function AddVendorPage() {
         }
       }
 
-      const vendorData = {
+      const vendorData: any = {
         business_name: formData.business_name,
         contact_person: formData.contact_person,
         email: formData.email,
@@ -146,12 +146,23 @@ export default function AddVendorPage() {
         service_category: formData.service_category,
         description: formData.description || undefined,
         password: formData.password,
-        image_url: imageUrl
       }
+      
+      // Only include image_url if it exists
+      if (imageUrl) {
+        vendorData.image_url = imageUrl
+      }
+      
+      console.log('Sending vendor data:', vendorData)
 
       const response = await api.post('/admin/vendors/create', vendorData)
+      console.log('Vendor creation response:', response.data)
       
-      setSuccess(`Vendor "${response.data.business_name}" created successfully! They can now login with email: ${response.data.email}`)
+      if (response.status === 201 || response.status === 200) {
+        setSuccess(`Vendor "${response.data.business_name}" created successfully! They can now login with email: ${response.data.email}`)
+      } else {
+        throw new Error('Unexpected response status: ' + response.status)
+      }
       
       // Reset form
       setFormData({
@@ -173,7 +184,26 @@ export default function AddVendorPage() {
         setSuccess('')
       }, 5000)
     } catch (err: any) {
-      const errorMessage = err.response?.data?.detail || err.message || 'Failed to create vendor'
+      console.error('Error creating vendor:', err)
+      console.error('Error response:', err.response)
+      
+      let errorMessage = 'Failed to create vendor'
+      if (err.response?.data) {
+        if (Array.isArray(err.response.data.detail)) {
+          // Pydantic validation errors
+          errorMessage = err.response.data.detail.map((e: any) => {
+            const field = e.loc?.join('.') || 'unknown'
+            return `${field}: ${e.msg}`
+          }).join('; ')
+        } else if (err.response.data.detail) {
+          errorMessage = err.response.data.detail
+        } else if (err.response.data.message) {
+          errorMessage = err.response.data.message
+        }
+      } else if (err.message) {
+        errorMessage = err.message
+      }
+      
       setError(errorMessage)
     } finally {
       setLoading(false)

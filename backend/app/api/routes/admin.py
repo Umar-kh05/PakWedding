@@ -1,11 +1,13 @@
 """
 Admin routes
 """
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Request
+from fastapi.exceptions import RequestValidationError
 from typing import List
 from app.services.vendor_service import VendorService
 from app.api.dependencies import get_vendor_service, get_current_admin
 from app.models.vendor import VendorResponse, VendorCreate
+import traceback
 
 router = APIRouter()
 
@@ -43,6 +45,8 @@ async def create_vendor(
 ):
     """Create a new vendor (admin only, auto-approved)"""
     try:
+        # Log the incoming data for debugging
+        print(f"[DEBUG] Creating vendor with data: {vendor_data.model_dump()}")
         vendor = await vendor_service.create_vendor_as_admin(vendor_data)
         
         # Convert _id to id for response model
@@ -62,13 +66,20 @@ async def create_vendor(
         
         return vendor
     except ValueError as e:
+        print(f"[ERROR] ValueError creating vendor: {str(e)}")
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
     except Exception as e:
         import traceback
         error_msg = str(e)
         traceback_str = traceback.format_exc()
-        print(f"Error creating vendor: {error_msg}")
+        print(f"[ERROR] Error creating vendor: {error_msg}")
         print(traceback_str)
+        # If it's a validation error, return 400 instead of 500
+        if "validation" in error_msg.lower() or "pydantic" in error_msg.lower():
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Validation error: {error_msg}"
+            )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to create vendor: {error_msg}"

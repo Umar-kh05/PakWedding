@@ -3,7 +3,7 @@ import { useEffect, useState, useMemo } from 'react'
 import { fetchVendors, Vendor } from '../../services/vendorService'
 import BookingModal from '../../components/BookingModal'
 import { useAuthStore } from '../../store/authStore'
-import { getRandomVendorImages, getVendorImagesByCategory, pakistaniVendorImages } from '../../config/vendorImages'
+import { getRandomVendorImages, getVendorImagesByCategory } from '../../config/vendorImages'
 
 type UiVendor = Vendor & {
   rating?: number
@@ -35,38 +35,11 @@ export default function BrowseVendorsPage() {
   // Get all vendor images for fallback when vendor doesn't have image
   const allVendorImages = getRandomVendorImages(34)
 
-  // Generate sample vendors from Cloudinary images to show more content
-  // Memoize to prevent recreation on every render
-  const sampleVendors = useMemo(() => {
-    const cities = ['Lahore', 'Karachi', 'Islamabad', 'Rawalpindi', 'Faisalabad', 'Multan', 'Peshawar', 'Gujranwala', 'Sialkot']
-    
-    return pakistaniVendorImages.map((img, index) => {
-      const city = cities[index % cities.length]
-      const price = 30000 + (index % 10) * 10000 // Varying prices
-      
-      return {
-        _id: `sample-${img.id}`,
-        id: `sample-${img.id}`,
-        business_name: img.name,
-        service_category: img.category,
-        business_address: `${city}, Pakistan`,
-        phone_number: `+92 300 ${Math.floor(1000000 + index * 123456)}`,
-        contact_person: 'Manager',
-        email: `contact@${img.name.toLowerCase().replace(/\s+/g, '')}.com`,
-        rating: 4.0 + (index % 10) * 0.1, // Ratings from 4.0 to 4.9
-        reviews: 20 + (index % 50) * 5, // Reviews from 20 to 270
-        startingPrice: `Rs. ${price.toLocaleString()}`,
-        image_url: img.url,
-      }
-    })
-  }, [])
-
-  // Get unique categories and locations from all vendors (including samples)
-  // This ensures categories are available even before API vendors load
+  // Get unique categories and locations from vendors loaded from database
   // Use useMemo to make it reactive to vendors changes
   const allVendorsForCategories = useMemo(() => {
-    return vendors.length > 0 ? vendors : sampleVendors
-  }, [vendors, sampleVendors])
+    return vendors
+  }, [vendors])
   
   const categories = useMemo(() => {
     return Array.from(new Set(allVendorsForCategories.map(v => v.service_category).filter(Boolean))).sort()
@@ -112,21 +85,20 @@ export default function BrowseVendorsPage() {
               image_url: imageUrl,
             }
           })
-          // Combine API vendors with sample vendors for better display
-          const combinedVendors = [...mappedVendors, ...sampleVendors]
-          setVendors(combinedVendors)
-          setFilteredVendors(combinedVendors)
+          // Set vendors from database
+          setVendors(mappedVendors)
+          setFilteredVendors(mappedVendors)
         } else {
-          // If no API vendors, show sample vendors
-          console.log('No API vendors found, showing sample vendors')
-          setVendors(sampleVendors)
-          setFilteredVendors(sampleVendors)
+          // If no API vendors, show empty state
+          console.log('No vendors found in database')
+          setVendors([])
+          setFilteredVendors([])
         }
       } catch (err) {
         console.error('Error fetching vendors:', err)
-        // On error, show sample vendors so page still works
-        setVendors(sampleVendors)
-        setFilteredVendors(sampleVendors)
+        // On error, show empty state
+        setVendors([])
+        setFilteredVendors([])
       } finally {
         setLoading(false)
       }

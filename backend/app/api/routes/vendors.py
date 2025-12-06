@@ -59,9 +59,37 @@ async def get_vendor(
     vendor_service: VendorService = Depends(get_vendor_service)
 ):
     """Get vendor by ID"""
+    # Validate vendor_id format (should be a valid ObjectId)
+    from bson import ObjectId
+    from bson.errors import InvalidId
+    
+    try:
+        # Try to validate ObjectId format
+        ObjectId(vendor_id)
+    except InvalidId:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, 
+            detail=f"Invalid vendor ID format: '{vendor_id}'. Vendor ID must be a valid MongoDB ObjectId."
+        )
+    
     vendor = await vendor_service.get_vendor_by_id(vendor_id)
     if not vendor:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Vendor not found")
+    
+    # Format vendor response (convert _id to id, remove sensitive fields)
+    if "_id" in vendor:
+        vendor["id"] = str(vendor["_id"])
+        del vendor["_id"]
+    
+    # Remove fields not in VendorResponse
+    vendor.pop("user_id", None)
+    vendor.pop("hashed_password", None)
+    vendor.pop("updated_at", None)
+    
+    # Ensure gallery_images is a list (not None)
+    if "gallery_images" not in vendor or vendor["gallery_images"] is None:
+        vendor["gallery_images"] = []
+    
     return vendor
 
 

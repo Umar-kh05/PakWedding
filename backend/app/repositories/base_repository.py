@@ -54,7 +54,14 @@ class BaseRepository(IRepository[T]):
     
     async def get_by_id(self, entity_id: str) -> Optional[dict]:
         """Get entity by ID"""
-        entity = await self.collection.find_one({"_id": ObjectId(entity_id)})
+        # Check if entity_id is a valid ObjectId
+        try:
+            obj_id = ObjectId(entity_id)
+            entity = await self.collection.find_one({"_id": obj_id})
+        except Exception:
+            # If not a valid ObjectId, return None
+            return None
+        
         if entity:
             entity["_id"] = str(entity["_id"])
         return entity
