@@ -24,7 +24,7 @@ async def register_vendor(
 async def get_vendors(
     category: str = Query(None),
     skip: int = 0,
-    limit: int = 100,
+    limit: int = Query(200, ge=1, le=1000),  # Increase default limit to 200, max 1000
     vendor_service: VendorService = Depends(get_vendor_service)
 ):
     """Get all approved vendors, optionally filtered by category"""

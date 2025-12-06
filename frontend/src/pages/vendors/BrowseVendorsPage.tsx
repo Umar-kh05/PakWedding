@@ -53,9 +53,10 @@ export default function BrowseVendorsPage() {
     const load = async () => {
       setLoading(true)
       try {
-        const data = await fetchVendors()
+        const data = await fetchVendors(undefined, 500) // Increase limit to 500
         console.log('Fetched vendors:', data)
-        if (data && data.length > 0) {
+        
+        if (data && Array.isArray(data) && data.length > 0) {
           // Filter out unwanted vendors (Rasheed and Ghauri)
           const filteredData = data.filter(v => {
             const name = v.business_name?.toLowerCase() || ''
@@ -90,12 +91,18 @@ export default function BrowseVendorsPage() {
           setFilteredVendors(mappedVendors)
         } else {
           // If no API vendors, show empty state
-          console.log('No vendors found in database')
+          console.log('No vendors found in database - received:', data)
           setVendors([])
           setFilteredVendors([])
         }
-      } catch (err) {
+      } catch (err: any) {
         console.error('Error fetching vendors:', err)
+        console.error('Error details:', {
+          message: err.message,
+          response: err.response?.data,
+          status: err.response?.status,
+          url: err.config?.url
+        })
         // On error, show empty state
         setVendors([])
         setFilteredVendors([])
