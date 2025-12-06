@@ -129,7 +129,7 @@ async def get_vendor_bookings(
             
             # Remove any fields not in BookingResponse
             allowed_fields = {
-                "id", "user_id", "vendor_id", "service_id", "event_date", 
+                "id", "user_id", "vendor_id", "service_id", "package_name", "event_date", 
                 "event_location", "guest_count", "special_requirements", 
                 "total_amount", "status", "created_at"
             }

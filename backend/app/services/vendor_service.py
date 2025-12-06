@@ -100,6 +100,63 @@ class VendorService:
         vendor_dict["created_at"] = datetime.utcnow()
         vendor_dict["updated_at"] = datetime.utcnow()
         
+        # Add default packages if not provided
+        if "packages" not in vendor_dict or not vendor_dict["packages"]:
+            # Create default packages based on category with realistic prices
+            category_prices = {
+                "Photography": {"basic": 50000, "standard": 100000, "premium": 200000},
+                "Caterer": {"basic": 80000, "standard": 150000, "premium": 300000},
+                "Decorator": {"basic": 60000, "standard": 120000, "premium": 250000},
+                "Venue": {"basic": 100000, "standard": 200000, "premium": 400000},
+                "Makeup Artist": {"basic": 30000, "standard": 60000, "premium": 120000},
+                "DJ": {"basic": 40000, "standard": 80000, "premium": 150000},
+                "Florist": {"basic": 25000, "standard": 50000, "premium": 100000},
+                "Mehndi": {"basic": 20000, "standard": 40000, "premium": 80000},
+                "Videography": {"basic": 60000, "standard": 120000, "premium": 250000},
+            }
+            
+            category = vendor_dict.get('service_category', 'Other')
+            prices = category_prices.get(category, {"basic": 50000, "standard": 100000, "premium": 200000})
+            
+            vendor_dict["packages"] = [
+                {
+                    "name": "Basic",
+                    "price": float(prices["basic"]),
+                    "description": f"Basic {category} package - Perfect for intimate celebrations",
+                    "features": [
+                        "Standard service coverage",
+                        "Basic setup and delivery",
+                        "Digital documentation",
+                        "Email support"
+                    ]
+                },
+                {
+                    "name": "Standard",
+                    "price": float(prices["standard"]),
+                    "description": f"Standard {category} package - Ideal for most weddings",
+                    "features": [
+                        "Enhanced service coverage",
+                        "Extended hours",
+                        "Premium delivery",
+                        "Priority support",
+                        "Additional team members"
+                    ]
+                },
+                {
+                    "name": "Premium",
+                    "price": float(prices["premium"]),
+                    "description": f"Premium {category} package - Luxury experience",
+                    "features": [
+                        "Full premium service",
+                        "Complete coverage",
+                        "Priority delivery",
+                        "Dedicated support team",
+                        "Exclusive features",
+                        "Post-event follow-up"
+                    ]
+                }
+            ]
+        
         vendor = await self.vendor_repo.create(vendor_dict)
         print(f"[VENDOR_SERVICE] Vendor created successfully with ID: {vendor.get('_id')}")
         return vendor

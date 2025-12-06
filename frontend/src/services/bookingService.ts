@@ -8,6 +8,7 @@ export type Booking = {
   user_id: string
   vendor_id: string
   service_id?: string
+  package_name?: string
   event_date: string
   event_location: string
   guest_count?: number
@@ -20,6 +21,7 @@ export type Booking = {
 export type BookingCreate = {
   vendor_id: string
   service_id?: string
+  package_name?: string
   event_date: string
   event_location: string
   guest_count?: number

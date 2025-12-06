@@ -1,5 +1,12 @@
 import api from './api'
 
+export type Package = {
+  name: string
+  price: number
+  description?: string
+  features?: string[]
+}
+
 export type Vendor = {
   _id?: string
   id?: string
@@ -14,6 +21,7 @@ export type Vendor = {
   image_url?: string
   gallery_images?: string[]
   description?: string
+  packages?: Package[]
   is_approved?: boolean
   is_active?: boolean
   created_at?: string

@@ -329,6 +329,66 @@ async def create_sample_vendors():
             }
             user = await user_repo.create(user_dict)
             
+            # Create default packages based on category with realistic prices
+            # Different base prices for different categories
+            category_prices = {
+                "Photography": {"basic": 50000, "standard": 100000, "premium": 200000},
+                "Caterer": {"basic": 80000, "standard": 150000, "premium": 300000},
+                "Decorator": {"basic": 60000, "standard": 120000, "premium": 250000},
+                "Venue": {"basic": 100000, "standard": 200000, "premium": 400000},
+                "Makeup Artist": {"basic": 30000, "standard": 60000, "premium": 120000},
+                "DJ": {"basic": 40000, "standard": 80000, "premium": 150000},
+                "Florist": {"basic": 25000, "standard": 50000, "premium": 100000},
+                "Mehndi": {"basic": 20000, "standard": 40000, "premium": 80000},
+                "Videography": {"basic": 60000, "standard": 120000, "premium": 250000},
+            }
+            
+            # Get prices for this category, or use default
+            category = vendor_data['category']
+            prices = category_prices.get(category, {"basic": 50000, "standard": 100000, "premium": 200000})
+            
+            # Add some variation based on index to make prices unique
+            variation = (index % 5) * 5000  # 0-20000 variation
+            
+            packages = [
+                {
+                    "name": "Basic",
+                    "price": float(prices["basic"] + variation),
+                    "description": f"Basic {category} package - Perfect for intimate celebrations",
+                    "features": [
+                        "Standard service coverage",
+                        "Basic setup and delivery",
+                        "Digital documentation",
+                        "Email support"
+                    ]
+                },
+                {
+                    "name": "Standard",
+                    "price": float(prices["standard"] + variation),
+                    "description": f"Standard {category} package - Ideal for most weddings",
+                    "features": [
+                        "Enhanced service coverage",
+                        "Extended hours",
+                        "Premium delivery",
+                        "Priority support",
+                        "Additional team members"
+                    ]
+                },
+                {
+                    "name": "Premium",
+                    "price": float(prices["premium"] + variation),
+                    "description": f"Premium {category} package - Luxury experience",
+                    "features": [
+                        "Full premium service",
+                        "Complete coverage",
+                        "Priority delivery",
+                        "Dedicated support team",
+                        "Exclusive features",
+                        "Post-event follow-up"
+                    ]
+                }
+            ]
+            
             # Create vendor profile
             vendor_dict = {
                 "business_name": vendor_data['name'],
@@ -342,6 +402,7 @@ async def create_sample_vendors():
                 "rating": round(rating, 1),
                 "total_bookings": total_bookings,
                 "gallery_images": [],
+                "packages": packages,
                 "user_id": user["_id"],
                 "is_approved": True,  # Auto-approved
                 "is_active": True,

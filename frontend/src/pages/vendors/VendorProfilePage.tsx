@@ -103,6 +103,7 @@ export default function VendorProfilePage() {
   const rating = vendor.rating ?? 0
   const totalBookings = vendor.total_bookings ?? 0
   const galleryImages = vendor.gallery_images || []
+  const packages = vendor.packages || []
 
   return (
     <div className="bg-gradient-to-br from-rose-50/30 via-white to-accent-50/30 min-h-screen">
@@ -251,6 +252,47 @@ export default function VendorProfilePage() {
             </div>
           </div>
         </div>
+
+        {/* Packages Section */}
+        {vendor.packages && vendor.packages.length > 0 && (
+          <div className="mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-8">Pricing Packages</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {vendor.packages.map((pkg, index) => (
+                <div
+                  key={index}
+                  className="bg-white border border-gray-200 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow flex flex-col"
+                >
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">{pkg.name}</h3>
+                  <div className="mb-6">
+                    <span className="text-4xl font-bold text-pink-600">Rs. {pkg.price.toLocaleString()}</span>
+                  </div>
+                  {pkg.description && (
+                    <p className="text-gray-600 mb-4 text-sm">{pkg.description}</p>
+                  )}
+                  {pkg.features && pkg.features.length > 0 && (
+                    <ul className="space-y-3 mb-6 flex-grow">
+                      {pkg.features.map((feature, idx) => (
+                        <li key={idx} className="flex items-start gap-2">
+                          <svg className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                          </svg>
+                          <span className="text-gray-700 text-sm">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  <button
+                    onClick={handleBookNowClick}
+                    className="block w-full bg-pink-600 hover:bg-pink-700 text-white text-center font-semibold py-3 rounded-lg transition-colors mt-auto"
+                  >
+                    Select Package
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Gallery Images Section */}
         {galleryImages.length > 0 && (

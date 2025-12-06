@@ -2,10 +2,18 @@
 Vendor domain model
 Following Single Responsibility Principle
 """
-from typing import Optional, List
+from typing import Optional, List, Dict
 from datetime import datetime
 from pydantic import BaseModel, Field
 from bson import ObjectId
+
+
+class PackageInfo(BaseModel):
+    """Package information schema"""
+    name: str  # Basic, Standard, Premium
+    price: float
+    description: Optional[str] = None
+    features: Optional[List[str]] = []
 
 
 class VendorBase(BaseModel):
@@ -21,6 +29,7 @@ class VendorBase(BaseModel):
     total_bookings: int = 0
     image_url: Optional[str] = None  # Main vendor image
     gallery_images: Optional[List[str]] = []  # Gallery images
+    packages: Optional[List[Dict]] = []  # List of packages: Basic, Standard, Premium
 
 
 class VendorCreate(VendorBase):
@@ -37,6 +46,7 @@ class VendorUpdate(BaseModel):
     description: Optional[str] = None
     image_url: Optional[str] = None
     gallery_images: Optional[List[str]] = None
+    packages: Optional[List[Dict]] = None
 
 
 class VendorInDB(VendorBase):

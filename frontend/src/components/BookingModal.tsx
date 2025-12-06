@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { createBooking, BookingCreate } from '../services/bookingService'
+import { fetchVendorById, Package } from '../services/vendorService'
 import { useAuthStore } from '../store/authStore'
 
 interface BookingModalProps {
@@ -12,6 +13,9 @@ interface BookingModalProps {
 
 export default function BookingModal({ vendorId, vendorName, isOpen, onClose, onSuccess }: BookingModalProps) {
   const { user } = useAuthStore()
+  const [packages, setPackages] = useState<Package[]>([])
+  const [selectedPackage, setSelectedPackage] = useState<Package | null>(null)
+  const [loadingPackages, setLoadingPackages] = useState(false)
   const [formData, setFormData] = useState({
     event_date: '',
     event_location: '',
@@ -21,6 +25,61 @@ export default function BookingModal({ vendorId, vendorName, isOpen, onClose, on
   })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+
+  // Load vendor packages when modal opens
+  useEffect(() => {
+    if (isOpen && vendorId) {
+      loadVendorPackages()
+    }
+  }, [isOpen, vendorId])
+
+  const loadVendorPackages = async () => {
+    setLoadingPackages(true)
+    try {
+      const vendor = await fetchVendorById(vendorId)
+      if (vendor.packages && vendor.packages.length > 0) {
+        setPackages(vendor.packages)
+        // Set default to Basic package if available
+        const basicPackage = vendor.packages.find((p: Package) => p.name.toLowerCase() === 'basic')
+        if (basicPackage) {
+          setSelectedPackage(basicPackage)
+          setFormData(prev => ({ ...prev, total_amount: basicPackage.price.toString() }))
+        } else {
+          // If no Basic, select first package
+          setSelectedPackage(vendor.packages[0])
+          setFormData(prev => ({ ...prev, total_amount: vendor.packages[0].price.toString() }))
+        }
+      } else {
+        // Create default packages if vendor doesn't have any
+        const defaultPackages: Package[] = [
+          { name: 'Basic', price: 50000, description: 'Basic package', features: [] },
+          { name: 'Standard', price: 100000, description: 'Standard package', features: [] },
+          { name: 'Premium', price: 200000, description: 'Premium package', features: [] }
+        ]
+        setPackages(defaultPackages)
+        setSelectedPackage(defaultPackages[0])
+        setFormData(prev => ({ ...prev, total_amount: defaultPackages[0].price.toString() }))
+      }
+    } catch (err) {
+      console.error('Error loading vendor packages:', err)
+      // Use default packages on error
+      const defaultPackages: Package[] = [
+        { name: 'Basic', price: 50000, description: 'Basic package', features: [] },
+        { name: 'Standard', price: 100000, description: 'Standard package', features: [] },
+        { name: 'Premium', price: 200000, description: 'Premium package', features: [] }
+      ]
+      setPackages(defaultPackages)
+      setSelectedPackage(defaultPackages[0])
+      setFormData(prev => ({ ...prev, total_amount: defaultPackages[0].price.toString() }))
+    } finally {
+      setLoadingPackages(false)
+    }
+  }
+
+  const handlePackageSelect = (pkg: Package) => {
+    setSelectedPackage(pkg)
+    setFormData(prev => ({ ...prev, total_amount: pkg.price.toString() }))
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -74,6 +133,7 @@ export default function BookingModal({ vendorId, vendorName, isOpen, onClose, on
 
       const bookingData: BookingCreate = {
         vendor_id: vendorId,
+        package_name: selectedPackage?.name || undefined,
         event_date: new Date(formData.event_date).toISOString(),
         event_location: formData.event_location.trim(),
         guest_count: formData.guest_count ? parseInt(formData.guest_count) : undefined,
@@ -165,6 +225,59 @@ export default function BookingModal({ vendorId, vendorName, isOpen, onClose, on
             </div>
           )}
 
+          {/* Package Selection */}
+          {loadingPackages ? (
+            <div className="text-center py-4">
+              <p className="text-gray-500">Loading packages...</p>
+            </div>
+          ) : packages.length > 0 ? (
+            <div>
+              <label className="block text-gray-700 font-medium mb-3">
+                Select Package <span className="text-red-500">*</span>
+              </label>
+              <div className="grid grid-cols-3 gap-3">
+                {packages.map((pkg) => (
+                  <button
+                    key={pkg.name}
+                    type="button"
+                    onClick={() => handlePackageSelect(pkg)}
+                    className={`p-4 rounded-lg border-2 transition-all ${
+                      selectedPackage?.name === pkg.name
+                        ? 'border-pink-600 bg-pink-50 shadow-md'
+                        : 'border-gray-200 hover:border-pink-300 bg-white'
+                    }`}
+                  >
+                    <div className="font-semibold text-gray-900 mb-1">{pkg.name}</div>
+                    <div className="text-pink-600 font-bold text-lg">Rs. {pkg.price.toLocaleString()}</div>
+                    {pkg.description && (
+                      <div className="text-xs text-gray-500 mt-1">{pkg.description}</div>
+                    )}
+                  </button>
+                ))}
+              </div>
+              {selectedPackage && (
+                <div className="mt-3 p-3 bg-pink-50 rounded-lg">
+                  <div className="text-sm text-gray-700">
+                    <span className="font-semibold">Selected:</span> {selectedPackage.name} - Rs. {selectedPackage.price.toLocaleString()}
+                  </div>
+                  {selectedPackage.features && selectedPackage.features.length > 0 && (
+                    <div className="mt-2">
+                      <div className="text-xs font-semibold text-gray-600 mb-1">Features:</div>
+                      <ul className="text-xs text-gray-600 space-y-1">
+                        {selectedPackage.features.map((feature, idx) => (
+                          <li key={idx} className="flex items-start gap-1">
+                            <span className="text-pink-600">•</span>
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          ) : null}
+
           <div>
             <label className="block text-gray-700 font-medium mb-2">
               Event Date <span className="text-red-500">*</span>
@@ -217,12 +330,15 @@ export default function BookingModal({ vendorId, vendorName, isOpen, onClose, on
               value={formData.total_amount}
               onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
-              placeholder="Enter estimated amount"
+              placeholder="Amount will be set based on selected package"
               min="0.01"
               step="0.01"
               required
+              readOnly={!!selectedPackage}
             />
-            <p className="text-sm text-gray-500 mt-1">Required field</p>
+            <p className="text-sm text-gray-500 mt-1">
+              {selectedPackage ? 'Amount is set based on selected package' : 'Enter amount or select a package'}
+            </p>
           </div>
 
           <div>

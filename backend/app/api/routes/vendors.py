@@ -48,6 +48,11 @@ async def get_vendors(
         vendor.pop("user_id", None)
         vendor.pop("hashed_password", None)
         vendor.pop("updated_at", None)
+        
+        # Ensure packages is a list (not None)
+        if "packages" not in vendor or vendor["packages"] is None:
+            vendor["packages"] = []
+        
         formatted_vendors.append(vendor)
     
     return formatted_vendors
@@ -89,6 +94,10 @@ async def get_vendor(
     # Ensure gallery_images is a list (not None)
     if "gallery_images" not in vendor or vendor["gallery_images"] is None:
         vendor["gallery_images"] = []
+    
+    # Ensure packages is a list (not None)
+    if "packages" not in vendor or vendor["packages"] is None:
+        vendor["packages"] = []
     
     return vendor
 

@@ -23,6 +23,7 @@ class BookingBase(BaseModel):
     user_id: str
     vendor_id: str
     service_id: Optional[str] = None  # Optional - can book vendor directly
+    package_name: Optional[str] = None  # Basic, Standard, Premium
     event_date: datetime
     event_location: str
     guest_count: Optional[int] = None
@@ -34,6 +35,7 @@ class BookingCreateRequest(BaseModel):
     """Schema for creating a booking (user_id is set by backend)"""
     vendor_id: str
     service_id: Optional[str] = None
+    package_name: Optional[str] = None  # Basic, Standard, Premium
     event_date: datetime
     event_location: str
     guest_count: Optional[int] = None
@@ -71,6 +73,7 @@ class BookingResponse(BookingBase):
     id: str
     status: BookingStatus
     created_at: datetime
+    package_name: Optional[str] = None
     
     class Config:
         from_attributes = True

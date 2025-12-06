@@ -40,7 +40,10 @@ async def create_booking(
         booking["user_id"] = str(booking["user_id"])
     if "vendor_id" in booking:
         booking["vendor_id"] = str(booking["vendor_id"])
+    if "service_id" in booking and booking["service_id"]:
+        booking["service_id"] = str(booking["service_id"])
     
+    # package_name should already be in booking from BookingCreate
     return booking
 
 
@@ -101,7 +104,7 @@ async def get_my_bookings(
             
             # Remove any fields not in BookingResponse
             allowed_fields = {
-                "id", "user_id", "vendor_id", "service_id", "event_date", 
+                "id", "user_id", "vendor_id", "service_id", "package_name", "event_date", 
                 "event_location", "guest_count", "special_requirements", 
                 "total_amount", "status", "created_at"
             }

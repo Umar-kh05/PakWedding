@@ -8,7 +8,6 @@ import { getRandomVendorImages, getVendorImagesByCategory } from '../../config/v
 type UiVendor = Vendor & {
   rating?: number
   reviews?: number
-  startingPrice?: string
 }
 
 export default function BrowseVendorsPage() {
@@ -82,8 +81,8 @@ export default function BrowseVendorsPage() {
               id: v.id || v._id || '',
               rating: v.rating ?? 4.8,
               reviews: v.total_bookings ?? 0,
-              startingPrice: 'Rs. 50,000',
               image_url: imageUrl,
+              packages: v.packages || [],
             }
           })
           // Set vendors from database
@@ -398,9 +397,33 @@ export default function BrowseVendorsPage() {
                   <span>•</span>
                   <span>{vendor.business_address}</span>
                 </div>
-                <div className="bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent font-bold text-lg mb-4">
-                  Starting from {vendor.startingPrice}
-                </div>
+                {/* Standard Package Price Display */}
+                {(() => {
+                  if (vendor.packages && vendor.packages.length > 0) {
+                    const standardPackage = vendor.packages.find((pkg: any) => pkg.name === 'Standard')
+                    if (standardPackage) {
+                      return (
+                        <div className="bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent font-bold text-lg mb-4">
+                          Rs. {standardPackage.price.toLocaleString()}
+                        </div>
+                      )
+                    }
+                    // Fallback to first package if Standard not found
+                    if (vendor.packages[0]) {
+                      return (
+                        <div className="bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent font-bold text-lg mb-4">
+                          Rs. {vendor.packages[0].price.toLocaleString()}
+                        </div>
+                      )
+                    }
+                  }
+                  // Default fallback if no packages
+                  return (
+                    <div className="bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent font-bold text-lg mb-4">
+                      Contact for pricing
+                    </div>
+                  )
+                })()}
                 <div className="flex gap-3">
                   <Link
                     to={`/vendors/${vendor._id || vendor.id}`}
