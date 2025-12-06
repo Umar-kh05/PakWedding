@@ -39,12 +39,12 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center py-12 px-4">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8">
+    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-white to-accent-50 flex items-center justify-center py-12 px-4">
+      <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8 border-2 border-rose-100 hover:border-primary-200 transition-all duration-300">
         <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">Welcome Back!</h2>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm">
+          <div className="bg-red-50 border-2 border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm">
             {error}
           </div>
         )}
@@ -56,7 +56,7 @@ export default function LoginPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-pink-600"
+              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-all duration-300 hover:border-primary-400"
               placeholder="Enter your email"
               required
             />
@@ -65,7 +65,7 @@ export default function LoginPage() {
           <div>
             <div className="flex items-center justify-between mb-2">
               <label className="block text-gray-700 font-medium">Password</label>
-              <Link to="/forgot-password" className="text-sm bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent font-semibold hover:from-pink-700 hover:to-purple-700">
+              <Link to="/forgot-password" className="text-sm bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent font-semibold hover:from-primary-700 hover:via-accent-700 hover:to-primary-700 transition-all duration-300">
                 Forgot password?
               </Link>
             </div>
@@ -73,7 +73,7 @@ export default function LoginPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-pink-600"
+              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-all duration-300 hover:border-primary-400"
               placeholder="Enter your password"
               required
             />
@@ -81,7 +81,7 @@ export default function LoginPage() {
 
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white py-3 rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl"
+            className="w-full bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 hover:from-primary-700 hover:via-accent-700 hover:to-primary-700 text-white py-3 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-primary-600/50 transform hover:scale-[1.02]"
           >
             Login
           </button>
@@ -93,13 +93,13 @@ export default function LoginPage() {
             <div className="flex flex-col gap-2">
               <Link
                 to="/vendor/register"
-                className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-center text-sm transition-colors"
+                className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-center text-sm transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
               >
                 Login as Vendor
               </Link>
               <Link
                 to="/admin/login"
-                className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-center text-sm transition-colors"
+                className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-center text-sm transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
               >
                 Login as Admin
               </Link>
@@ -108,7 +108,7 @@ export default function LoginPage() {
           <div className="text-center space-y-2">
             <p className="text-gray-600 text-sm">
               Don't have an account?{' '}
-              <Link to="/register" className="bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent font-semibold hover:from-pink-700 hover:to-purple-700">
+              <Link to="/register" className="bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent font-semibold hover:from-primary-700 hover:via-accent-700 hover:to-primary-700 transition-all duration-300">
                 Sign Up
               </Link>
             </p>

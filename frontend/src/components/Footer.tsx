@@ -6,40 +6,40 @@ export default function Footer() {
         <div>
           <h3 className="text-lg font-semibold mb-4">Company</h3>
           <ul className="space-y-2 text-gray-400">
-            <li>About Us</li>
-            <li>Careers</li>
-            <li>Press</li>
-            <li>Blog</li>
+            <li className="hover:text-primary-400 transition-colors duration-300 cursor-pointer">About Us</li>
+            <li className="hover:text-primary-400 transition-colors duration-300 cursor-pointer">Careers</li>
+            <li className="hover:text-primary-400 transition-colors duration-300 cursor-pointer">Press</li>
+            <li className="hover:text-primary-400 transition-colors duration-300 cursor-pointer">Blog</li>
           </ul>
         </div>
 
         <div>
           <h3 className="text-lg font-semibold mb-4">Services</h3>
           <ul className="space-y-2 text-gray-400">
-            <li>Find Vendors</li>
-            <li>Budget Planner</li>
-            <li>Checklists</li>
-            <li>Inspiration</li>
+            <li className="hover:text-primary-400 transition-colors duration-300 cursor-pointer">Find Vendors</li>
+            <li className="hover:text-primary-400 transition-colors duration-300 cursor-pointer">Budget Planner</li>
+            <li className="hover:text-primary-400 transition-colors duration-300 cursor-pointer">Checklists</li>
+            <li className="hover:text-primary-400 transition-colors duration-300 cursor-pointer">Inspiration</li>
           </ul>
         </div>
 
         <div>
           <h3 className="text-lg font-semibold mb-4">Support</h3>
           <ul className="space-y-2 text-gray-400">
-            <li>Help Center</li>
-            <li>Contact Us</li>
-            <li>FAQs</li>
-            <li>Terms of Service</li>
+            <li className="hover:text-primary-400 transition-colors duration-300 cursor-pointer">Help Center</li>
+            <li className="hover:text-primary-400 transition-colors duration-300 cursor-pointer">Contact Us</li>
+            <li className="hover:text-primary-400 transition-colors duration-300 cursor-pointer">FAQs</li>
+            <li className="hover:text-primary-400 transition-colors duration-300 cursor-pointer">Terms of Service</li>
           </ul>
         </div>
 
         <div>
           <h3 className="text-lg font-semibold mb-4">Connect</h3>
           <ul className="space-y-2 text-gray-400">
-            <li>Facebook</li>
-            <li>Instagram</li>
-            <li>Twitter</li>
-            <li>Pinterest</li>
+            <li className="hover:text-primary-400 transition-colors duration-300 cursor-pointer">Facebook</li>
+            <li className="hover:text-primary-400 transition-colors duration-300 cursor-pointer">Instagram</li>
+            <li className="hover:text-primary-400 transition-colors duration-300 cursor-pointer">Twitter</li>
+            <li className="hover:text-primary-400 transition-colors duration-300 cursor-pointer">Pinterest</li>
           </ul>
         </div>
 
