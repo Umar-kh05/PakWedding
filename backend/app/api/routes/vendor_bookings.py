@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Query
 from typing import List, Optional
 from app.services.booking_service import BookingService
 from app.services.vendor_service import VendorService
-from app.api.dependencies import get_booking_service, get_current_vendor, get_vendor_service
+from app.api.dependencies import get_booking_service, get_current_vendor, get_vendor_service, get_vendor_stats_service
 from app.models.booking import BookingResponse
 
 router = APIRouter()
@@ -151,7 +151,8 @@ async def approve_booking(
     booking_id: str,
     current_user: dict = Depends(get_current_vendor),
     booking_service: BookingService = Depends(get_booking_service),
-    vendor_service: VendorService = Depends(get_vendor_service)
+    vendor_service: VendorService = Depends(get_vendor_service),
+    stats_service = Depends(get_vendor_stats_service)
 ):
     """Approve a booking (vendor only)"""
     try:
@@ -180,7 +181,7 @@ async def approve_booking(
         if booking_vendor_id != vendor_id:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You can only approve your own bookings")
         
-        approved_booking = await booking_service.approve_booking(booking_id)
+        approved_booking = await booking_service.approve_booking(booking_id, stats_service)
         if not approved_booking:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Booking not found")
         
@@ -241,7 +242,8 @@ async def reject_booking(
     booking_id: str,
     current_user: dict = Depends(get_current_vendor),
     booking_service: BookingService = Depends(get_booking_service),
-    vendor_service: VendorService = Depends(get_vendor_service)
+    vendor_service: VendorService = Depends(get_vendor_service),
+    stats_service = Depends(get_vendor_stats_service)
 ):
     """Reject a booking (vendor only)"""
     try:
@@ -270,7 +272,7 @@ async def reject_booking(
         if booking_vendor_id != vendor_id:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You can only reject your own bookings")
         
-        rejected_booking = await booking_service.reject_booking(booking_id)
+        rejected_booking = await booking_service.reject_booking(booking_id, stats_service)
         if not rejected_booking:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Booking not found")
         

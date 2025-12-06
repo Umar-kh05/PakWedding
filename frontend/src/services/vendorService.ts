@@ -18,6 +18,8 @@ export type Vendor = {
   service_category: string
   rating?: number
   total_bookings?: number
+  pending_requests?: number
+  total_revenue?: number
   image_url?: string
   gallery_images?: string[]
   description?: string

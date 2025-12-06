@@ -1,16 +1,38 @@
 import { Link } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
+import { useState, useEffect } from 'react'
+import { getVendorProfile } from '../../services/vendorService'
 
 export default function VendorDashboard() {
-  const { user, logout } = useAuthStore()
+  const { user } = useAuthStore()
+  const [stats, setStats] = useState({
+    totalBookings: 0,
+    pendingRequests: 0,
+    averageRating: 0.0,
+    totalRevenue: 'Rs. 0'
+  })
+  const [loading, setLoading] = useState(true)
 
-  // Sample data - replace with API calls
-  const stats = {
-    totalBookings: 45,
-    pendingRequests: 8,
-    averageRating: 4.9,
-    totalRevenue: 'Rs. 2.5M'
-  }
+  useEffect(() => {
+    const loadStats = async () => {
+      try {
+        const vendor = await getVendorProfile()
+        setStats({
+          totalBookings: vendor.total_bookings || 0,
+          pendingRequests: vendor.pending_requests || 0,
+          averageRating: vendor.rating || 0.0,
+          totalRevenue: vendor.total_revenue 
+            ? `Rs. ${(vendor.total_revenue / 1000000).toFixed(1)}M` 
+            : 'Rs. 0'
+        })
+      } catch (err) {
+        console.error('Error loading vendor stats:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadStats()
+  }, [])
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50/30 to-pink-50">
@@ -36,7 +58,9 @@ export default function VendorDashboard() {
               </div>
             </div>
             <p className="text-gray-600 text-sm font-semibold mb-2">Total Bookings</p>
-            <p className="text-4xl font-extrabold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">{stats.totalBookings}</p>
+            <p className="text-4xl font-extrabold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+              {loading ? '...' : stats.totalBookings}
+            </p>
           </div>
           <div className="bg-gradient-to-br from-white to-pink-50/50 rounded-2xl shadow-xl p-6 border-2 border-pink-100 hover:border-pink-300 transition-all hover:shadow-2xl">
             <div className="flex items-center justify-between mb-4">
@@ -45,7 +69,9 @@ export default function VendorDashboard() {
               </div>
             </div>
             <p className="text-gray-600 text-sm font-semibold mb-2">Pending Requests</p>
-            <p className="text-4xl font-extrabold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">{stats.pendingRequests}</p>
+            <p className="text-4xl font-extrabold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+              {loading ? '...' : stats.pendingRequests}
+            </p>
           </div>
           <div className="bg-gradient-to-br from-white to-pink-50/50 rounded-2xl shadow-xl p-6 border-2 border-pink-100 hover:border-pink-300 transition-all hover:shadow-2xl">
             <div className="flex items-center justify-between mb-4">
@@ -54,7 +80,9 @@ export default function VendorDashboard() {
               </div>
             </div>
             <p className="text-gray-600 text-sm font-semibold mb-2">Average Rating</p>
-            <p className="text-4xl font-extrabold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">{stats.averageRating}</p>
+            <p className="text-4xl font-extrabold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+              {loading ? '...' : stats.averageRating.toFixed(1)}
+            </p>
           </div>
           <div className="bg-gradient-to-br from-white to-pink-50/50 rounded-2xl shadow-xl p-6 border-2 border-pink-100 hover:border-pink-300 transition-all hover:shadow-2xl">
             <div className="flex items-center justify-between mb-4">
@@ -63,7 +91,9 @@ export default function VendorDashboard() {
               </div>
             </div>
             <p className="text-gray-600 text-sm font-semibold mb-2">Total Revenue</p>
-            <p className="text-4xl font-extrabold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">{stats.totalRevenue}</p>
+            <p className="text-4xl font-extrabold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+              {loading ? '...' : stats.totalRevenue}
+            </p>
           </div>
         </div>
 

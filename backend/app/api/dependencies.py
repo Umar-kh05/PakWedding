@@ -10,9 +10,12 @@ from app.repositories.user_repository import UserRepository
 from app.repositories.vendor_repository import VendorRepository
 from app.repositories.booking_repository import BookingRepository
 from app.repositories.service_repository import ServiceRepository
+from app.repositories.review_repository import ReviewRepository
 from app.services.user_service import UserService
 from app.services.vendor_service import VendorService
 from app.services.booking_service import BookingService
+from app.services.vendor_stats_service import VendorStatsService
+from app.services.review_service import ReviewService
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
 
@@ -34,6 +37,10 @@ async def get_service_repository(db = Depends(get_db)):
     return ServiceRepository(db)
 
 
+async def get_review_repository(db = Depends(get_db)):
+    return ReviewRepository(db)
+
+
 # Service dependencies
 async def get_user_service(user_repo: UserRepository = Depends(get_user_repository)):
     return UserService(user_repo)
@@ -48,6 +55,21 @@ async def get_vendor_service(
 
 async def get_booking_service(booking_repo: BookingRepository = Depends(get_booking_repository)):
     return BookingService(booking_repo)
+
+
+async def get_vendor_stats_service(
+    vendor_repo: VendorRepository = Depends(get_vendor_repository),
+    booking_repo: BookingRepository = Depends(get_booking_repository),
+    review_repo: ReviewRepository = Depends(get_review_repository)
+):
+    return VendorStatsService(vendor_repo, booking_repo, review_repo)
+
+
+async def get_review_service(
+    review_repo: ReviewRepository = Depends(get_review_repository),
+    user_repo: UserRepository = Depends(get_user_repository)
+):
+    return ReviewService(review_repo, user_repo)
 
 
 # Authentication dependency

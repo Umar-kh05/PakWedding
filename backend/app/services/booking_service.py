@@ -14,7 +14,7 @@ class BookingService:
     def __init__(self, booking_repository: BookingRepository):
         self.booking_repo = booking_repository
     
-    async def create_booking(self, booking_data: BookingCreate) -> dict:
+    async def create_booking(self, booking_data: BookingCreate, stats_service: Optional['VendorStatsService'] = None) -> dict:
         """Create a new booking"""
         booking_dict = booking_data.model_dump()
         booking_dict["status"] = BookingStatus.PENDING
@@ -23,7 +23,9 @@ class BookingService:
         
         # Ensure vendor_id and user_id are stored as ObjectId for MongoDB
         from bson import ObjectId
+        vendor_id_str = None
         if "vendor_id" in booking_dict and booking_dict["vendor_id"]:
+            vendor_id_str = str(booking_dict["vendor_id"])
             try:
                 booking_dict["vendor_id"] = ObjectId(booking_dict["vendor_id"])
             except:
@@ -34,7 +36,14 @@ class BookingService:
             except:
                 pass  # Keep as string if conversion fails
         
-        return await self.booking_repo.create(booking_dict)
+        booking = await self.booking_repo.create(booking_dict)
+        
+        # Update vendor stats
+        if stats_service and vendor_id_str:
+            await stats_service.increment_pending_requests(vendor_id_str)
+            await stats_service.update_vendor_stats(vendor_id_str)
+        
+        return booking
     
     async def get_booking_by_id(self, booking_id: str) -> Optional[dict]:
         """Get booking by ID"""
@@ -68,17 +77,41 @@ class BookingService:
             "updated_at": datetime.utcnow()
         })
     
-    async def approve_booking(self, booking_id: str) -> Optional[dict]:
+    async def approve_booking(self, booking_id: str, stats_service: Optional['VendorStatsService'] = None) -> Optional[dict]:
         """Approve a booking (vendor action)"""
-        return await self.booking_repo.update(booking_id, {
+        booking = await self.booking_repo.get_by_id(booking_id)
+        old_status = booking.get("status") if booking else None
+        
+        result = await self.booking_repo.update(booking_id, {
             "status": BookingStatus.APPROVED,
             "updated_at": datetime.utcnow()
         })
+        
+        # Update vendor stats
+        if stats_service and booking:
+            vendor_id = str(booking.get("vendor_id", ""))
+            if old_status == "pending":
+                await stats_service.decrement_pending_requests(vendor_id)
+            await stats_service.add_revenue(vendor_id, booking.get("total_amount", 0))
+            await stats_service.update_vendor_stats(vendor_id)
+        
+        return result
     
-    async def reject_booking(self, booking_id: str) -> Optional[dict]:
+    async def reject_booking(self, booking_id: str, stats_service: Optional['VendorStatsService'] = None) -> Optional[dict]:
         """Reject a booking (vendor action)"""
-        return await self.booking_repo.update(booking_id, {
+        booking = await self.booking_repo.get_by_id(booking_id)
+        old_status = booking.get("status") if booking else None
+        
+        result = await self.booking_repo.update(booking_id, {
             "status": BookingStatus.REJECTED,
             "updated_at": datetime.utcnow()
         })
+        
+        # Update vendor stats
+        if stats_service and booking and old_status == "pending":
+            vendor_id = str(booking.get("vendor_id", ""))
+            await stats_service.decrement_pending_requests(vendor_id)
+            await stats_service.update_vendor_stats(vendor_id)
+        
+        return result
 

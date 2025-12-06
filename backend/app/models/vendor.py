@@ -27,6 +27,8 @@ class VendorBase(BaseModel):
     description: Optional[str] = None
     rating: float = 0.0
     total_bookings: int = 0
+    pending_requests: int = 0
+    total_revenue: float = 0.0
     image_url: Optional[str] = None  # Main vendor image
     gallery_images: Optional[List[str]] = []  # Gallery images
     packages: Optional[List[Dict]] = []  # List of packages: Basic, Standard, Premium

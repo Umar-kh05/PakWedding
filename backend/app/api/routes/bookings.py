@@ -4,7 +4,7 @@ Booking routes
 from fastapi import APIRouter, Depends, HTTPException, status
 from typing import List
 from app.services.booking_service import BookingService
-from app.api.dependencies import get_booking_service, get_current_user
+from app.api.dependencies import get_booking_service, get_current_user, get_vendor_stats_service
 from app.models.booking import BookingCreate, BookingCreateRequest, BookingUpdate, BookingResponse
 
 router = APIRouter()
@@ -14,7 +14,8 @@ router = APIRouter()
 async def create_booking(
     booking_data: BookingCreateRequest,
     current_user: dict = Depends(get_current_user),
-    booking_service: BookingService = Depends(get_booking_service)
+    booking_service: BookingService = Depends(get_booking_service),
+    stats_service = Depends(get_vendor_stats_service)
 ):
     """Create a new booking"""
     # Set user_id from current user
@@ -28,7 +29,7 @@ async def create_booking(
     # Create booking with user_id set
     from app.models.booking import BookingCreate
     booking_create = BookingCreate(**booking_dict)
-    booking = await booking_service.create_booking(booking_create)
+    booking = await booking_service.create_booking(booking_create, stats_service)
     
     # Format response
     if "_id" in booking:
