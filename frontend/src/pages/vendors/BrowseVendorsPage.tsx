@@ -338,7 +338,11 @@ export default function BrowseVendorsPage() {
               className="bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-pink-100 transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:border-pink-400 group cursor-pointer"
               style={{ pointerEvents: 'auto' }}
             >
-              <div className="bg-gradient-to-br from-pink-100 to-purple-100 h-48 w-full overflow-hidden relative">
+              <Link 
+                to={`/vendors/${vendor._id || vendor.id}`}
+                className="bg-gradient-to-br from-pink-100 to-purple-100 h-48 w-full overflow-hidden relative block"
+                onClick={(e) => e.stopPropagation()}
+              >
                 {vendor.image_url ? (
                   <img 
                     src={vendor.image_url.startsWith('http') ? vendor.image_url : `http://localhost:8000${vendor.image_url}`}
@@ -353,6 +357,7 @@ export default function BrowseVendorsPage() {
                     No Image
                   </div>
                 )}
+              </Link>
                 {/* Hover overlay with Book button */}
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto">
                   {user ? (
