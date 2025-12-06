@@ -17,6 +17,7 @@ export default function VendorRegisterPage() {
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [registrationSuccess, setRegistrationSuccess] = useState(false)
   const navigate = useNavigate()
 
   const categories = [
@@ -75,8 +76,8 @@ export default function VendorRegisterPage() {
         }
       }
 
-      alert('Registration successful! Please wait for admin approval.')
-      navigate('/login')
+      setRegistrationSuccess(true)
+      // Don't navigate immediately, show success message first
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Registration failed')
     } finally {
@@ -84,10 +85,88 @@ export default function VendorRegisterPage() {
     }
   }
 
+  // Success View
+  if (registrationSuccess) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center py-12 px-4">
+        <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-2xl p-8 md:p-12">
+          <div className="text-center">
+            {/* Success Icon */}
+            <div className="flex justify-center mb-6">
+              <div className="bg-gradient-to-r from-green-400 to-green-600 rounded-full p-4 w-24 h-24 flex items-center justify-center shadow-lg">
+                <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+            </div>
+            
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-4">
+              Registration Successful!
+            </h2>
+            
+            <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-6 mb-6 text-left">
+              <h3 className="text-lg font-bold text-blue-900 mb-3 flex items-center gap-2">
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                </svg>
+                Pending Admin Approval
+              </h3>
+              <p className="text-blue-800 mb-3">
+                Your vendor registration has been submitted successfully! Your account is now pending admin approval.
+              </p>
+              <ul className="list-disc list-inside text-blue-700 space-y-2 text-sm">
+                <li>You can login to your account immediately</li>
+                <li>Your profile will be visible to customers once approved by admin</li>
+                <li>You will receive notification once your account is approved</li>
+                <li>You can manage your profile and packages while waiting for approval</li>
+              </ul>
+            </div>
+            
+            <div className="flex gap-4 justify-center">
+              <button
+                onClick={() => navigate('/login')}
+                className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-8 py-3 rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl"
+              >
+                Go to Login
+              </button>
+              <button
+                onClick={() => setRegistrationSuccess(false)}
+                className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-8 py-3 rounded-lg font-semibold transition-all"
+              >
+                Register Another
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className="min-h-screen bg-gray-100 py-12 px-4">
-      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-xl p-8">
-        <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">Vendor Registration</h2>
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 py-12 px-4">
+      <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-xl p-8">
+        <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-2">
+          Vendor Registration
+        </h2>
+        <p className="text-center text-gray-600 mb-8">
+          Register your business and start serving customers
+        </p>
+        
+        {/* Info Banner */}
+        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <p className="text-sm text-yellow-700">
+                <strong>Note:</strong> Your registration will be reviewed by an administrator. You'll be able to login immediately, but your profile will be visible to customers only after approval.
+              </p>
+            </div>
+          </div>
+        </div>
         
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm">

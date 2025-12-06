@@ -62,8 +62,8 @@ class VendorRepository(BaseRepository):
         return await self.find_many({"is_approved": False}, skip, limit)
     
     async def approve_vendor(self, vendor_id: str):
-        """Approve a vendor"""
-        return await self.update(vendor_id, {"is_approved": True})
+        """Approve a vendor - sets is_approved to True and ensures is_active is True"""
+        return await self.update(vendor_id, {"is_approved": True, "is_active": True})
     
     async def reject_vendor(self, vendor_id: str):
         """Reject a vendor"""

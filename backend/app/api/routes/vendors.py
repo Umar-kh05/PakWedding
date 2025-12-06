@@ -15,9 +15,21 @@ async def register_vendor(
     vendor_data: VendorCreate,
     vendor_service: VendorService = Depends(get_vendor_service)
 ):
-    """Register as a vendor"""
-    vendor = await vendor_service.register_vendor(vendor_data)
-    return vendor
+    """Register as a vendor (pending admin approval)"""
+    try:
+        vendor = await vendor_service.register_vendor(vendor_data)
+        # Response is already formatted by service
+        return vendor
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+    except Exception as e:
+        print(f"[ERROR] Error registering vendor: {e}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to register vendor: {str(e)}"
+        )
 
 
 @router.get("/", response_model=List[VendorResponse])
@@ -28,38 +40,63 @@ async def get_vendors(
     vendor_service: VendorService = Depends(get_vendor_service)
 ):
     """Get all approved vendors, optionally filtered by category"""
-    if category:
-        vendors = await vendor_service.get_vendors_by_category(category, skip, limit)
-    else:
-        # Only return approved and active vendors
-        vendors = await vendor_service.vendor_repo.find_many(
-            {"is_approved": True, "is_active": True}, 
-            skip, 
-            limit
-        )
-    
-    # Convert _id to id for all vendors
-    formatted_vendors = []
-    for vendor in vendors:
-        if "_id" in vendor:
-            vendor["id"] = str(vendor["_id"])
-            del vendor["_id"]
-        # Remove fields not in VendorResponse
-        vendor.pop("user_id", None)
-        vendor.pop("hashed_password", None)
-        vendor.pop("updated_at", None)
-        
-        # Ensure packages is a list (not None)
-        if "packages" not in vendor or vendor["packages"] is None or len(vendor.get("packages", [])) == 0:
-            # If no packages, set empty list
-            vendor["packages"] = []
+    try:
+        if category:
+            vendors = await vendor_service.get_vendors_by_category(category, skip, limit)
         else:
-            # Ensure packages have proper structure
-            vendor["packages"] = vendor["packages"]
+            # Only return approved and active vendors
+            query = {"is_approved": True, "is_active": True}
+            print(f"[DEBUG] Fetching vendors with query: {query}")
+            vendors = await vendor_service.vendor_repo.find_many(query, skip, limit)
+            print(f"[DEBUG] Found {len(vendors)} approved vendors")
+            
+            # Debug: Check first vendor if exists
+            if vendors and len(vendors) > 0:
+                first_vendor = vendors[0]
+                print(f"[DEBUG] First vendor: {first_vendor.get('business_name')}, is_approved: {first_vendor.get('is_approved')}, is_active: {first_vendor.get('is_active')}")
         
-        formatted_vendors.append(vendor)
-    
-    return formatted_vendors
+        # Convert _id to id for all vendors
+        formatted_vendors = []
+        for vendor in vendors:
+            # Create a copy to avoid modifying the original
+            formatted_vendor = vendor.copy()
+            
+            if "_id" in formatted_vendor:
+                formatted_vendor["id"] = str(formatted_vendor["_id"])
+                del formatted_vendor["_id"]
+            
+            # Remove fields not in VendorResponse
+            formatted_vendor.pop("user_id", None)
+            formatted_vendor.pop("hashed_password", None)
+            formatted_vendor.pop("updated_at", None)
+            
+            # Ensure required fields exist
+            if "is_approved" not in formatted_vendor:
+                formatted_vendor["is_approved"] = True  # Default to True for approved vendors
+            if "is_active" not in formatted_vendor:
+                formatted_vendor["is_active"] = True  # Default to True for active vendors
+            
+            # Ensure packages is a list (not None)
+            if "packages" not in formatted_vendor or formatted_vendor["packages"] is None:
+                formatted_vendor["packages"] = []
+            elif not isinstance(formatted_vendor["packages"], list):
+                formatted_vendor["packages"] = []
+            
+            # Ensure gallery_images is a list
+            if "gallery_images" not in formatted_vendor or formatted_vendor["gallery_images"] is None:
+                formatted_vendor["gallery_images"] = []
+            elif not isinstance(formatted_vendor["gallery_images"], list):
+                formatted_vendor["gallery_images"] = []
+            
+            formatted_vendors.append(formatted_vendor)
+        
+        print(f"[DEBUG] Returning {len(formatted_vendors)} formatted vendors")
+        return formatted_vendors
+    except Exception as e:
+        print(f"[ERROR] Error fetching vendors: {e}")
+        import traceback
+        traceback.print_exc()
+        raise
 
 
 @router.get("/me", response_model=VendorResponse)
