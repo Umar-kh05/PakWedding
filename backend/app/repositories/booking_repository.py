@@ -13,6 +13,18 @@ class BookingRepository(BaseRepository):
     
     async def get_by_user_id(self, user_id: str, skip: int = 0, limit: int = 100):
         """Get bookings by user ID"""
+        from bson import ObjectId
+        # Try both string and ObjectId format
+        try:
+            user_obj_id = ObjectId(user_id)
+            # Try ObjectId first
+            bookings = await self.find_many({"user_id": user_obj_id}, skip, limit)
+            if bookings:
+                return bookings
+        except:
+            pass
+        
+        # Fallback to string
         return await self.find_many({"user_id": user_id}, skip, limit)
     
     async def get_by_vendor_id(self, vendor_id: str, skip: int = 0, limit: int = 100):

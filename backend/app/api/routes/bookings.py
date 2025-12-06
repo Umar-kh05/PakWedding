@@ -52,15 +52,68 @@ async def get_my_bookings(
     booking_service: BookingService = Depends(get_booking_service)
 ):
     """Get current user's bookings"""
-    bookings = await booking_service.get_user_bookings(current_user["_id"], skip, limit)
+    user_id = str(current_user.get("_id") or current_user.get("id"))
+    bookings = await booking_service.get_user_bookings(user_id, skip, limit)
     
     # Format bookings for response
     formatted_bookings = []
     for booking in bookings:
-        if "_id" in booking:
-            booking["id"] = str(booking["_id"])
-            del booking["_id"]
-        formatted_bookings.append(booking)
+        try:
+            # Create a copy to avoid modifying the original
+            formatted_booking = booking.copy()
+            
+            # Convert _id to id
+            if "_id" in formatted_booking:
+                formatted_booking["id"] = str(formatted_booking["_id"])
+                del formatted_booking["_id"]
+            
+            # Ensure all IDs are strings
+            if "user_id" in formatted_booking:
+                formatted_booking["user_id"] = str(formatted_booking["user_id"])
+            if "vendor_id" in formatted_booking:
+                formatted_booking["vendor_id"] = str(formatted_booking["vendor_id"])
+            if "service_id" in formatted_booking and formatted_booking["service_id"]:
+                formatted_booking["service_id"] = str(formatted_booking["service_id"])
+            
+            # Ensure dates are datetime objects (BookingResponse expects datetime, not string)
+            from datetime import datetime
+            if "created_at" in formatted_booking:
+                if isinstance(formatted_booking["created_at"], str):
+                    try:
+                        formatted_booking["created_at"] = datetime.fromisoformat(formatted_booking["created_at"].replace('Z', '+00:00'))
+                    except:
+                        formatted_booking["created_at"] = datetime.utcnow()
+                elif not isinstance(formatted_booking["created_at"], datetime):
+                    formatted_booking["created_at"] = datetime.utcnow()
+            
+            if "event_date" in formatted_booking:
+                if isinstance(formatted_booking["event_date"], str):
+                    try:
+                        formatted_booking["event_date"] = datetime.fromisoformat(formatted_booking["event_date"].replace('Z', '+00:00'))
+                    except:
+                        pass
+            
+            # Ensure required fields are present
+            if "status" not in formatted_booking:
+                formatted_booking["status"] = "pending"
+            if "created_at" not in formatted_booking:
+                formatted_booking["created_at"] = datetime.utcnow()
+            
+            # Remove any fields not in BookingResponse
+            allowed_fields = {
+                "id", "user_id", "vendor_id", "service_id", "event_date", 
+                "event_location", "guest_count", "special_requirements", 
+                "total_amount", "status", "created_at"
+            }
+            formatted_booking = {k: v for k, v in formatted_booking.items() if k in allowed_fields}
+            
+            formatted_bookings.append(formatted_booking)
+        except Exception as e:
+            # Log error but continue processing other bookings
+            import traceback
+            print(f"Error formatting booking {booking.get('_id', 'unknown')}: {e}")
+            print(traceback.format_exc())
+            continue
     
     return formatted_bookings
 

@@ -1,42 +1,47 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import api from '../../services/api'
+import { getUserBookings, Booking } from '../../services/bookingService'
 import { useAuthStore } from '../../store/authStore'
 
-interface Booking {
-  _id: string
-  vendor_id: string
+interface BookingDisplay extends Booking {
   vendor_name?: string
-  event_date: string
-  event_type: string
-  guest_count: number
-  status: string
-  total_amount?: number
-  created_at: string
+  event_type?: string
 }
 
 export default function BookingHistoryPage() {
   const { user } = useAuthStore()
-  const [bookings, setBookings] = useState<Booking[]>([])
+  const [bookings, setBookings] = useState<BookingDisplay[]>([])
   const [loading, setLoading] = useState(true)
-  const [filter, setFilter] = useState<'all' | 'pending' | 'confirmed' | 'completed' | 'cancelled'>('all')
+  const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'rejected' | 'confirmed' | 'completed' | 'cancelled'>('all')
 
   useEffect(() => {
-    loadBookings()
-  }, [filter])
+    if (user) {
+      loadBookings()
+    } else {
+      setLoading(false)
+    }
+  }, [filter, user])
 
   const loadBookings = async () => {
     try {
       setLoading(true)
-      const response = await api.get('/bookings')
-      let allBookings = response.data || []
+      const allBookings = await getUserBookings()
       
       // Filter by status if needed
+      let filteredBookings = allBookings
       if (filter !== 'all') {
-        allBookings = allBookings.filter((b: Booking) => b.status === filter)
+        filteredBookings = allBookings.filter((b: Booking) => b.status === filter)
       }
       
-      setBookings(allBookings)
+      // Map to display format
+      const displayBookings: BookingDisplay[] = filteredBookings.map((b: Booking) => ({
+        ...b,
+        _id: b.id || b._id || '',
+        vendor_name: 'Vendor', // Could be enhanced to fetch vendor name
+        event_type: 'Wedding', // Default event type
+      }))
+      
+      setBookings(displayBookings)
     } catch (error: any) {
       console.error('Error loading bookings:', error)
       // If API fails, show empty state
@@ -50,12 +55,16 @@ export default function BookingHistoryPage() {
     switch (status.toLowerCase()) {
       case 'confirmed':
         return 'bg-green-100 text-green-700'
+      case 'approved':
+        return 'bg-blue-100 text-blue-700'
       case 'pending':
         return 'bg-yellow-100 text-yellow-700'
-      case 'completed':
-        return 'bg-blue-100 text-blue-700'
-      case 'cancelled':
+      case 'rejected':
         return 'bg-red-100 text-red-700'
+      case 'completed':
+        return 'bg-purple-100 text-purple-700'
+      case 'cancelled':
+        return 'bg-gray-100 text-gray-700'
       default:
         return 'bg-gray-100 text-gray-700'
     }
@@ -88,7 +97,7 @@ export default function BookingHistoryPage() {
         {/* Filter Tabs */}
         <div className="bg-white rounded-2xl shadow-lg p-4 mb-6 border-2 border-pink-100">
           <div className="flex gap-4 flex-wrap">
-            {(['all', 'pending', 'confirmed', 'completed', 'cancelled'] as const).map((status) => (
+            {(['all', 'pending', 'approved', 'rejected', 'confirmed', 'completed', 'cancelled'] as const).map((status) => (
               <button
                 key={status}
                 onClick={() => setFilter(status)}
@@ -143,11 +152,13 @@ export default function BookingHistoryPage() {
                         <span className="font-semibold text-gray-700">Event Date:</span> {formatDate(booking.event_date)}
                       </div>
                       <div>
-                        <span className="font-semibold text-gray-700">Event Type:</span> {booking.event_type}
+                        <span className="font-semibold text-gray-700">Location:</span> {booking.event_location}
                       </div>
-                      <div>
-                        <span className="font-semibold text-gray-700">Guests:</span> {booking.guest_count}
-                      </div>
+                      {booking.guest_count && (
+                        <div>
+                          <span className="font-semibold text-gray-700">Guests:</span> {booking.guest_count}
+                        </div>
+                      )}
                       {booking.total_amount && (
                         <div>
                           <span className="font-semibold text-gray-700">Amount:</span> Rs. {booking.total_amount.toLocaleString()}
@@ -156,6 +167,11 @@ export default function BookingHistoryPage() {
                       <div>
                         <span className="font-semibold text-gray-700">Booked:</span> {formatDate(booking.created_at)}
                       </div>
+                      {booking.special_requirements && (
+                        <div className="md:col-span-3">
+                          <span className="font-semibold text-gray-700">Special Requirements:</span> {booking.special_requirements}
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="flex gap-3">
