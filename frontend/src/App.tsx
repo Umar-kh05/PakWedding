@@ -11,6 +11,8 @@ import VendorProfilePage from './pages/vendors/VendorProfilePage'
 import UserDashboard from './pages/user/UserDashboard'
 import VendorDashboard from './pages/vendor/VendorDashboard'
 import VendorBookingsPage from './pages/vendor/VendorBookingsPage'
+import VendorManageProfilePage from './pages/vendor/VendorProfilePage'
+import VendorPackagesPage from './pages/vendor/VendorPackagesPage'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import AddVendorPage from './pages/admin/AddVendorPage'
 import VendorApprovalsPage from './pages/admin/VendorApprovalsPage'
@@ -41,6 +43,8 @@ function App() {
             <Route path="/dashboard" element={<UserDashboard />} />
             <Route path="/vendor/dashboard" element={<VendorDashboard />} />
             <Route path="/vendor/bookings" element={<VendorBookingsPage />} />
+            <Route path="/vendor/profile" element={<VendorManageProfilePage />} />
+            <Route path="/vendor/packages" element={<VendorPackagesPage />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/vendors/add" element={<AddVendorPage />} />
             <Route path="/admin/vendors" element={<VendorApprovalsPage />} />

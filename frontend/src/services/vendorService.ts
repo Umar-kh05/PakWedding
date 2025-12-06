@@ -41,4 +41,19 @@ export async function fetchVendorById(id: string) {
   return data
 }
 
+export async function getVendorProfile() {
+  const { data } = await api.get<Vendor>('/vendors/me')
+  return data
+}
+
+export async function updateVendorProfile(vendorData: Partial<Vendor>) {
+  const { data } = await api.put<Vendor>('/vendors/me', vendorData)
+  return data
+}
+
+export async function updateVendorPackages(packages: Package[]) {
+  const { data } = await api.put<Vendor>('/vendors/me', { packages })
+  return data
+}
+
 

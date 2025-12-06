@@ -106,6 +106,37 @@ async def get_vendor(
     return vendor
 
 
+@router.get("/me", response_model=VendorResponse)
+async def get_vendor_profile(
+    current_user: dict = Depends(get_current_vendor),
+    vendor_service: VendorService = Depends(get_vendor_service)
+):
+    """Get current vendor's own profile"""
+    vendor = await vendor_service.vendor_repo.get_by_user_id(current_user["_id"])
+    if not vendor:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Vendor profile not found")
+    
+    # Format vendor response
+    if "_id" in vendor:
+        vendor["id"] = str(vendor["_id"])
+        del vendor["_id"]
+    
+    # Remove sensitive fields
+    vendor.pop("user_id", None)
+    vendor.pop("hashed_password", None)
+    vendor.pop("updated_at", None)
+    
+    # Ensure packages is a list
+    if "packages" not in vendor or vendor["packages"] is None:
+        vendor["packages"] = []
+    
+    # Ensure gallery_images is a list
+    if "gallery_images" not in vendor or vendor["gallery_images"] is None:
+        vendor["gallery_images"] = []
+    
+    return vendor
+
+
 @router.put("/me", response_model=VendorResponse)
 async def update_vendor_profile(
     vendor_data: VendorUpdate,
@@ -118,6 +149,22 @@ async def update_vendor_profile(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Vendor profile not found")
     
     updated_vendor = await vendor_service.update_vendor(vendor["_id"], vendor_data)
+    
+    # Format response
+    if "_id" in updated_vendor:
+        updated_vendor["id"] = str(updated_vendor["_id"])
+        del updated_vendor["_id"]
+    
+    updated_vendor.pop("user_id", None)
+    updated_vendor.pop("hashed_password", None)
+    updated_vendor.pop("updated_at", None)
+    
+    if "packages" not in updated_vendor or updated_vendor["packages"] is None:
+        updated_vendor["packages"] = []
+    
+    if "gallery_images" not in updated_vendor or updated_vendor["gallery_images"] is None:
+        updated_vendor["gallery_images"] = []
+    
     return updated_vendor
 
 
