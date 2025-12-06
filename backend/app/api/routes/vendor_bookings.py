@@ -154,34 +154,86 @@ async def approve_booking(
     vendor_service: VendorService = Depends(get_vendor_service)
 ):
     """Approve a booking (vendor only)"""
-    # Verify booking belongs to vendor
-    booking = await booking_service.get_booking_by_id(booking_id)
-    if not booking:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Booking not found")
-    
-    # Get vendor ID
-    from bson import ObjectId
-    vendor = await vendor_service.vendor_repo.get_by_user_id(current_user["_id"])
-    
-    if not vendor:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Vendor profile not found")
-    
-    vendor_id = str(vendor["_id"])
-    booking_vendor_id = str(booking.get("vendor_id"))
-    
-    if booking_vendor_id != vendor_id:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You can only approve your own bookings")
-    
-    approved_booking = await booking_service.approve_booking(booking_id)
-    if not approved_booking:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Booking not found")
-    
-    # Format response
-    if "_id" in approved_booking:
-        approved_booking["id"] = str(approved_booking["_id"])
-        del approved_booking["_id"]
-    
-    return approved_booking
+    try:
+        # Verify booking belongs to vendor
+        booking = await booking_service.get_booking_by_id(booking_id)
+        if not booking:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Booking not found")
+        
+        # Get vendor ID
+        from bson import ObjectId
+        user_id = current_user.get("_id") or current_user.get("id")
+        if not user_id:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="User ID not found in authentication token"
+            )
+        
+        vendor = await vendor_service.vendor_repo.get_by_user_id(str(user_id))
+        
+        if not vendor:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Vendor profile not found")
+        
+        vendor_id = str(vendor["_id"])
+        booking_vendor_id = str(booking.get("vendor_id"))
+        
+        if booking_vendor_id != vendor_id:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You can only approve your own bookings")
+        
+        approved_booking = await booking_service.approve_booking(booking_id)
+        if not approved_booking:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Booking not found")
+        
+        # Format response for BookingResponse model
+        if "_id" in approved_booking:
+            approved_booking["id"] = str(approved_booking["_id"])
+            del approved_booking["_id"]
+        
+        # Ensure all IDs are strings
+        if "user_id" in approved_booking:
+            approved_booking["user_id"] = str(approved_booking["user_id"])
+        if "vendor_id" in approved_booking:
+            approved_booking["vendor_id"] = str(approved_booking["vendor_id"])
+        if "service_id" in approved_booking and approved_booking["service_id"]:
+            approved_booking["service_id"] = str(approved_booking["service_id"])
+        
+        # Ensure dates are datetime objects
+        from datetime import datetime
+        if "created_at" in approved_booking:
+            if isinstance(approved_booking["created_at"], str):
+                try:
+                    approved_booking["created_at"] = datetime.fromisoformat(approved_booking["created_at"].replace('Z', '+00:00'))
+                except:
+                    approved_booking["created_at"] = datetime.utcnow()
+            elif not isinstance(approved_booking["created_at"], datetime):
+                approved_booking["created_at"] = datetime.utcnow()
+        
+        if "event_date" in approved_booking:
+            if isinstance(approved_booking["event_date"], str):
+                try:
+                    approved_booking["event_date"] = datetime.fromisoformat(approved_booking["event_date"].replace('Z', '+00:00'))
+                except:
+                    pass
+        
+        # Remove fields not in BookingResponse
+        allowed_fields = {
+            "id", "user_id", "vendor_id", "service_id", "event_date", 
+            "event_location", "guest_count", "special_requirements", 
+            "total_amount", "status", "created_at"
+        }
+        approved_booking = {k: v for k, v in approved_booking.items() if k in allowed_fields}
+        
+        return approved_booking
+    except HTTPException:
+        raise
+    except Exception as e:
+        import traceback
+        print(f"[ERROR] Error approving booking {booking_id}: {e}")
+        print(traceback.format_exc())
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to approve booking: {str(e)}"
+        )
 
 
 @router.post("/bookings/{booking_id}/reject", response_model=BookingResponse)
@@ -192,32 +244,84 @@ async def reject_booking(
     vendor_service: VendorService = Depends(get_vendor_service)
 ):
     """Reject a booking (vendor only)"""
-    # Verify booking belongs to vendor
-    booking = await booking_service.get_booking_by_id(booking_id)
-    if not booking:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Booking not found")
-    
-    # Get vendor ID
-    from bson import ObjectId
-    vendor = await vendor_service.vendor_repo.get_by_user_id(current_user["_id"])
-    
-    if not vendor:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Vendor profile not found")
-    
-    vendor_id = str(vendor["_id"])
-    booking_vendor_id = str(booking.get("vendor_id"))
-    
-    if booking_vendor_id != vendor_id:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You can only reject your own bookings")
-    
-    rejected_booking = await booking_service.reject_booking(booking_id)
-    if not rejected_booking:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Booking not found")
-    
-    # Format response
-    if "_id" in rejected_booking:
-        rejected_booking["id"] = str(rejected_booking["_id"])
-        del rejected_booking["_id"]
-    
-    return rejected_booking
+    try:
+        # Verify booking belongs to vendor
+        booking = await booking_service.get_booking_by_id(booking_id)
+        if not booking:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Booking not found")
+        
+        # Get vendor ID
+        from bson import ObjectId
+        user_id = current_user.get("_id") or current_user.get("id")
+        if not user_id:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="User ID not found in authentication token"
+            )
+        
+        vendor = await vendor_service.vendor_repo.get_by_user_id(str(user_id))
+        
+        if not vendor:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Vendor profile not found")
+        
+        vendor_id = str(vendor["_id"])
+        booking_vendor_id = str(booking.get("vendor_id"))
+        
+        if booking_vendor_id != vendor_id:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You can only reject your own bookings")
+        
+        rejected_booking = await booking_service.reject_booking(booking_id)
+        if not rejected_booking:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Booking not found")
+        
+        # Format response for BookingResponse model
+        if "_id" in rejected_booking:
+            rejected_booking["id"] = str(rejected_booking["_id"])
+            del rejected_booking["_id"]
+        
+        # Ensure all IDs are strings
+        if "user_id" in rejected_booking:
+            rejected_booking["user_id"] = str(rejected_booking["user_id"])
+        if "vendor_id" in rejected_booking:
+            rejected_booking["vendor_id"] = str(rejected_booking["vendor_id"])
+        if "service_id" in rejected_booking and rejected_booking["service_id"]:
+            rejected_booking["service_id"] = str(rejected_booking["service_id"])
+        
+        # Ensure dates are datetime objects
+        from datetime import datetime
+        if "created_at" in rejected_booking:
+            if isinstance(rejected_booking["created_at"], str):
+                try:
+                    rejected_booking["created_at"] = datetime.fromisoformat(rejected_booking["created_at"].replace('Z', '+00:00'))
+                except:
+                    rejected_booking["created_at"] = datetime.utcnow()
+            elif not isinstance(rejected_booking["created_at"], datetime):
+                rejected_booking["created_at"] = datetime.utcnow()
+        
+        if "event_date" in rejected_booking:
+            if isinstance(rejected_booking["event_date"], str):
+                try:
+                    rejected_booking["event_date"] = datetime.fromisoformat(rejected_booking["event_date"].replace('Z', '+00:00'))
+                except:
+                    pass
+        
+        # Remove fields not in BookingResponse
+        allowed_fields = {
+            "id", "user_id", "vendor_id", "service_id", "event_date", 
+            "event_location", "guest_count", "special_requirements", 
+            "total_amount", "status", "created_at"
+        }
+        rejected_booking = {k: v for k, v in rejected_booking.items() if k in allowed_fields}
+        
+        return rejected_booking
+    except HTTPException:
+        raise
+    except Exception as e:
+        import traceback
+        print(f"[ERROR] Error rejecting booking {booking_id}: {e}")
+        print(traceback.format_exc())
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to reject booking: {str(e)}"
+        )
 

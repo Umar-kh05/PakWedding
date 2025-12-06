@@ -48,6 +48,7 @@ async def create_vendor(
         # Log the incoming data for debugging
         print(f"[DEBUG] Creating vendor with data: {vendor_data.model_dump()}")
         vendor = await vendor_service.create_vendor_as_admin(vendor_data)
+        print(f"[DEBUG] Vendor created, preparing response...")
         
         # Convert _id to id for response model
         vendor_id = vendor.get("_id") or vendor.get("id")
@@ -64,6 +65,7 @@ async def create_vendor(
         vendor.pop("hashed_password", None)
         vendor.pop("updated_at", None)
         
+        print(f"[DEBUG] Returning vendor response with ID: {vendor.get('id')}")
         return vendor
     except ValueError as e:
         print(f"[ERROR] ValueError creating vendor: {str(e)}")

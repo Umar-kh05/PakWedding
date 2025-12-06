@@ -68,11 +68,15 @@ class VendorService:
     
     async def create_vendor_as_admin(self, vendor_data: VendorCreate) -> dict:
         """Create a vendor as admin (auto-approved)"""
+        print(f"[VENDOR_SERVICE] Starting vendor creation for: {vendor_data.email}")
+        
         # Check if user with this email already exists
         existing_user = await self.user_repo.get_by_email(vendor_data.email)
         if existing_user:
+            print(f"[VENDOR_SERVICE] ERROR: User with email {vendor_data.email} already exists")
             raise ValueError("User with this email already exists")
         
+        print(f"[VENDOR_SERVICE] Creating user account...")
         # Create user account first
         user_dict = {
             "email": vendor_data.email,
@@ -85,7 +89,9 @@ class VendorService:
             "updated_at": datetime.utcnow()
         }
         user = await self.user_repo.create(user_dict)
+        print(f"[VENDOR_SERVICE] User created with ID: {user.get('_id')}")
         
+        print(f"[VENDOR_SERVICE] Creating vendor profile...")
         # Create vendor profile (auto-approved)
         vendor_dict = vendor_data.model_dump(exclude={"password"})
         vendor_dict["user_id"] = user["_id"]
@@ -94,5 +100,7 @@ class VendorService:
         vendor_dict["created_at"] = datetime.utcnow()
         vendor_dict["updated_at"] = datetime.utcnow()
         
-        return await self.vendor_repo.create(vendor_dict)
+        vendor = await self.vendor_repo.create(vendor_dict)
+        print(f"[VENDOR_SERVICE] Vendor created successfully with ID: {vendor.get('_id')}")
+        return vendor
 
