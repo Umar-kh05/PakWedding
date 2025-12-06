@@ -55,6 +55,12 @@ export default function BrowseVendorsPage() {
         const data = await fetchVendors(undefined, 500) // Increase limit to 500
         console.log('Fetched vendors:', data)
         
+        // Debug: Check packages for first vendor
+        if (data && Array.isArray(data) && data.length > 0) {
+          console.log('First vendor packages:', data[0]?.packages)
+          console.log('First vendor has packages?', data[0]?.packages?.length > 0)
+        }
+        
         if (data && Array.isArray(data) && data.length > 0) {
           // Filter out unwanted vendors (Rasheed and Ghauri)
           const filteredData = data.filter(v => {
@@ -399,6 +405,11 @@ export default function BrowseVendorsPage() {
                 </div>
                 {/* Standard Package Price Display */}
                 {(() => {
+                  // Debug logging
+                  if (!vendor.packages || vendor.packages.length === 0) {
+                    console.log(`Vendor ${vendor.business_name} has no packages:`, vendor.packages)
+                  }
+                  
                   if (vendor.packages && vendor.packages.length > 0) {
                     const standardPackage = vendor.packages.find((pkg: any) => pkg.name === 'Standard')
                     if (standardPackage) {

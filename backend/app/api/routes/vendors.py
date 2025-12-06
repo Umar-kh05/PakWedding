@@ -50,8 +50,12 @@ async def get_vendors(
         vendor.pop("updated_at", None)
         
         # Ensure packages is a list (not None)
-        if "packages" not in vendor or vendor["packages"] is None:
+        if "packages" not in vendor or vendor["packages"] is None or len(vendor.get("packages", [])) == 0:
+            # If no packages, set empty list
             vendor["packages"] = []
+        else:
+            # Ensure packages have proper structure
+            vendor["packages"] = vendor["packages"]
         
         formatted_vendors.append(vendor)
     

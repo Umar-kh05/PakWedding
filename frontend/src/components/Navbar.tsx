@@ -37,14 +37,6 @@ export default function Navbar() {
           </li>
           <li>
             <Link 
-              to="/services" 
-              className={`relative transition-all duration-300 font-semibold ${isActive('/services') ? 'text-primary-600 border-b-2 border-primary-600 pb-1' : 'hover:text-primary-600 hover:border-b-2 hover:border-primary-400 pb-1'}`}
-            >
-              Services
-            </Link>
-          </li>
-          <li>
-            <Link 
               to="/budget-planner" 
               className={`relative transition-all duration-300 font-semibold ${isActive('/budget-planner') ? 'text-primary-600 border-b-2 border-primary-600 pb-1' : 'hover:text-primary-600 hover:border-b-2 hover:border-primary-400 pb-1'}`}
             >
