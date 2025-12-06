@@ -168,23 +168,32 @@ export default function BrowseVendorsPage() {
   }, [searchQuery, selectedCategory, selectedLocation, priceRange, minRating, sortBy, vendors])
 
   const handleRemoveFilter = (filter: string, e?: React.MouseEvent) => {
-    e?.stopPropagation()
-    e?.preventDefault()
+    if (e) {
+      e.stopPropagation()
+      e.preventDefault()
+    }
+    
+    console.log('Removing filter:', filter)
+    console.log('Current filters - category:', selectedCategory, 'location:', selectedLocation, 'rating:', minRating)
     
     // Check if it's a rating filter (format: "4+ Rating" or "4.5+ Rating")
     if (filter.includes('Rating') || filter.match(/\d\+/)) {
+      console.log('Removing rating filter')
       setMinRating(0)
     } 
     // Check if it's a category filter - check if filter exactly matches any category
     else if (categories.includes(filter)) {
+      console.log('Removing category filter:', filter)
       setSelectedCategory('')
     } 
     // Check if it's a location filter - check if any location is in the filter string
     else if (locations.some(loc => filter.includes(loc) || loc.includes(filter))) {
+      console.log('Removing location filter:', filter)
       setSelectedLocation('')
     } 
     // Check if it's a price filter
     else if (filter.includes('Rs.') || filter.includes('Price') || filter.includes('price')) {
+      console.log('Removing price filter')
       setPriceRange('')
     }
   }
@@ -286,9 +295,14 @@ export default function BrowseVendorsPage() {
                   {filter}
                   <button
                     type="button"
-                    onClick={(e) => handleRemoveFilter(filter, e)}
-                    className="hover:text-pink-600 font-bold cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      e.preventDefault()
+                      handleRemoveFilter(filter, e)
+                    }}
+                    className="hover:text-pink-600 hover:bg-pink-200 font-bold cursor-pointer rounded-full w-5 h-5 flex items-center justify-center transition-all duration-200 ml-1"
                     aria-label={`Remove ${filter} filter`}
+                    style={{ pointerEvents: 'auto', zIndex: 10 }}
                   >
                     ×
                   </button>
@@ -321,7 +335,8 @@ export default function BrowseVendorsPage() {
               .map((vendor) => (
             <div
               key={vendor._id || vendor.id}
-              className="bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-pink-100 transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:border-pink-400 group"
+              className="bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-pink-100 transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:border-pink-400 group cursor-pointer"
+              style={{ pointerEvents: 'auto' }}
             >
               <div className="bg-gradient-to-br from-pink-100 to-purple-100 h-48 w-full overflow-hidden relative">
                 {vendor.image_url ? (
@@ -339,21 +354,25 @@ export default function BrowseVendorsPage() {
                   </div>
                 )}
                 {/* Hover overlay with Book button */}
-                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto">
                   {user ? (
                     <button
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation()
                         setSelectedVendor(vendor)
                         setIsBookingModalOpen(true)
                       }}
-                      className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-semibold transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg"
+                      className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-semibold transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg cursor-pointer z-10"
+                      style={{ pointerEvents: 'auto' }}
                     >
                       Book Now
                     </button>
                   ) : (
                     <Link
                       to="/login"
-                      className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-semibold transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg"
+                      onClick={(e) => e.stopPropagation()}
+                      className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-semibold transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg cursor-pointer z-10"
+                      style={{ pointerEvents: 'auto' }}
                     >
                       Login to Book
                     </Link>
@@ -385,11 +404,13 @@ export default function BrowseVendorsPage() {
                   </Link>
                   {user && (
                     <button
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation()
                         setSelectedVendor(vendor)
                         setIsBookingModalOpen(true)
                       }}
-                      className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-all shadow-md"
+                      className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-all shadow-md cursor-pointer"
+                      style={{ pointerEvents: 'auto' }}
                     >
                       Book
                     </button>
