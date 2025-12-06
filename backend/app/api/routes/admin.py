@@ -12,6 +12,24 @@ import traceback
 router = APIRouter()
 
 
+@router.get("/vendors", response_model=List[VendorResponse])
+async def get_all_vendors(
+    status: str = None,
+    skip: int = 0,
+    limit: int = 100,
+    current_admin: dict = Depends(get_current_admin),
+    vendor_service: VendorService = Depends(get_vendor_service)
+):
+    """Get all vendors with optional status filter (admin only)"""
+    # Map frontend filter to backend status
+    status_filter = None
+    if status:
+        status_filter = status  # pending, approved, rejected, all
+    
+    vendors = await vendor_service.get_all_vendors_with_status(status_filter, skip, limit)
+    return vendors
+
+
 @router.get("/vendors/pending", response_model=List[VendorResponse])
 async def get_pending_vendors(
     skip: int = 0,
@@ -31,10 +49,39 @@ async def approve_vendor(
     vendor_service: VendorService = Depends(get_vendor_service)
 ):
     """Approve a vendor (admin only)"""
-    vendor = await vendor_service.approve_vendor(vendor_id)
-    if not vendor:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Vendor not found")
-    return vendor
+    try:
+        vendor = await vendor_service.approve_vendor(vendor_id)
+        if not vendor:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Vendor not found")
+        return vendor
+    except Exception as e:
+        print(f"[ERROR] Error approving vendor {vendor_id}: {e}")
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to approve vendor: {str(e)}"
+        )
+
+
+@router.post("/vendors/{vendor_id}/reject", response_model=VendorResponse)
+async def reject_vendor(
+    vendor_id: str,
+    current_admin: dict = Depends(get_current_admin),
+    vendor_service: VendorService = Depends(get_vendor_service)
+):
+    """Reject a vendor (admin only)"""
+    try:
+        vendor = await vendor_service.reject_vendor(vendor_id)
+        if not vendor:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Vendor not found")
+        return vendor
+    except Exception as e:
+        print(f"[ERROR] Error rejecting vendor {vendor_id}: {e}")
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to reject vendor: {str(e)}"
+        )
 
 
 @router.post("/vendors/create", response_model=VendorResponse, status_code=status.HTTP_201_CREATED)

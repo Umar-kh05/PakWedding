@@ -60,11 +60,75 @@ class VendorService:
     
     async def approve_vendor(self, vendor_id: str) -> Optional[dict]:
         """Approve vendor (admin only)"""
-        return await self.vendor_repo.approve_vendor(vendor_id)
+        vendor = await self.vendor_repo.approve_vendor(vendor_id)
+        if vendor:
+            # Format response
+            if "_id" in vendor:
+                vendor["id"] = str(vendor["_id"])
+                del vendor["_id"]
+            vendor.pop("user_id", None)
+            vendor.pop("hashed_password", None)
+            vendor.pop("updated_at", None)
+            if "packages" not in vendor or vendor["packages"] is None:
+                vendor["packages"] = []
+            if "gallery_images" not in vendor or vendor["gallery_images"] is None:
+                vendor["gallery_images"] = []
+        return vendor
+    
+    async def reject_vendor(self, vendor_id: str) -> Optional[dict]:
+        """Reject vendor (admin only)"""
+        vendor = await self.vendor_repo.reject_vendor(vendor_id)
+        if vendor:
+            # Format response
+            if "_id" in vendor:
+                vendor["id"] = str(vendor["_id"])
+                del vendor["_id"]
+            vendor.pop("user_id", None)
+            vendor.pop("hashed_password", None)
+            vendor.pop("updated_at", None)
+            if "packages" not in vendor or vendor["packages"] is None:
+                vendor["packages"] = []
+            if "gallery_images" not in vendor or vendor["gallery_images"] is None:
+                vendor["gallery_images"] = []
+        return vendor
     
     async def get_pending_approvals(self, skip: int = 0, limit: int = 100):
         """Get vendors pending approval"""
-        return await self.vendor_repo.get_pending_approvals(skip, limit)
+        vendors = await self.vendor_repo.get_pending_approvals(skip, limit)
+        # Format vendors
+        formatted = []
+        for vendor in vendors:
+            if "_id" in vendor:
+                vendor["id"] = str(vendor["_id"])
+                del vendor["_id"]
+            vendor.pop("user_id", None)
+            vendor.pop("hashed_password", None)
+            vendor.pop("updated_at", None)
+            if "packages" not in vendor or vendor["packages"] is None:
+                vendor["packages"] = []
+            if "gallery_images" not in vendor or vendor["gallery_images"] is None:
+                vendor["gallery_images"] = []
+            formatted.append(vendor)
+        return formatted
+    
+    async def get_all_vendors_with_status(self, status_filter: str = None, skip: int = 0, limit: int = 100):
+        """Get all vendors with optional status filter"""
+        vendors = await self.vendor_repo.get_all_vendors_with_status(status_filter, skip, limit)
+        # Format vendors
+        formatted = []
+        for vendor in vendors:
+            if "_id" in vendor:
+                vendor["id"] = str(vendor["_id"])
+                del vendor["_id"]
+            vendor.pop("user_id", None)
+            vendor.pop("hashed_password", None)
+            vendor.pop("updated_at", None)
+            if "packages" not in vendor or vendor["packages"] is None:
+                vendor["packages"] = []
+            if "gallery_images" not in vendor or vendor["gallery_images"] is None:
+                vendor["gallery_images"] = []
+            formatted.append(vendor)
+        return formatted
     
     async def create_vendor_as_admin(self, vendor_data: VendorCreate) -> dict:
         """Create a vendor as admin (auto-approved)"""

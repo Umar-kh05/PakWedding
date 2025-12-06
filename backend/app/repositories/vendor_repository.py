@@ -64,4 +64,21 @@ class VendorRepository(BaseRepository):
     async def approve_vendor(self, vendor_id: str):
         """Approve a vendor"""
         return await self.update(vendor_id, {"is_approved": True})
+    
+    async def reject_vendor(self, vendor_id: str):
+        """Reject a vendor"""
+        return await self.update(vendor_id, {"is_approved": False, "is_active": False})
+    
+    async def get_all_vendors_with_status(self, status_filter: str = None, skip: int = 0, limit: int = 100):
+        """Get all vendors with optional status filter"""
+        query = {}
+        if status_filter == "pending":
+            query = {"is_approved": False}
+        elif status_filter == "approved":
+            query = {"is_approved": True, "is_active": True}
+        elif status_filter == "rejected":
+            query = {"is_approved": False, "is_active": False}
+        # "all" or None returns all vendors
+        
+        return await self.find_many(query, skip, limit)
 
