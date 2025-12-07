@@ -168,7 +168,7 @@ export default function UserDashboard() {
             </Link>
 
             <Link
-              to="/checklist"
+              to="/budget-planner"
               className="group bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border-2 border-green-200 hover:border-green-400 transition-all hover:shadow-xl transform hover:-translate-y-1 text-center"
             >
               <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform">

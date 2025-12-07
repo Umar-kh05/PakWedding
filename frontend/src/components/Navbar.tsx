@@ -12,9 +12,9 @@ export default function Navbar() {
         {/* Logo */}
         <Link
           to="/"
-          className="flex items-center gap-2 group transition-all duration-300 transform hover:scale-105"
+          className="flex items-center gap-2"
         >
-          <span className="text-3xl group-hover:scale-110 transition-transform duration-300">💍</span>
+          <span className="text-xl">💍</span>
           <span className="text-2xl font-bold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent tracking-tight">
             PakWedding
           </span>
