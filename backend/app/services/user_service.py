@@ -72,5 +72,9 @@ class UserService:
         if not verify_password(password, user["hashed_password"]):
             return None
         
+        # Check if user is active
+        if not user.get("is_active", True):
+            return None
+        
         return user
 

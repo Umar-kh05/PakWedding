@@ -33,6 +33,7 @@ async def login(
 ):
     """Login and get access token"""
     # OAuth2PasswordRequestForm uses 'username' field, but we use email
+    # authenticate_user checks password and is_active status
     user = await user_service.authenticate_user(form_data.username, form_data.password)
     if not user:
         raise HTTPException(
