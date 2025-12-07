@@ -66,17 +66,17 @@ export default function HomePage() {
   return (
     <div className="bg-gradient-to-b from-rose-50/30 via-white to-rose-50/20">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-rose-100 via-accent-50 to-rose-100 pt-20 pb-32 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 pt-20 pb-32 overflow-hidden">
         {/* Decorative background elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 right-10 w-96 h-96 bg-accent-200/20 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 left-10 w-96 h-96 bg-primary-200/20 rounded-full blur-3xl"></div>
+          <div className="absolute top-20 right-10 w-96 h-96 bg-amber-300/15 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 left-10 w-96 h-96 bg-red-300/15 rounded-full blur-3xl"></div>
         </div>
         <div className="container mx-auto px-6 relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left Content */}
             <div className="space-y-8">
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary-500 via-accent-500 to-primary-500 text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-lg hover:shadow-xl hover:shadow-primary-500/50 transition-all duration-300 transform hover:scale-105">
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-red-700 to-red-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
                 <span>✨</span>
                 <span>Pakistan's #1 Wedding Platform</span>
               </div>
@@ -84,7 +84,7 @@ export default function HomePage() {
               <h1 className="text-6xl lg:text-7xl font-extrabold leading-tight">
                 Your Dream
                 <br />
-                <span className="bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-red-700 via-red-600 to-amber-600 bg-clip-text text-transparent">
                   Wedding
                 </span>
                 <br />
@@ -92,20 +92,20 @@ export default function HomePage() {
               </h1>
 
               <p className="text-xl text-gray-600 leading-relaxed max-w-xl">
-                Connect with <strong className="text-primary-600">1000+ vendors</strong>, plan your budget, and create unforgettable memories for your special day.
+                Connect with <strong className="text-red-700">1000+ vendors</strong>, plan your budget, and create unforgettable memories for your special day.
               </p>
 
               <div className="flex flex-wrap gap-4">
                 <Link
                   to="/vendors"
-                  className="group bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:from-primary-700 hover:via-accent-700 hover:to-primary-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-primary-600/50 flex items-center gap-2 transform hover:scale-105"
+                  className="group bg-gradient-to-r from-red-700 to-red-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:from-red-800 hover:to-red-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-red-600/30 flex items-center gap-2 transform hover:scale-105"
                 >
                   Find Vendors
                   <span className="group-hover:translate-x-2 transition-transform duration-300">→</span>
                 </Link>
                 <Link
                   to="/budget-planner"
-                  className="bg-white border-2 border-primary-600 text-primary-600 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-gradient-to-r hover:from-primary-50 hover:via-accent-50 hover:to-primary-50 hover:border-primary-700 hover:text-primary-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
+                  className="bg-white border-2 border-amber-600 text-amber-700 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-amber-50 hover:border-amber-700 hover:text-amber-800 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
                 >
                   Budget Planner
                 </Link>
@@ -113,16 +113,16 @@ export default function HomePage() {
 
               {/* Stats */}
               <div className="grid grid-cols-3 gap-8 pt-6">
-                <div className="text-center p-4 rounded-xl bg-gradient-to-br from-rose-50 to-white backdrop-blur-sm border-2 border-rose-200 hover:border-primary-500 hover:shadow-xl hover:shadow-primary-500/30 transition-all duration-300 transform hover:scale-105">
-                  <div className="text-4xl font-bold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent">1000+</div>
+                <div className="text-center p-4 rounded-xl bg-white backdrop-blur-sm border-2 border-amber-100 hover:border-amber-300 hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                  <div className="text-4xl font-bold bg-gradient-to-r from-red-700 to-amber-600 bg-clip-text text-transparent">1000+</div>
                   <div className="text-sm text-gray-700 font-semibold mt-1">Vendors</div>
                 </div>
-                <div className="text-center p-4 rounded-xl bg-gradient-to-br from-rose-50 to-white backdrop-blur-sm border-2 border-rose-200 hover:border-primary-500 hover:shadow-xl hover:shadow-primary-500/30 transition-all duration-300 transform hover:scale-105">
-                  <div className="text-4xl font-bold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent">5000+</div>
+                <div className="text-center p-4 rounded-xl bg-white backdrop-blur-sm border-2 border-amber-100 hover:border-amber-300 hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                  <div className="text-4xl font-bold bg-gradient-to-r from-red-700 to-amber-600 bg-clip-text text-transparent">5000+</div>
                   <div className="text-sm text-gray-700 font-semibold mt-1">Happy Couples</div>
                 </div>
-                <div className="text-center p-4 rounded-xl bg-gradient-to-br from-rose-50 to-white backdrop-blur-sm border-2 border-rose-200 hover:border-primary-500 hover:shadow-xl hover:shadow-primary-500/30 transition-all duration-300 transform hover:scale-105">
-                  <div className="text-4xl font-bold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent">50+</div>
+                <div className="text-center p-4 rounded-xl bg-white backdrop-blur-sm border-2 border-amber-100 hover:border-amber-300 hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                  <div className="text-4xl font-bold bg-gradient-to-r from-red-700 to-amber-600 bg-clip-text text-transparent">50+</div>
                   <div className="text-sm text-gray-700 font-semibold mt-1">Cities</div>
                 </div>
               </div>
@@ -130,15 +130,15 @@ export default function HomePage() {
 
             {/* Right Image */}
             <div className="relative">
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl ring-4 ring-primary-200/50 hover:ring-primary-400/70 transition-all duration-300">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl ring-4 ring-amber-200/50 hover:ring-amber-300/70 transition-all duration-300">
                 <img
-                  src="https://res.cloudinary.com/dsk2eyecb/image/upload/v1764965356/homepage/homepage/homepage-hero-couple.jpg"
-                  alt="Wedding Couple"
+                  src="https://res.cloudinary.com/dsk2eyecb/image/upload/v1765096566/elegant_wedding_hero_1765095944302_jbt3rx.jpg"
+                  alt="Beautiful Pakistani Wedding Celebration"
                   className="w-full h-auto object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-accent-900/30 via-primary-900/10 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-red-900/15 via-transparent to-transparent"></div>
                 {/* Decorative border glow */}
-                <div className="absolute -inset-1 bg-gradient-to-r from-primary-500 via-accent-500 to-primary-500 rounded-3xl opacity-20 blur-xl -z-10"></div>
+                <div className="absolute -inset-1 bg-gradient-to-r from-red-500 via-amber-500 to-red-500 rounded-3xl opacity-25 blur-xl -z-10"></div>
               </div>
             </div>
           </div>
@@ -356,36 +356,55 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-b from-rose-50/40 via-white to-rose-50/30 relative">
-        <div className="container mx-auto px-6">
-          <div className="max-w-5xl mx-auto bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 rounded-3xl p-16 text-center shadow-2xl relative overflow-hidden ring-4 ring-primary-200/50 hover:ring-primary-300/70 transition-all duration-300">
-            {/* Background Pattern */}
-            <div className="absolute inset-0 opacity-20">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl"></div>
-              <div className="absolute bottom-0 left-0 w-64 h-64 bg-white rounded-full blur-3xl"></div>
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+      <section className="py-24 bg-gradient-to-b from-white via-amber-50/20 to-white relative overflow-hidden">
+        {/* Subtle decorative elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-10 right-10 w-96 h-96 bg-amber-200/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 left-10 w-96 h-96 bg-red-200/10 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="max-w-4xl mx-auto text-center">
+            {/* Elegant heading */}
+            <div className="mb-8">
+              <h2 className="text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+                Begin Your Wedding Journey
+              </h2>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                Join thousands of couples who found their perfect wedding vendors on <span className="font-semibold text-red-700">PakWedding</span>
+              </p>
             </div>
 
-            <div className="relative z-10">
-              <h2 className="text-5xl font-extrabold text-white mb-6">
-                Ready to Start Planning?
-              </h2>
-              <p className="text-xl text-rose-50 font-medium mb-10 max-w-2xl mx-auto">
-                Join thousands of couples who found their perfect wedding vendors on PakWedding
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Link
-                  to="/register"
-                  className="bg-white text-primary-600 px-10 py-4 rounded-xl text-lg font-bold hover:bg-primary-50 hover:text-primary-700 transition-all duration-300 shadow-xl hover:shadow-2xl hover:shadow-white/50 transform hover:scale-105"
-                >
-                  Get Started Free
-                </Link>
-                <Link
-                  to="/vendors"
-                  className="bg-transparent border-2 border-white text-white px-10 py-4 rounded-xl text-lg font-bold hover:bg-white hover:text-primary-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-                >
-                  Browse Vendors
-                </Link>
+            {/* Elegant buttons */}
+            <div className="flex flex-wrap justify-center gap-4 mb-12">
+              <Link
+                to="/register"
+                className="group bg-gradient-to-r from-red-700 to-red-600 text-white px-10 py-4 rounded-xl text-lg font-semibold hover:from-red-800 hover:to-red-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-red-600/30 transform hover:scale-105 flex items-center gap-2"
+              >
+                Get Started Free
+                <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
+              </Link>
+              <Link
+                to="/vendors"
+                className="bg-white border-2 border-gray-300 text-gray-700 px-10 py-4 rounded-xl text-lg font-semibold hover:bg-gray-50 hover:border-red-700 hover:text-red-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
+              >
+                Browse Vendors
+              </Link>
+            </div>
+
+            {/* Trust indicators */}
+            <div className="grid grid-cols-3 gap-8 max-w-3xl mx-auto pt-8 border-t border-gray-200">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-red-700 mb-2">1000+</div>
+                <div className="text-sm text-gray-600 font-medium">Verified Vendors</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-red-700 mb-2">5000+</div>
+                <div className="text-sm text-gray-600 font-medium">Happy Couples</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-red-700 mb-2">50+</div>
+                <div className="text-sm text-gray-600 font-medium">Cities Covered</div>
               </div>
             </div>
           </div>

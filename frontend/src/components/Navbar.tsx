@@ -12,48 +12,57 @@ export default function Navbar() {
         {/* Logo */}
         <Link
           to="/"
-          className="text-2xl font-bold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent flex items-center gap-2 hover:from-primary-700 hover:via-accent-700 hover:to-primary-700 transition-all duration-300 transform hover:scale-105"
+          className="flex items-center gap-3 group transition-all duration-300 transform hover:scale-105"
         >
-          💍 PakWedding
+          <svg
+            className="w-7 h-7 text-red-700"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M12 2L4 7v3l8 12 8-12V7l-8-5zm0 2.18L17.8 8H6.2L12 4.18zM5 9h14v.5l-7 10.5L5 9.5V9z" />
+          </svg>
+          <span className="text-2xl font-serif text-gray-800 tracking-wide" style={{ fontFamily: "'Playfair Display', serif" }}>
+            PakWedding
+          </span>
         </Link>
 
         {/* Links */}
         <ul className="hidden md:flex items-center gap-8 text-gray-800 font-medium">
           <li>
-            <Link 
-              to="/" 
+            <Link
+              to="/"
               className={`relative transition-all duration-300 font-semibold ${isActive('/') ? 'text-primary-600 border-b-2 border-primary-600 pb-1' : 'hover:text-primary-600 hover:border-b-2 hover:border-primary-400 pb-1'}`}
             >
               Home
             </Link>
           </li>
           <li>
-            <Link 
-              to="/vendors" 
+            <Link
+              to="/vendors"
               className={`relative transition-all duration-300 font-semibold ${isActive('/vendors') ? 'text-primary-600 border-b-2 border-primary-600 pb-1' : 'hover:text-primary-600 hover:border-b-2 hover:border-primary-400 pb-1'}`}
             >
               Vendors
             </Link>
           </li>
           <li>
-            <Link 
-              to="/budget-planner" 
+            <Link
+              to="/budget-planner"
               className={`relative transition-all duration-300 font-semibold ${isActive('/budget-planner') ? 'text-primary-600 border-b-2 border-primary-600 pb-1' : 'hover:text-primary-600 hover:border-b-2 hover:border-primary-400 pb-1'}`}
             >
               Budget Planner
             </Link>
           </li>
           <li>
-            <Link 
-              to="/about" 
+            <Link
+              to="/about"
               className={`relative transition-all duration-300 font-semibold ${isActive('/about') ? 'text-primary-600 border-b-2 border-primary-600 pb-1' : 'hover:text-primary-600 hover:border-b-2 hover:border-primary-400 pb-1'}`}
             >
               About
             </Link>
           </li>
           <li>
-            <Link 
-              to="/contact" 
+            <Link
+              to="/contact"
               className={`relative transition-all duration-300 font-semibold ${isActive('/contact') ? 'text-primary-600 border-b-2 border-primary-600 pb-1' : 'hover:text-primary-600 hover:border-b-2 hover:border-primary-400 pb-1'}`}
             >
               Contact
@@ -81,18 +90,18 @@ export default function Navbar() {
             </>
           ) : (
             <>
-          <Link
-            to="/login"
+              <Link
+                to="/login"
                 className="border-2 border-primary-600 text-primary-600 px-5 py-1.5 rounded-md hover:bg-primary-50 hover:border-primary-700 hover:text-primary-700 transition-all duration-300 font-semibold shadow-sm hover:shadow-md transform hover:scale-105"
-          >
-            Login
-          </Link>
-          <Link
+              >
+                Login
+              </Link>
+              <Link
                 to="/register"
                 className="bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 hover:from-primary-700 hover:via-accent-700 hover:to-primary-700 text-white px-5 py-1.5 rounded-md transition-all duration-300 shadow-lg hover:shadow-xl font-semibold transform hover:scale-105"
-          >
-            Sign Up
-          </Link>
+              >
+                Sign Up
+              </Link>
             </>
           )}
         </div>
