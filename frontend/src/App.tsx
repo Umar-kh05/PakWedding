@@ -19,6 +19,7 @@ import AddVendorPage from './pages/admin/AddVendorPage'
 import VendorApprovalsPage from './pages/admin/VendorApprovalsPage'
 import UserManagementPage from './pages/admin/UserManagementPage'
 import ReviewModerationPage from './pages/admin/ReviewModerationPage'
+import AdminApprovalsPage from './pages/admin/AdminApprovalsPage'
 import BookingPage from './pages/bookings/BookingPage'
 import BookingHistoryPage from './pages/bookings/BookingHistoryPage'
 import BudgetPlannerPage from './pages/BudgetPlannerPage'
@@ -55,6 +56,7 @@ function App() {
             <Route path="/admin/vendors" element={<VendorApprovalsPage />} />
             <Route path="/admin/users" element={<UserManagementPage />} />
             <Route path="/admin/reviews" element={<ReviewModerationPage />} />
+            <Route path="/admin/admin-approvals" element={<AdminApprovalsPage />} />
             <Route path="/bookings/new" element={<BookingPage />} />
             <Route path="/bookings/history" element={<BookingHistoryPage />} />
             <Route path="/budget-planner" element={<BudgetPlannerPage />} />

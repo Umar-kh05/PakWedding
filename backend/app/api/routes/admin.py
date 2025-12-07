@@ -173,6 +173,140 @@ async def get_all_users(
         )
 
 
+@router.get("/admin-approvals", response_model=List[UserResponse])
+async def get_pending_admin_approvals(
+    skip: int = 0,
+    limit: int = 100,
+    current_admin: dict = Depends(get_current_admin),
+    user_service: UserService = Depends(get_user_service)
+):
+    """Get pending admin approval requests (admin only)"""
+    try:
+        # Get users with role=admin and is_admin_approved=False
+        pending_admins = await user_service.user_repo.find_many(
+            {"role": "admin", "is_admin_approved": False},
+            skip,
+            limit
+        )
+        
+        # Format users for response
+        formatted_users = []
+        for user in pending_admins:
+            formatted_user = user.copy()
+            if "_id" in formatted_user:
+                formatted_user["id"] = str(formatted_user["_id"])
+                del formatted_user["_id"]
+            
+            # Remove sensitive fields
+            formatted_user.pop("hashed_password", None)
+            formatted_user.pop("updated_at", None)
+            
+            formatted_users.append(formatted_user)
+        
+        return formatted_users
+    except Exception as e:
+        print(f"[ERROR] Error fetching pending admin approvals: {e}")
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to fetch pending admin approvals: {str(e)}"
+        )
+
+
+@router.post("/admin-approvals/{user_id}/approve")
+async def approve_admin(
+    user_id: str,
+    current_admin: dict = Depends(get_current_admin),
+    user_service: UserService = Depends(get_user_service)
+):
+    """Approve an admin registration (admin only)"""
+    try:
+        user = await user_service.get_user_by_id(user_id)
+        if not user:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        
+        if user.get("role") != "admin":
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User is not an admin")
+        
+        # Approve admin: set is_admin_approved to True and is_active to True
+        updated_user = await user_service.user_repo.update(
+            user_id,
+            {"is_admin_approved": True, "is_active": True}
+        )
+        
+        if not updated_user:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        
+        # Format response
+        if "_id" in updated_user:
+            updated_user["id"] = str(updated_user["_id"])
+            del updated_user["_id"]
+        
+        updated_user.pop("hashed_password", None)
+        updated_user.pop("updated_at", None)
+        
+        return {
+            "message": "Admin approved successfully",
+            "user": updated_user
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"[ERROR] Error approving admin: {e}")
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to approve admin: {str(e)}"
+        )
+
+
+@router.post("/admin-approvals/{user_id}/reject")
+async def reject_admin(
+    user_id: str,
+    current_admin: dict = Depends(get_current_admin),
+    user_service: UserService = Depends(get_user_service)
+):
+    """Reject an admin registration (admin only)"""
+    try:
+        user = await user_service.get_user_by_id(user_id)
+        if not user:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        
+        if user.get("role") != "admin":
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User is not an admin")
+        
+        # Reject admin: set is_admin_approved to False and is_active to False
+        updated_user = await user_service.user_repo.update(
+            user_id,
+            {"is_admin_approved": False, "is_active": False}
+        )
+        
+        if not updated_user:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        
+        # Format response
+        if "_id" in updated_user:
+            updated_user["id"] = str(updated_user["_id"])
+            del updated_user["_id"]
+        
+        updated_user.pop("hashed_password", None)
+        updated_user.pop("updated_at", None)
+        
+        return {
+            "message": "Admin registration rejected",
+            "user": updated_user
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"[ERROR] Error rejecting admin: {e}")
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to reject admin: {str(e)}"
+        )
+
+
 @router.post("/users/{user_id}/toggle-active")
 async def toggle_user_active(
     user_id: str,
@@ -228,6 +362,14 @@ async def get_admin_stats(
         pending_vendors = await vendor_service.get_pending_approvals(0, 1000)
         pending_count = len(pending_vendors)
         
+        # Get pending admin approvals count
+        pending_admins = await user_service.user_repo.find_many(
+            {"role": "admin", "is_admin_approved": False},
+            0,
+            1000
+        )
+        pending_admin_count = len(pending_admins)
+        
         # Get active users count
         all_users = await user_service.user_repo.find_many({"is_active": True}, 0, 10000)
         active_users_count = len(all_users)
@@ -239,6 +381,7 @@ async def get_admin_stats(
         
         return {
             "pendingApprovals": pending_count,
+            "pendingAdminApprovals": pending_admin_count,
             "activeUsers": active_users_count,
             "flaggedReviews": flagged_reviews_count
         }

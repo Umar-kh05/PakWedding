@@ -5,6 +5,7 @@ import api from '../../services/api'
 
 interface DashboardStats {
   pendingApprovals: number
+  pendingAdminApprovals?: number
   flaggedReviews: number
   activeUsers: number
 }
@@ -13,6 +14,7 @@ export default function AdminDashboard() {
   const { logout } = useAuthStore()
   const [stats, setStats] = useState<DashboardStats>({
     pendingApprovals: 0,
+    pendingAdminApprovals: 0,
     flaggedReviews: 0,
     activeUsers: 0
   })
@@ -50,7 +52,7 @@ export default function AdminDashboard() {
 
       <div className="container mx-auto px-6 py-8">
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-gradient-to-br from-white to-pink-50/50 rounded-2xl shadow-xl p-6 border-2 border-pink-100 hover:border-pink-300 transition-all hover:shadow-2xl">
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center">
@@ -59,6 +61,15 @@ export default function AdminDashboard() {
             </div>
             <p className="text-gray-600 text-sm font-semibold mb-2">Pending Vendor Approvals</p>
             <p className="text-4xl font-extrabold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">{stats.pendingApprovals}</p>
+          </div>
+          <div className="bg-gradient-to-br from-white to-pink-50/50 rounded-2xl shadow-xl p-6 border-2 border-pink-100 hover:border-pink-300 transition-all hover:shadow-2xl">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-amber-500 rounded-xl flex items-center justify-center">
+                <span className="text-2xl">🔐</span>
+              </div>
+            </div>
+            <p className="text-gray-600 text-sm font-semibold mb-2">Pending Admin Approvals</p>
+            <p className="text-4xl font-extrabold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">{stats.pendingAdminApprovals || 0}</p>
           </div>
           <div className="bg-gradient-to-br from-white to-pink-50/50 rounded-2xl shadow-xl p-6 border-2 border-pink-100 hover:border-pink-300 transition-all hover:shadow-2xl">
             <div className="flex items-center justify-between mb-4">
@@ -83,7 +94,7 @@ export default function AdminDashboard() {
         {/* Action Cards - Redesigned */}
         <div className="bg-gradient-to-br from-white to-pink-50/30 rounded-2xl shadow-xl p-8 border-2 border-pink-100">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Admin Actions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
             <Link
               to="/admin/vendors/add"
               className="group bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border-2 border-green-200 hover:border-green-400 transition-all hover:shadow-xl transform hover:-translate-y-1"
@@ -131,6 +142,18 @@ export default function AdminDashboard() {
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">Review Moderation</h3>
               <p className="text-sm text-gray-600">Moderate user reviews</p>
+            </Link>
+            <Link
+              to="/admin/admin-approvals"
+              className="group bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl p-6 border-2 border-orange-200 hover:border-orange-400 transition-all hover:shadow-xl transform hover:-translate-y-1"
+            >
+              <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-amber-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors">Admin Approvals</h3>
+              <p className="text-sm text-gray-600">Approve new admin requests</p>
             </Link>
           </div>
         </div>

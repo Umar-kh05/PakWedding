@@ -33,7 +33,21 @@ async def login(
 ):
     """Login and get access token"""
     # OAuth2PasswordRequestForm uses 'username' field, but we use email
-    # authenticate_user checks password and is_active status
+    # Check if user exists first to provide better error message for unapproved admins
+    user_check = await user_service.user_repo.get_by_email(form_data.username)
+    if user_check:
+        from app.core.security import verify_password
+        # If password is correct but admin is not approved, show specific message
+        if (user_check.get("role") == "admin" and 
+            user_check.get("is_admin_approved") is False and
+            verify_password(form_data.password, user_check["hashed_password"])):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Your admin registration is pending approval. Please wait for an existing admin to approve your request.",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+    
+    # authenticate_user checks password, is_active status, and admin approval
     user = await user_service.authenticate_user(form_data.username, form_data.password)
     if not user:
         raise HTTPException(

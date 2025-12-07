@@ -56,6 +56,7 @@ class UserInDB(UserBase):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     hashed_password: str
     is_active: bool = True
+    is_admin_approved: Optional[bool] = None  # None for non-admin users, False for pending admin approval, True for approved
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 

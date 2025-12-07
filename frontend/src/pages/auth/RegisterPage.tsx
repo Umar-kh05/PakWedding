@@ -12,6 +12,8 @@ export default function RegisterPage() {
     role: 'user' // user, vendor, or admin
   })
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
   const navigate = useNavigate()
 
   const checkEmail = async (email: string) => {
@@ -58,6 +60,20 @@ export default function RegisterPage() {
         role: formData.role
       })
 
+      // Show success message based on role
+      if (formData.role === 'admin') {
+        // For admin, show pending approval message
+        setError('') // Clear any errors
+        setSuccess('Admin registration submitted! Your request is pending approval from an existing admin.')
+        setShowSuccessModal(true)
+        // Don't navigate immediately, let user see the message
+        setTimeout(() => {
+          setShowSuccessModal(false)
+          navigate('/login')
+        }, 5000)
+        return
+      }
+      
       navigate('/login')
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Registration failed')
@@ -192,6 +208,35 @@ export default function RegisterPage() {
           </p>
         </div>
       </div>
+
+      {/* Success Modal for Admin Registration */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md mx-4">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">Registration Submitted!</h3>
+              <p className="text-gray-600 mb-6">{success}</p>
+              <p className="text-sm text-gray-500 mb-6">
+                You will be redirected to the login page shortly. Once your request is approved, you'll be able to log in.
+              </p>
+              <button
+                onClick={() => {
+                  setShowSuccessModal(false)
+                  navigate('/login')
+                }}
+                className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl"
+              >
+                Go to Login
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

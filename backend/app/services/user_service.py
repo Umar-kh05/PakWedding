@@ -32,6 +32,14 @@ class UserService:
         user_dict["created_at"] = datetime.utcnow()
         user_dict["updated_at"] = datetime.utcnow()
         
+        # For admin users, set is_admin_approved to False (pending approval)
+        # For non-admin users, leave it as None
+        if user_dict.get("role") == "admin":
+            user_dict["is_admin_approved"] = False
+            user_dict["is_active"] = False  # Inactive until approved
+        else:
+            user_dict["is_admin_approved"] = None
+        
         user = await self.user_repo.create(user_dict)
         
         # Convert _id to id for response
@@ -75,6 +83,10 @@ class UserService:
         # Check if user is active
         if not user.get("is_active", True):
             return None
+        
+        # For admin users, check if they are approved
+        if user.get("role") == "admin" and user.get("is_admin_approved") is False:
+            return None  # Admin not approved yet
         
         return user
 
