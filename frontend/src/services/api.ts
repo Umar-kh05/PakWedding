@@ -46,12 +46,26 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Only redirect if not already on login page and not a booking-related error
       const currentPath = window.location.pathname
-      const isBookingError = error.config?.url?.includes('/bookings')
+      const requestUrl = error.config?.url || ''
+      const token = useAuthStore.getState().token
       
-      // Don't redirect if already on login page or if it's a booking error (let component handle it)
-      if (currentPath !== '/login' && currentPath !== '/admin/login' && !isBookingError) {
+      // Don't logout if:
+      // 1. Already on login/register pages
+      // 2. Error is from auth endpoints (login, register, etc.)
+      // 3. Error is from booking endpoints (let component handle it)
+      // 4. Error is from checklist endpoints (let component handle it)
+      // 5. Error is from favorites/reviews endpoints (let component handle it)
+      // 6. No token exists (user not logged in, so no need to logout)
+      const isAuthEndpoint = requestUrl.includes('/auth/')
+      const isBookingError = requestUrl.includes('/bookings')
+      const isChecklistError = requestUrl.includes('/checklist')
+      const isFavoritesError = requestUrl.includes('/favorites')
+      const isReviewsError = requestUrl.includes('/reviews')
+      const isOnLoginPage = currentPath === '/login' || currentPath === '/admin/login' || currentPath === '/register' || currentPath === '/vendor/register'
+      
+      // Only logout if we have a token (user was logged in) and it's not an expected error
+      if (token && !isOnLoginPage && !isAuthEndpoint && !isBookingError && !isChecklistError && !isFavoritesError && !isReviewsError) {
         useAuthStore.getState().logout()
         window.location.href = '/login'
       }

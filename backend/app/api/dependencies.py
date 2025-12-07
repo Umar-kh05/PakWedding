@@ -12,12 +12,14 @@ from app.repositories.booking_repository import BookingRepository
 from app.repositories.service_repository import ServiceRepository
 from app.repositories.review_repository import ReviewRepository
 from app.repositories.checklist_repository import ChecklistRepository
+from app.repositories.favorite_repository import FavoriteRepository
 from app.services.user_service import UserService
 from app.services.vendor_service import VendorService
 from app.services.booking_service import BookingService
 from app.services.vendor_stats_service import VendorStatsService
 from app.services.review_service import ReviewService
 from app.services.checklist_service import ChecklistService
+from app.services.favorite_service import FavoriteService
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
 
@@ -45,6 +47,10 @@ async def get_review_repository(db = Depends(get_db)):
 
 async def get_checklist_repository(db = Depends(get_db)):
     return ChecklistRepository(db)
+
+
+async def get_favorite_repository(db = Depends(get_db)):
+    return FavoriteRepository(db)
 
 
 # Service dependencies
@@ -82,6 +88,12 @@ async def get_checklist_service(
     checklist_repo: ChecklistRepository = Depends(get_checklist_repository)
 ):
     return ChecklistService(checklist_repo)
+
+
+async def get_favorite_service(
+    favorite_repo: FavoriteRepository = Depends(get_favorite_repository)
+):
+    return FavoriteService(favorite_repo)
 
 
 # Authentication dependency

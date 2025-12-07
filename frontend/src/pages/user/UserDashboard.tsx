@@ -30,7 +30,7 @@ export default function UserDashboard() {
       setLoading(true)
       // Fetch bookings
       try {
-        const bookingsRes = await api.get('/bookings')
+        const bookingsRes = await api.get('/bookings/my-bookings')
         const bookings = bookingsRes.data || []
         setStats(prev => ({ ...prev, bookings: bookings.length }))
       } catch (err) {
@@ -99,14 +99,17 @@ export default function UserDashboard() {
             </div>
 
             {/* Favorites Card */}
-            <div className="bg-gradient-to-br from-white to-pink-50/50 rounded-2xl shadow-xl p-6 border-2 border-pink-100 hover:border-pink-300 transition-all hover:shadow-2xl">
+            <Link
+              to="/favorites"
+              className="bg-gradient-to-br from-white to-pink-50/50 rounded-2xl shadow-xl p-6 border-2 border-pink-100 hover:border-pink-300 transition-all hover:shadow-2xl cursor-pointer"
+            >
               <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-red-400 to-pink-500 rounded-xl mb-4">
                 <span className="text-3xl">❤️</span>
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-2">Favorites</h3>
               <div className="text-4xl font-extrabold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-1">{stats.favorites}</div>
               <p className="text-gray-600 text-sm font-semibold">Saved vendors</p>
-            </div>
+            </Link>
 
             {/* Budget Card */}
             <div className="bg-gradient-to-br from-white to-pink-50/50 rounded-2xl shadow-xl p-6 border-2 border-pink-100 hover:border-pink-300 transition-all hover:shadow-2xl">
@@ -119,14 +122,17 @@ export default function UserDashboard() {
             </div>
 
             {/* Reviews Card */}
-            <div className="bg-gradient-to-br from-white to-pink-50/50 rounded-2xl shadow-xl p-6 border-2 border-pink-100 hover:border-pink-300 transition-all hover:shadow-2xl">
+            <Link
+              to="/reviews"
+              className="bg-gradient-to-br from-white to-pink-50/50 rounded-2xl shadow-xl p-6 border-2 border-pink-100 hover:border-pink-300 transition-all hover:shadow-2xl cursor-pointer"
+            >
               <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl mb-4">
                 <span className="text-3xl">⭐</span>
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-2">Reviews</h3>
               <div className="text-4xl font-extrabold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-1">{stats.reviews}</div>
-              <p className="text-gray-600 text-sm font-semibold">Pending reviews</p>
-            </div>
+              <p className="text-gray-600 text-sm font-semibold">Your reviews</p>
+            </Link>
           </div>
         )}
 

@@ -4,6 +4,7 @@ import { fetchVendors, Vendor } from '../../services/vendorService'
 import BookingModal from '../../components/BookingModal'
 import { useAuthStore } from '../../store/authStore'
 import { getRandomVendorImages, getVendorImagesByCategory } from '../../config/vendorImages'
+import api from '../../services/api'
 
 type UiVendor = Vendor & {
   rating?: number
@@ -17,6 +18,7 @@ export default function BrowseVendorsPage() {
   const [selectedVendor, setSelectedVendor] = useState<UiVendor | null>(null)
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false)
   const { user } = useAuthStore()
+  const [favoriteVendorIds, setFavoriteVendorIds] = useState<Set<string>>(new Set())
   
   // Search and filter states
   const [searchQuery, setSearchQuery] = useState('')
@@ -47,6 +49,25 @@ export default function BrowseVendorsPage() {
   const locations = useMemo(() => {
     return Array.from(new Set(allVendorsForCategories.map(v => v.business_address).filter(Boolean))).sort()
   }, [allVendorsForCategories])
+
+  // Load favorites when user is logged in
+  useEffect(() => {
+    const loadFavorites = async () => {
+      if (!user) {
+        setFavoriteVendorIds(new Set())
+        return
+      }
+      try {
+        const response = await api.get('/favorites')
+        const favorites = response.data || []
+        const favoriteIds = new Set(favorites.map((f: any) => f.vendor_id))
+        setFavoriteVendorIds(favoriteIds)
+      } catch (err) {
+        console.log('Error loading favorites:', err)
+      }
+    }
+    loadFavorites()
+  }, [user])
 
   useEffect(() => {
     const load = async () => {
@@ -208,6 +229,32 @@ export default function BrowseVendorsPage() {
     // Search is handled by useEffect
   }
 
+  const handleToggleFavorite = async (vendorId: string, e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (!user) {
+      window.location.href = '/login'
+      return
+    }
+
+    try {
+      const isFavorite = favoriteVendorIds.has(vendorId)
+      if (isFavorite) {
+        await api.delete(`/favorites/${vendorId}`)
+        setFavoriteVendorIds(prev => {
+          const newSet = new Set(prev)
+          newSet.delete(vendorId)
+          return newSet
+        })
+      } else {
+        await api.post('/favorites', { vendor_id: vendorId })
+        setFavoriteVendorIds(prev => new Set(prev).add(vendorId))
+      }
+    } catch (err: any) {
+      console.error('Error toggling favorite:', err)
+      alert(err.response?.data?.detail || 'Failed to update favorite')
+    }
+  }
+
   return (
     <div className="bg-gradient-to-b from-pink-50/30 via-white to-pink-50/20 min-h-screen">
       {/* Header Section */}
@@ -364,6 +411,16 @@ export default function BrowseVendorsPage() {
                     </div>
                   )}
                 </Link>
+                {/* Favorite Button */}
+                <button
+                  onClick={(e) => handleToggleFavorite(vendor._id || vendor.id, e)}
+                  className="absolute top-3 right-3 z-20 bg-white/90 hover:bg-white rounded-full p-2 shadow-lg transition-all duration-300 hover:scale-110"
+                  title={favoriteVendorIds.has(vendor._id || vendor.id) ? 'Remove from favorites' : 'Add to favorites'}
+                >
+                  <span className={`text-2xl transition-all duration-300 ${favoriteVendorIds.has(vendor._id || vendor.id) ? 'text-red-500' : 'text-gray-400'}`}>
+                    {favoriteVendorIds.has(vendor._id || vendor.id) ? '❤️' : '🤍'}
+                  </span>
+                </button>
                 {/* Hover overlay with Book button */}
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto">
                   {user ? (

@@ -38,6 +38,35 @@ async def get_vendor_reviews(
     return formatted_reviews
 
 
+@router.get("/user", response_model=List[ReviewResponse])
+async def get_user_reviews(
+    skip: int = 0,
+    limit: int = 100,
+    current_user: dict = Depends(get_current_user),
+    review_service: ReviewService = Depends(get_review_service)
+):
+    """Get all reviews made by current user"""
+    user_id = str(current_user["_id"])
+    reviews = await review_service.get_reviews_by_user(user_id, skip, limit)
+    
+    # Format reviews
+    formatted_reviews = []
+    for review in reviews:
+        if "_id" in review:
+            review["id"] = str(review["_id"])
+            del review["_id"]
+        if "user_id" in review:
+            review["user_id"] = str(review["user_id"])
+        if "vendor_id" in review:
+            review["vendor_id"] = str(review["vendor_id"])
+        if "booking_id" in review and review["booking_id"]:
+            review["booking_id"] = str(review["booking_id"])
+        
+        formatted_reviews.append(review)
+    
+    return formatted_reviews
+
+
 @router.get("/vendor/me", response_model=List[ReviewResponse])
 async def get_my_vendor_reviews(
     skip: int = 0,

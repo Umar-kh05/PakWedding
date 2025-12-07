@@ -68,6 +68,11 @@ class ReviewService:
         
         return reviews
     
+    async def get_reviews_by_user(self, user_id: str, skip: int = 0, limit: int = 100) -> List[dict]:
+        """Get all reviews made by a user"""
+        reviews = await self.review_repo.get_by_user_id(user_id, skip, limit)
+        return reviews
+    
     async def get_review_by_id(self, review_id: str) -> Optional[dict]:
         """Get review by ID"""
         return await self.review_repo.get_by_id(review_id)
