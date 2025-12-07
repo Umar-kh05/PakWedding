@@ -1,10 +1,16 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 
 export default function Navbar() {
   const location = useLocation()
+  const navigate = useNavigate()
   const { user, logout } = useAuthStore()
   const isActive = (path: string) => location.pathname === path
+
+  const handleLogout = () => {
+    logout()
+    navigate('/')
+  }
 
   return (
     <nav className="bg-gradient-to-r from-white via-rose-50/40 to-white border-b border-rose-100/60 shadow-lg backdrop-blur-sm">
@@ -76,7 +82,7 @@ export default function Navbar() {
                 Dashboard
               </Link>
               <button
-                onClick={logout}
+                onClick={handleLogout}
                 className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-md text-sm transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
               >
                 Logout

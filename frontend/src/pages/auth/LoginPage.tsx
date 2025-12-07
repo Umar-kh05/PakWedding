@@ -87,33 +87,13 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <div className="mt-6 space-y-4">
-          <div className="text-center">
-            <p className="text-gray-500 text-sm mb-3">OR</p>
-            <div className="flex flex-col gap-2">
-              <Link
-                to="/vendor/register"
-                className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-center text-sm transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
-              >
-                Login as Vendor
-              </Link>
-              <Link
-                to="/admin/login"
-                className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-center text-sm transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
-              >
-                Login as Admin
-              </Link>
-            </div>
-          </div>
-          <div className="text-center space-y-2">
-            <p className="text-gray-600 text-sm">
-              Don't have an account?{' '}
-              <Link to="/register" className="bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent font-semibold hover:from-primary-700 hover:via-accent-700 hover:to-primary-700 transition-all duration-300">
-                Sign Up
-              </Link>
-            </p>
-
-          </div>
+        <div className="mt-6 text-center">
+          <p className="text-gray-600 text-sm">
+            Don't have an account?{' '}
+            <Link to="/register" className="bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent font-semibold hover:from-primary-700 hover:via-accent-700 hover:to-primary-700 transition-all duration-300">
+              Sign Up
+            </Link>
+          </p>
         </div>
       </div>
     </div>

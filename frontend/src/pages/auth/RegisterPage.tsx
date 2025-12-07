@@ -8,7 +8,8 @@ export default function RegisterPage() {
     email: '',
     phone_number: '',
     password: '',
-    confirm_password: ''
+    confirm_password: '',
+    role: 'user' // user, vendor, or admin
   })
   const [error, setError] = useState('')
   const navigate = useNavigate()
@@ -54,7 +55,7 @@ export default function RegisterPage() {
         email: formData.email,
         phone_number: formData.phone_number,
         password: formData.password,
-        role: 'user'
+        role: formData.role
       })
 
       navigate('/login')
@@ -109,6 +110,39 @@ export default function RegisterPage() {
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
               placeholder="Enter your phone number"
             />
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-medium mb-2">Sign Up As</label>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => setFormData({ ...formData, role: 'user' })}
+                className={`px-4 py-3 rounded-lg font-semibold transition-all ${
+                  formData.role === 'user'
+                    ? 'bg-pink-600 text-white shadow-lg'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                User
+              </button>
+              <button
+                type="button"
+                onClick={() => setFormData({ ...formData, role: 'admin' })}
+                className={`px-4 py-3 rounded-lg font-semibold transition-all ${
+                  formData.role === 'admin'
+                    ? 'bg-pink-600 text-white shadow-lg'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                Admin
+              </button>
+            </div>
+            <p className="text-xs text-gray-500 mt-2">
+              {formData.role === 'user' 
+                ? 'Sign up as a regular user to book vendors for your wedding'
+                : 'Sign up as an admin to manage the platform'}
+            </p>
           </div>
 
           <div>

@@ -67,7 +67,7 @@ api.interceptors.response.use(
       // Only logout if we have a token (user was logged in) and it's not an expected error
       if (token && !isOnLoginPage && !isAuthEndpoint && !isBookingError && !isChecklistError && !isFavoritesError && !isReviewsError) {
         useAuthStore.getState().logout()
-        window.location.href = '/login'
+        window.location.href = '/'
       }
     }
     return Promise.reject(error)
