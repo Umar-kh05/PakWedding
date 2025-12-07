@@ -5,8 +5,11 @@ from fastapi import APIRouter, Depends, HTTPException, status, Request
 from fastapi.exceptions import RequestValidationError
 from typing import List
 from app.services.vendor_service import VendorService
-from app.api.dependencies import get_vendor_service, get_current_admin
+from app.services.user_service import UserService
+from app.services.review_service import ReviewService
+from app.api.dependencies import get_vendor_service, get_current_admin, get_user_service, get_review_service
 from app.models.vendor import VendorResponse, VendorCreate
+from app.models.user import UserResponse
 import traceback
 
 router = APIRouter()
@@ -132,5 +135,181 @@ async def create_vendor(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to create vendor: {error_msg}"
+        )
+
+
+@router.get("/users", response_model=List[UserResponse])
+async def get_all_users(
+    skip: int = 0,
+    limit: int = 100,
+    current_admin: dict = Depends(get_current_admin),
+    user_service: UserService = Depends(get_user_service)
+):
+    """Get all users (admin only)"""
+    try:
+        users = await user_service.user_repo.find_many({}, skip, limit)
+        
+        # Format users for response
+        formatted_users = []
+        for user in users:
+            formatted_user = user.copy()
+            if "_id" in formatted_user:
+                formatted_user["id"] = str(formatted_user["_id"])
+                del formatted_user["_id"]
+            
+            # Remove sensitive fields
+            formatted_user.pop("hashed_password", None)
+            formatted_user.pop("updated_at", None)
+            
+            formatted_users.append(formatted_user)
+        
+        return formatted_users
+    except Exception as e:
+        print(f"[ERROR] Error fetching users: {e}")
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to fetch users: {str(e)}"
+        )
+
+
+@router.post("/users/{user_id}/toggle-active")
+async def toggle_user_active(
+    user_id: str,
+    current_admin: dict = Depends(get_current_admin),
+    user_service: UserService = Depends(get_user_service)
+):
+    """Toggle user active status (admin only)"""
+    try:
+        user = await user_service.get_user_by_id(user_id)
+        if not user:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        
+        # Toggle is_active status
+        new_status = not user.get("is_active", True)
+        updated_user = await user_service.user_repo.update(user_id, {"is_active": new_status})
+        
+        if not updated_user:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        
+        # Format response
+        if "_id" in updated_user:
+            updated_user["id"] = str(updated_user["_id"])
+            del updated_user["_id"]
+        
+        updated_user.pop("hashed_password", None)
+        updated_user.pop("updated_at", None)
+        
+        return {
+            "message": f"User {'activated' if new_status else 'deactivated'} successfully",
+            "user": updated_user
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"[ERROR] Error toggling user status: {e}")
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to toggle user status: {str(e)}"
+        )
+
+
+@router.get("/stats")
+async def get_admin_stats(
+    current_admin: dict = Depends(get_current_admin),
+    vendor_service: VendorService = Depends(get_vendor_service),
+    user_service: UserService = Depends(get_user_service),
+    review_service: ReviewService = Depends(get_review_service)
+):
+    """Get dashboard statistics (admin only)"""
+    try:
+        # Get pending vendors count
+        pending_vendors = await vendor_service.get_pending_approvals(0, 1000)
+        pending_count = len(pending_vendors)
+        
+        # Get active users count
+        all_users = await user_service.user_repo.find_many({"is_active": True}, 0, 10000)
+        active_users_count = len(all_users)
+        
+        # Get all reviews (we'll count them as flagged reviews for now)
+        # In a real app, you'd have a flagged field
+        all_reviews = await review_service.review_repo.find_many({}, 0, 10000)
+        flagged_reviews_count = len([r for r in all_reviews if r.get("rating", 5) < 3])
+        
+        return {
+            "pendingApprovals": pending_count,
+            "activeUsers": active_users_count,
+            "flaggedReviews": flagged_reviews_count
+        }
+    except Exception as e:
+        print(f"[ERROR] Error fetching admin stats: {e}")
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to fetch stats: {str(e)}"
+        )
+
+
+@router.get("/reviews")
+async def get_all_reviews(
+    skip: int = 0,
+    limit: int = 100,
+    current_admin: dict = Depends(get_current_admin),
+    review_service: ReviewService = Depends(get_review_service)
+):
+    """Get all reviews (admin only)"""
+    try:
+        reviews = await review_service.review_repo.find_many({}, skip, limit)
+        
+        # Format reviews for response
+        formatted_reviews = []
+        for review in reviews:
+            formatted_review = review.copy()
+            if "_id" in formatted_review:
+                formatted_review["id"] = str(formatted_review["_id"])
+                del formatted_review["_id"]
+            
+            # Ensure all IDs are strings
+            if "user_id" in formatted_review:
+                formatted_review["user_id"] = str(formatted_review["user_id"])
+            if "vendor_id" in formatted_review:
+                formatted_review["vendor_id"] = str(formatted_review["vendor_id"])
+            if "booking_id" in formatted_review and formatted_review["booking_id"]:
+                formatted_review["booking_id"] = str(formatted_review["booking_id"])
+            
+            formatted_reviews.append(formatted_review)
+        
+        return formatted_reviews
+    except Exception as e:
+        print(f"[ERROR] Error fetching reviews: {e}")
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to fetch reviews: {str(e)}"
+        )
+
+
+@router.delete("/reviews/{review_id}")
+async def delete_review(
+    review_id: str,
+    current_admin: dict = Depends(get_current_admin),
+    review_service: ReviewService = Depends(get_review_service)
+):
+    """Delete a review (admin only)"""
+    try:
+        deleted = await review_service.review_repo.delete(review_id)
+        if not deleted:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Review not found")
+        
+        return {"message": "Review deleted successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"[ERROR] Error deleting review: {e}")
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to delete review: {str(e)}"
         )
 

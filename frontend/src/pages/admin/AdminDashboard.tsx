@@ -1,14 +1,37 @@
 import { Link } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
+import { useState, useEffect } from 'react'
+import api from '../../services/api'
+
+interface DashboardStats {
+  pendingApprovals: number
+  flaggedReviews: number
+  activeUsers: number
+}
 
 export default function AdminDashboard() {
   const { logout } = useAuthStore()
+  const [stats, setStats] = useState<DashboardStats>({
+    pendingApprovals: 0,
+    flaggedReviews: 0,
+    activeUsers: 0
+  })
+  const [loading, setLoading] = useState(true)
 
-  // Sample data - replace with API calls
-  const stats = {
-    pendingApprovals: 5,
-    flaggedReviews: 12,
-    activeUsers: 1234
+  useEffect(() => {
+    loadStats()
+  }, [])
+
+  const loadStats = async () => {
+    try {
+      setLoading(true)
+      const { data } = await api.get<DashboardStats>('/admin/stats')
+      setStats(data)
+    } catch (error) {
+      console.error('Error loading stats:', error)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (

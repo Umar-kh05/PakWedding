@@ -22,28 +22,8 @@ export default function UserManagementPage() {
   const loadUsers = async () => {
     try {
       setLoading(true)
-      // const response = await api.get('/admin/users')
-      // setUsers(response.data)
-      
-      // Mock data
-      setUsers([
-        {
-          _id: '1',
-          full_name: 'Ahmed Ali',
-          email: 'ahmed@example.com',
-          role: 'user',
-          created_at: '2024-01-15',
-          is_active: true
-        },
-        {
-          _id: '2',
-          full_name: 'Fatima Khan',
-          email: 'fatima@example.com',
-          role: 'user',
-          created_at: '2024-02-20',
-          is_active: true
-        }
-      ])
+      const response = await api.get('/admin/users')
+      setUsers(response.data)
     } catch (error) {
       console.error('Error loading users:', error)
     } finally {
@@ -53,7 +33,7 @@ export default function UserManagementPage() {
 
   const handleToggleActive = async (userId: string) => {
     try {
-      // await api.post(`/admin/users/${userId}/toggle-active`)
+      await api.post(`/admin/users/${userId}/toggle-active`)
       alert('User status updated')
       loadUsers()
     } catch (error) {
@@ -116,20 +96,18 @@ export default function UserManagementPage() {
                         </span>
                       </td>
                       <td className="px-6 py-4">
-                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                          user.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-                        }`}>
+                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${user.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                          }`}>
                           {user.is_active ? 'Active' : 'Inactive'}
                         </span>
                       </td>
                       <td className="px-6 py-4">
                         <button
                           onClick={() => handleToggleActive(user._id)}
-                          className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
-                            user.is_active
+                          className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${user.is_active
                               ? 'bg-red-100 text-red-700 hover:bg-red-200'
                               : 'bg-green-100 text-green-700 hover:bg-green-200'
-                          }`}
+                            }`}
                         >
                           {user.is_active ? 'Deactivate' : 'Activate'}
                         </button>
