@@ -20,7 +20,7 @@ interface Vendor {
 }
 
 export default function VendorApprovalsPage() {
-  const [vendors, setVendors] = useState<Vendor[]>([])
+  const [allVendors, setAllVendors] = useState<Vendor[]>([]) // Store all vendors for counts
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
@@ -28,20 +28,19 @@ export default function VendorApprovalsPage() {
 
   useEffect(() => {
     loadVendors()
-  }, [filter])
+  }, [])
 
+  // Reload vendors when filter changes or after approve/reject
   const loadVendors = async () => {
     try {
       setLoading(true)
       setError(null)
       
-      const params: any = { limit: 1000 }
-      if (filter !== 'all') {
-        params.status = filter
-      }
-      
-      const { data } = await api.get<Vendor[]>('/admin/vendors', { params })
-      setVendors(data || [])
+      // Always load ALL vendors to calculate accurate counts
+      const { data } = await api.get<Vendor[]>('/admin/vendors', { 
+        params: { limit: 1000 } 
+      })
+      setAllVendors(data || [])
     } catch (err: any) {
       console.error('Error loading vendors:', err)
       setError(err.response?.data?.detail || 'Failed to load vendors')
@@ -92,9 +91,18 @@ export default function VendorApprovalsPage() {
     }
   }
 
+  // Filter vendors based on selected filter
   const filteredVendors = filter === 'all' 
-    ? vendors 
-    : vendors.filter(v => getVendorStatus(v) === filter)
+    ? allVendors 
+    : allVendors.filter(v => getVendorStatus(v) === filter)
+
+  // Calculate counts from all vendors
+  const counts = {
+    all: allVendors.length,
+    pending: allVendors.filter(v => getVendorStatus(v) === 'pending').length,
+    approved: allVendors.filter(v => getVendorStatus(v) === 'approved').length,
+    rejected: allVendors.filter(v => getVendorStatus(v) === 'rejected').length,
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50/30 to-pink-50 py-8 px-4">
@@ -131,7 +139,7 @@ export default function VendorApprovalsPage() {
                     : 'bg-pink-50 text-gray-700 hover:bg-pink-100'
                 }`}
               >
-                {status} ({vendors.filter(v => getVendorStatus(v) === status).length})
+                {status.charAt(0).toUpperCase() + status.slice(1)} ({counts[status]})
               </button>
             ))}
           </div>
