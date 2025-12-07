@@ -12,16 +12,10 @@ export default function Navbar() {
         {/* Logo */}
         <Link
           to="/"
-          className="flex items-center gap-3 group transition-all duration-300 transform hover:scale-105"
+          className="flex items-center gap-2 group transition-all duration-300 transform hover:scale-105"
         >
-          <svg
-            className="w-7 h-7 text-red-700"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
-            <path d="M12 2L4 7v3l8 12 8-12V7l-8-5zm0 2.18L17.8 8H6.2L12 4.18zM5 9h14v.5l-7 10.5L5 9.5V9z" />
-          </svg>
-          <span className="text-2xl font-serif text-gray-800 tracking-wide" style={{ fontFamily: "'Playfair Display', serif" }}>
+          <span className="text-3xl group-hover:scale-110 transition-transform duration-300">💍</span>
+          <span className="text-2xl font-bold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent tracking-tight">
             PakWedding
           </span>
         </Link>

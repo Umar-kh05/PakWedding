@@ -130,15 +130,15 @@ export default function HomePage() {
 
             {/* Right Image */}
             <div className="relative">
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl ring-4 ring-amber-200/50 hover:ring-amber-300/70 transition-all duration-300">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl ring-4 ring-primary-200/50 hover:ring-primary-300/70 transition-all duration-300">
                 <img
                   src="https://res.cloudinary.com/dsk2eyecb/image/upload/v1765096566/elegant_wedding_hero_1765095944302_jbt3rx.jpg"
                   alt="Beautiful Pakistani Wedding Celebration"
                   className="w-full h-auto object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-red-900/15 via-transparent to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-primary-900/20 via-transparent to-transparent"></div>
                 {/* Decorative border glow */}
-                <div className="absolute -inset-1 bg-gradient-to-r from-red-500 via-amber-500 to-red-500 rounded-3xl opacity-25 blur-xl -z-10"></div>
+                <div className="absolute -inset-1 bg-gradient-to-r from-primary-500 via-accent-500 to-primary-500 rounded-3xl opacity-20 blur-xl -z-10"></div>
               </div>
             </div>
           </div>
