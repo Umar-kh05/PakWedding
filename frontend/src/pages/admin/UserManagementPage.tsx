@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import api from '../../services/api'
 
 interface User {
-  _id: string
+  id: string
   full_name: string
   email: string
   role: string
@@ -87,7 +87,7 @@ export default function UserManagementPage() {
                 </thead>
                 <tbody className="divide-y divide-pink-100">
                   {filteredUsers.map((user) => (
-                    <tr key={user._id} className="hover:bg-pink-50/30 transition-colors">
+                    <tr key={user.id} className="hover:bg-pink-50/30 transition-colors">
                       <td className="px-6 py-4 font-semibold text-gray-900">{user.full_name}</td>
                       <td className="px-6 py-4 text-gray-600">{user.email}</td>
                       <td className="px-6 py-4">
@@ -103,7 +103,7 @@ export default function UserManagementPage() {
                       </td>
                       <td className="px-6 py-4">
                         <button
-                          onClick={() => handleToggleActive(user._id)}
+                          onClick={() => handleToggleActive(user.id)}
                           className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${user.is_active
                               ? 'bg-red-100 text-red-700 hover:bg-red-200'
                               : 'bg-green-100 text-green-700 hover:bg-green-200'
