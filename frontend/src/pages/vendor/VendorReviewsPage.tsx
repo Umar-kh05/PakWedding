@@ -31,11 +31,14 @@ export default function VendorReviewsPage() {
   const loadReviews = async () => {
     try {
       setLoading(true)
+      setError(null)
+      console.log('Loading vendor reviews...')
       const { data } = await api.get<Review[]>('/reviews/vendor/me')
-      setReviews(data)
+      console.log('Reviews received:', data)
+      setReviews(data || [])
       
       // Calculate stats
-      if (data.length > 0) {
+      if (data && data.length > 0) {
         const avgRating = data.reduce((sum, r) => sum + r.rating, 0) / data.length
         const distribution = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 }
         data.forEach(r => {
@@ -50,10 +53,19 @@ export default function VendorReviewsPage() {
           totalReviews: data.length,
           ratingDistribution: distribution
         })
+      } else {
+        // Reset stats if no reviews
+        setStats({
+          averageRating: 0,
+          totalReviews: 0,
+          ratingDistribution: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 }
+        })
       }
     } catch (err: any) {
       console.error('Error loading reviews:', err)
-      setError(err.response?.data?.detail || 'Failed to load reviews')
+      const errorMessage = err.response?.data?.detail || err.message || 'Failed to load reviews'
+      setError(errorMessage)
+      setReviews([])
     } finally {
       setLoading(false)
     }

@@ -7,7 +7,7 @@ from typing import List
 from app.services.vendor_service import VendorService
 from app.services.user_service import UserService
 from app.services.review_service import ReviewService
-from app.api.dependencies import get_vendor_service, get_current_admin, get_user_service, get_review_service
+from app.api.dependencies import get_vendor_service, get_current_admin, get_user_service, get_review_service, get_vendor_stats_service
 from app.models.vendor import VendorResponse, VendorCreate
 from app.models.user import UserResponse
 import traceback
@@ -256,13 +256,14 @@ async def get_all_reviews(
     skip: int = 0,
     limit: int = 100,
     current_admin: dict = Depends(get_current_admin),
-    review_service: ReviewService = Depends(get_review_service)
+    review_service: ReviewService = Depends(get_review_service),
+    user_service: UserService = Depends(get_user_service)
 ):
     """Get all reviews (admin only)"""
     try:
-        reviews = await review_service.review_repo.find_many({}, skip, limit)
+        reviews = await review_service.get_all_reviews(skip, limit)
         
-        # Format reviews for response
+        # Format reviews for response and add user names
         formatted_reviews = []
         for review in reviews:
             formatted_review = review.copy()
@@ -277,6 +278,13 @@ async def get_all_reviews(
                 formatted_review["vendor_id"] = str(formatted_review["vendor_id"])
             if "booking_id" in formatted_review and formatted_review["booking_id"]:
                 formatted_review["booking_id"] = str(formatted_review["booking_id"])
+            
+            # Add user name
+            user_id = formatted_review.get("user_id")
+            if user_id:
+                user = await user_service.get_user_by_id(user_id)
+                if user:
+                    formatted_review["user_name"] = user.get("full_name", "Anonymous")
             
             formatted_reviews.append(formatted_review)
         
@@ -294,11 +302,12 @@ async def get_all_reviews(
 async def delete_review(
     review_id: str,
     current_admin: dict = Depends(get_current_admin),
-    review_service: ReviewService = Depends(get_review_service)
+    review_service: ReviewService = Depends(get_review_service),
+    stats_service = Depends(get_vendor_stats_service)
 ):
     """Delete a review (admin only)"""
     try:
-        deleted = await review_service.review_repo.delete(review_id)
+        deleted = await review_service.delete_review(review_id, stats_service)
         if not deleted:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Review not found")
         

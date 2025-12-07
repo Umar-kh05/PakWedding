@@ -2,10 +2,14 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { getUserBookings, Booking } from '../../services/bookingService'
 import { useAuthStore } from '../../store/authStore'
+import { reviewService, Review } from '../../services/reviewService'
+import ReviewModal from '../../components/ReviewModal'
+import api from '../../services/api'
 
 interface BookingDisplay extends Booking {
   vendor_name?: string
   event_type?: string
+  hasReview?: boolean
 }
 
 export default function BookingHistoryPage() {
@@ -13,6 +17,10 @@ export default function BookingHistoryPage() {
   const [bookings, setBookings] = useState<BookingDisplay[]>([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'rejected' | 'confirmed' | 'completed' | 'cancelled'>('all')
+  const [reviewModalOpen, setReviewModalOpen] = useState(false)
+  const [selectedBooking, setSelectedBooking] = useState<BookingDisplay | null>(null)
+  const [userReviews, setUserReviews] = useState<Review[]>([])
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
   useEffect(() => {
     if (user) {
@@ -27,19 +35,32 @@ export default function BookingHistoryPage() {
       setLoading(true)
       const allBookings = await getUserBookings()
       
+      // Load user reviews to check which bookings have reviews
+      try {
+        const reviewsData = await api.get<Review[]>('/reviews/user')
+        setUserReviews(reviewsData.data || [])
+      } catch (err) {
+        console.log('Could not load reviews')
+        setUserReviews([])
+      }
+      
       // Filter by status if needed
       let filteredBookings = allBookings
       if (filter !== 'all') {
         filteredBookings = allBookings.filter((b: Booking) => b.status === filter)
       }
       
-      // Map to display format
-      const displayBookings: BookingDisplay[] = filteredBookings.map((b: Booking) => ({
-        ...b,
-        _id: b.id || b._id || '',
-        vendor_name: 'Vendor', // Could be enhanced to fetch vendor name
-        event_type: 'Wedding', // Default event type
-      }))
+      // Map to display format and check if review exists
+      const displayBookings: BookingDisplay[] = filteredBookings.map((b: Booking) => {
+        const hasReview = userReviews.some(r => r.booking_id === (b.id || b._id))
+        return {
+          ...b,
+          _id: b.id || b._id || '',
+          vendor_name: 'Vendor', // Could be enhanced to fetch vendor name
+          event_type: 'Wedding', // Default event type
+          hasReview
+        }
+      })
       
       setBookings(displayBookings)
     } catch (error: any) {
@@ -93,6 +114,26 @@ export default function BookingHistoryPage() {
           </h1>
           <p className="text-gray-600 font-medium">View and manage all your bookings</p>
         </div>
+
+        {/* Success Message */}
+        {successMessage && (
+          <div className="bg-green-50 border-2 border-green-200 text-green-700 px-6 py-4 rounded-xl mb-6 shadow-lg flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <svg className="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              <span className="font-semibold">{successMessage}</span>
+            </div>
+            <button
+              onClick={() => setSuccessMessage(null)}
+              className="text-green-600 hover:text-green-800 transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        )}
 
         {/* Filter Tabs */}
         <div className="bg-white rounded-2xl shadow-lg p-4 mb-6 border-2 border-pink-100">
@@ -174,13 +215,32 @@ export default function BookingHistoryPage() {
                       )}
                     </div>
                   </div>
-                  <div className="flex gap-3">
+                  <div className="flex gap-3 flex-wrap">
                     <Link
                       to={`/vendors/${booking.vendor_id}`}
                       className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-6 py-2 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl"
                     >
                       View Vendor
                     </Link>
+                    {(booking.status === 'approved' || booking.status === 'confirmed' || booking.status === 'completed') && !booking.hasReview && (
+                      <button
+                        onClick={() => {
+                          setSelectedBooking(booking)
+                          setReviewModalOpen(true)
+                        }}
+                        className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white px-6 py-2 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl"
+                      >
+                        Add Review
+                      </button>
+                    )}
+                    {booking.hasReview && (
+                      <span className="px-6 py-2 rounded-xl font-semibold bg-green-100 text-green-700 border-2 border-green-200 flex items-center gap-2">
+                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                        Review Added
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -188,6 +248,42 @@ export default function BookingHistoryPage() {
           </div>
         )}
       </div>
+
+      {/* Review Modal */}
+      {selectedBooking && (
+        <ReviewModal
+          isOpen={reviewModalOpen}
+          onClose={() => {
+            setReviewModalOpen(false)
+            setSelectedBooking(null)
+          }}
+          vendorId={selectedBooking.vendor_id}
+          bookingId={selectedBooking.id || selectedBooking._id || ''}
+          vendorName={selectedBooking.vendor_name}
+          onReviewSubmitted={async () => {
+            setSuccessMessage('Review added successfully!')
+            
+            // Update the booking immediately to show "Review Added"
+            if (selectedBooking) {
+              setBookings(prevBookings => 
+                prevBookings.map(booking => 
+                  booking._id === selectedBooking._id 
+                    ? { ...booking, hasReview: true }
+                    : booking
+                )
+              )
+            }
+            
+            // Reload bookings to ensure data is in sync
+            await loadBookings()
+            
+            // Hide success message after 3 seconds
+            setTimeout(() => {
+              setSuccessMessage(null)
+            }, 3000)
+          }}
+        />
+      )}
     </div>
   )
 }

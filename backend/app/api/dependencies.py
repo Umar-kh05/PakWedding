@@ -79,9 +79,10 @@ async def get_vendor_stats_service(
 
 async def get_review_service(
     review_repo: ReviewRepository = Depends(get_review_repository),
-    user_repo: UserRepository = Depends(get_user_repository)
+    user_repo: UserRepository = Depends(get_user_repository),
+    booking_repo: BookingRepository = Depends(get_booking_repository)
 ):
-    return ReviewService(review_repo, user_repo)
+    return ReviewService(review_repo, user_repo, booking_repo)
 
 
 async def get_checklist_service(

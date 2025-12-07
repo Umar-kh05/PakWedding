@@ -95,25 +95,37 @@ export default function ReviewModerationPage() {
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <div className="flex items-center gap-4 mb-3">
-                      <h3 className="font-bold text-gray-900">User ID: {review.user_id.substring(0, 8)}...</h3>
-                      <span className="text-gray-500">for</span>
-                      <span className="font-semibold text-pink-600">Vendor ID: {review.vendor_id.substring(0, 8)}...</span>
+                    <div className="flex items-center gap-4 mb-3 flex-wrap">
+                      <h3 className="font-bold text-gray-900">
+                        {review.user_name || `User ${review.user_id.substring(0, 8)}...`}
+                      </h3>
+                      <span className="text-gray-500">reviewed</span>
+                      <span className="font-semibold text-pink-600">
+                        {review.vendor_name || `Vendor ${review.vendor_id.substring(0, 8)}...`}
+                      </span>
                       <div className="flex items-center gap-1">
                         {[...Array(5)].map((_, i) => (
                           <span
                             key={i}
                             className={`text-lg ${i < review.rating ? 'text-yellow-400' : 'text-gray-300'}`}
                           >
-                            ⭐
+                            ★
                           </span>
                         ))}
                         <span className="ml-2 text-sm font-semibold text-gray-700">{review.rating}/5</span>
                       </div>
                     </div>
-                    <p className="text-gray-700 mb-3">{review.comment}</p>
+                    {review.comment && (
+                      <p className="text-gray-700 mb-3 bg-gray-50 p-3 rounded-lg border border-gray-200">
+                        {review.comment}
+                      </p>
+                    )}
                     <div className="flex items-center gap-4 text-sm text-gray-500">
-                      <span>{new Date(review.created_at).toLocaleDateString()}</span>
+                      <span>Reviewed on: {new Date(review.created_at).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}</span>
                       <span className={`px-3 py-1 rounded-full text-xs font-semibold ${review.rating < 3 ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'
                         }`}>
                         {review.rating < 3 ? 'Low Rating' : 'Good Rating'}
