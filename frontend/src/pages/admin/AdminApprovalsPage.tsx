@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react'
 import api from '../../services/api'
 
 interface AdminUser {
-  id: string
+  id?: string
+  _id?: string
   full_name: string
   email: string
   phone_number?: string
@@ -27,7 +28,15 @@ export default function AdminApprovalsPage() {
       setLoading(true)
       setError(null)
       const { data } = await api.get<AdminUser[]>('/admin/admin-approvals')
-      setPendingAdmins(data || [])
+      // Ensure all admins have an id field (convert _id to id if needed)
+      const formattedAdmins = (data || []).map((admin: any) => {
+        if (!admin.id && admin._id) {
+          admin.id = admin._id
+        }
+        return admin
+      })
+      console.log('Loaded pending admins:', formattedAdmins)
+      setPendingAdmins(formattedAdmins)
     } catch (err: any) {
       console.error('Error loading pending admins:', err)
       setError(err.response?.data?.detail || 'Failed to load pending admin approvals')
@@ -37,16 +46,23 @@ export default function AdminApprovalsPage() {
   }
 
   const handleApprove = async (userId: string) => {
+    if (!userId) {
+      setError('Invalid user ID')
+      return
+    }
+    
     try {
       setError(null)
       setSuccess(null)
+      console.log('Approving admin with ID:', userId)
       await api.post(`/admin/admin-approvals/${userId}/approve`)
       setSuccess('Admin approved successfully!')
       loadPendingAdmins()
       setTimeout(() => setSuccess(null), 3000)
     } catch (err: any) {
       console.error('Error approving admin:', err)
-      setError(err.response?.data?.detail || 'Failed to approve admin')
+      const errorMessage = err.response?.data?.detail || err.message || 'Failed to approve admin'
+      setError(errorMessage)
     }
   }
 
@@ -55,16 +71,34 @@ export default function AdminApprovalsPage() {
       return
     }
     
+    if (!userId) {
+      setError('Invalid user ID')
+      return
+    }
+    
     try {
       setError(null)
       setSuccess(null)
-      await api.post(`/admin/admin-approvals/${userId}/reject`)
+      console.log('Rejecting admin with ID:', userId)
+      console.log('Request URL:', `/admin/admin-approvals/${userId}/reject`)
+      const response = await api.post(`/admin/admin-approvals/${userId}/reject`)
+      console.log('Reject response:', response)
       setSuccess('Admin registration rejected')
       loadPendingAdmins()
       setTimeout(() => setSuccess(null), 3000)
     } catch (err: any) {
       console.error('Error rejecting admin:', err)
-      setError(err.response?.data?.detail || 'Failed to reject admin')
+      const errorDetail = err.response?.data?.detail || err.response?.data?.message || 'Unknown error'
+      const errorMessage = errorDetail || err.message || 'Failed to reject admin'
+      setError(`Error: ${errorMessage}`)
+      console.error('Full error details:', {
+        status: err.response?.status,
+        statusText: err.response?.statusText,
+        data: err.response?.data,
+        userId: userId,
+        url: err.config?.url,
+        method: err.config?.method
+      })
     }
   }
 
@@ -118,57 +152,60 @@ export default function AdminApprovalsPage() {
           </div>
         ) : (
           <div className="space-y-4">
-            {pendingAdmins.map((admin) => (
-              <div
-                key={admin.id}
-                className="bg-gradient-to-br from-white to-amber-50/40 rounded-2xl shadow-lg p-6 border-2 border-primary-100 hover:border-primary-300 transition-all"
-              >
-                <div className="flex items-start justify-between gap-6">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-4 mb-4">
-                      <div className="w-16 h-16 bg-gradient-to-br from-primary-600 to-accent-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
-                        {admin.full_name?.charAt(0).toUpperCase() || 'A'}
+            {pendingAdmins.map((admin) => {
+              const adminId = admin.id || admin._id || ''
+              return (
+                <div
+                  key={adminId}
+                  className="bg-gradient-to-br from-white to-amber-50/40 rounded-2xl shadow-lg p-6 border-2 border-primary-100 hover:border-primary-300 transition-all"
+                >
+                  <div className="flex items-start justify-between gap-6">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-4 mb-4">
+                        <div className="w-16 h-16 bg-gradient-to-br from-primary-600 to-accent-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                          {admin.full_name?.charAt(0).toUpperCase() || 'A'}
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-bold text-gray-900">{admin.full_name}</h3>
+                          <p className="text-gray-600">{admin.email}</p>
+                          {admin.phone_number && (
+                            <p className="text-sm text-gray-500">Phone: {admin.phone_number}</p>
+                          )}
+                        </div>
                       </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-gray-900">{admin.full_name}</h3>
-                        <p className="text-gray-600">{admin.email}</p>
-                        {admin.phone_number && (
-                          <p className="text-sm text-gray-500">Phone: {admin.phone_number}</p>
-                        )}
+                      
+                      <div className="grid md:grid-cols-2 gap-4 text-sm text-gray-600 mb-4">
+                        <div>
+                          <span className="font-semibold text-gray-700">Registration Date:</span>{' '}
+                          {formatDate(admin.created_at)}
+                        </div>
+                        <div>
+                          <span className="font-semibold text-gray-700">Status:</span>{' '}
+                          <span className="px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700">
+                            Pending Approval
+                          </span>
+                        </div>
                       </div>
                     </div>
                     
-                    <div className="grid md:grid-cols-2 gap-4 text-sm text-gray-600 mb-4">
-                      <div>
-                        <span className="font-semibold text-gray-700">Registration Date:</span>{' '}
-                        {formatDate(admin.created_at)}
-                      </div>
-                      <div>
-                        <span className="font-semibold text-gray-700">Status:</span>{' '}
-                        <span className="px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700">
-                          Pending Approval
-                        </span>
-                      </div>
+                    <div className="flex flex-col gap-3 min-w-[140px]">
+                      <button
+                        onClick={() => handleApprove(adminId)}
+                        className="bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 hover:from-primary-700 hover:via-accent-700 hover:to-primary-700 text-white px-6 py-2 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl"
+                      >
+                        Approve
+                      </button>
+                      <button
+                        onClick={() => handleReject(adminId)}
+                        className="bg-white border border-gray-200 text-gray-800 hover:border-primary-300 hover:bg-primary-50 px-6 py-2 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl"
+                      >
+                        Reject
+                      </button>
                     </div>
                   </div>
-                  
-                  <div className="flex flex-col gap-3 min-w-[140px]">
-                    <button
-                      onClick={() => handleApprove(admin.id)}
-                      className="bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 hover:from-primary-700 hover:via-accent-700 hover:to-primary-700 text-white px-6 py-2 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl"
-                    >
-                      Approve
-                    </button>
-                    <button
-                      onClick={() => handleReject(admin.id)}
-                      className="bg-white border border-gray-200 text-gray-800 hover:border-primary-300 hover:bg-primary-50 px-6 py-2 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl"
-                    >
-                      Reject
-                    </button>
-                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         )}
       </div>

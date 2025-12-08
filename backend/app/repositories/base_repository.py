@@ -80,7 +80,8 @@ class BaseRepository(IRepository[T]):
             {"_id": ObjectId(entity_id)},
             {"$set": entity}
         )
-        if result.modified_count:
+        # If a document matched (even if values were identical), return the document
+        if result.matched_count:
             return await self.get_by_id(entity_id)
         return None
     

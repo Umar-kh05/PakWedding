@@ -266,36 +266,22 @@ async def reject_admin(
     current_admin: dict = Depends(get_current_admin),
     user_service: UserService = Depends(get_user_service)
 ):
-    """Reject an admin registration (admin only)"""
+    """Reject an admin registration (admin only) by removing the pending admin user."""
     try:
+        print(f"[DEBUG] Reject admin called with user_id: {user_id}")
         user = await user_service.get_user_by_id(user_id)
         if not user:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User not found with ID: {user_id}")
         
         if user.get("role") != "admin":
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User is not an admin")
         
-        # Reject admin: set is_admin_approved to False and is_active to False
-        updated_user = await user_service.user_repo.update(
-            user_id,
-            {"is_admin_approved": False, "is_active": False}
-        )
+        deleted = await user_service.user_repo.delete(user_id)
+        if not deleted:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User not found with ID: {user_id}")
         
-        if not updated_user:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-        
-        # Format response
-        if "_id" in updated_user:
-            updated_user["id"] = str(updated_user["_id"])
-            del updated_user["_id"]
-        
-        updated_user.pop("hashed_password", None)
-        updated_user.pop("updated_at", None)
-        
-        return {
-            "message": "Admin registration rejected",
-            "user": updated_user
-        }
+        print(f"[DEBUG] Admin rejection successful, user deleted: {user_id}")
+        return {"message": "Admin registration rejected and removed"}
     except HTTPException:
         raise
     except Exception as e:
