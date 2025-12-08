@@ -89,4 +89,24 @@ class UserService:
             return None  # Admin not approved yet
         
         return user
+    
+    async def update_password(self, user_id: str, old_password: str, new_password: str) -> Optional[dict]:
+        """Update user password after verifying old password"""
+        # Get user
+        user = await self.user_repo.get_by_id(user_id)
+        if not user:
+            return None
+        
+        # Verify old password
+        if not verify_password(old_password, user.get("hashed_password")):
+            raise ValueError("Incorrect old password")
+        
+        # Hash new password and update
+        hashed_password = hash_password(new_password)
+        update_dict = {
+            "hashed_password": hashed_password,
+            "updated_at": datetime.utcnow()
+        }
+        
+        return await self.user_repo.update(user_id, update_dict)
 
