@@ -107,8 +107,8 @@ export default function VendorApprovalsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 py-8 px-4">
       <div className="max-w-7xl mx-auto">
-        <div className="bg-gradient-to-r from-white via-pink-50/50 to-white rounded-2xl shadow-xl p-8 border-2 border-pink-100 mb-8">
-          <h1 className="text-3xl font-extrabold bg-gradient-to-r from-gray-900 via-pink-600 to-gray-900 bg-clip-text text-transparent mb-2">
+        <div className="bg-gradient-to-r from-white via-amber-50/60 to-white rounded-2xl shadow-xl p-8 border-2 border-primary-100 mb-8">
+          <h1 className="text-3xl font-extrabold bg-gradient-to-r from-gray-900 via-primary-600 to-accent-600 bg-clip-text text-transparent mb-2">
             Vendor Approvals
           </h1>
           <p className="text-gray-600 font-medium">Review and approve vendor registrations</p>
@@ -127,7 +127,7 @@ export default function VendorApprovalsPage() {
         )}
 
         {/* Filter Tabs */}
-        <div className="bg-white rounded-2xl shadow-lg p-4 mb-6 border-2 border-pink-100">
+        <div className="bg-white rounded-2xl shadow-lg p-4 mb-6 border-2 border-primary-100">
           <div className="flex gap-4 flex-wrap">
             {(['all', 'pending', 'approved', 'rejected'] as const).map((status) => (
               <button
@@ -135,8 +135,8 @@ export default function VendorApprovalsPage() {
                 onClick={() => setFilter(status)}
                 className={`px-6 py-2 rounded-xl font-semibold transition-all capitalize ${
                   filter === status
-                    ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-lg'
-                    : 'bg-pink-50 text-gray-700 hover:bg-pink-100'
+                    ? 'bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 text-white shadow-lg'
+                    : 'bg-primary-50 text-gray-700 hover:bg-primary-100'
                 }`}
               >
                 {status.charAt(0).toUpperCase() + status.slice(1)} ({counts[status]})
@@ -148,11 +148,11 @@ export default function VendorApprovalsPage() {
         {/* Vendors List */}
         {loading ? (
           <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-pink-200 border-t-pink-600 mb-4"></div>
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary-200 border-t-primary-600 mb-4"></div>
             <p className="text-gray-600">Loading vendors...</p>
           </div>
         ) : filteredVendors.length === 0 ? (
-          <div className="bg-white rounded-2xl shadow-lg p-12 text-center border-2 border-pink-100">
+          <div className="bg-white rounded-2xl shadow-lg p-12 text-center border-2 border-primary-100">
             <svg className="w-24 h-24 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-3-3h-4a3 3 0 00-3 3v2h5zM9 10a3 3 0 100-6 3 3 0 000 6z" />
             </svg>
@@ -171,7 +171,7 @@ export default function VendorApprovalsPage() {
               return (
                 <div
                   key={vendor.id || vendor._id}
-                  className="bg-gradient-to-br from-white to-pink-50/30 rounded-2xl shadow-lg p-6 border-2 border-pink-100 hover:border-pink-300 transition-all"
+                  className="bg-gradient-to-br from-white to-amber-50/40 rounded-2xl shadow-lg p-6 border-2 border-primary-100 hover:border-primary-300 transition-all"
                 >
                   <div className="flex items-start justify-between gap-6">
                     <div className="flex-1">
@@ -189,7 +189,7 @@ export default function VendorApprovalsPage() {
                         <div className="flex-1">
                           <h3 className="text-xl font-bold text-gray-900 mb-2">{vendor.business_name}</h3>
                           <div className="flex items-center gap-4 mb-2">
-                            <span className="px-3 py-1 bg-pink-100 text-pink-700 rounded-full text-xs font-semibold">
+                            <span className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-xs font-semibold">
                               {vendor.service_category}
                             </span>
                             {vendor.rating && (
@@ -253,13 +253,13 @@ export default function VendorApprovalsPage() {
                       <div className="flex flex-col gap-3 min-w-[140px]">
                         <button
                           onClick={() => handleApprove(vendor.id || vendor._id || '')}
-                          className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-6 py-2 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl"
+                          className="bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 hover:from-primary-700 hover:via-accent-700 hover:to-primary-700 text-white px-6 py-2 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl"
                         >
                           Approve
                         </button>
                         <button
                           onClick={() => handleReject(vendor.id || vendor._id || '')}
-                          className="bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 text-white px-6 py-2 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl"
+                          className="bg-white border border-gray-200 text-gray-800 hover:border-primary-300 hover:bg-primary-50 px-6 py-2 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl"
                         >
                           Reject
                         </button>

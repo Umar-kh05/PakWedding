@@ -39,10 +39,10 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
       {/* Header */}
-      <div className="bg-gradient-to-r from-white via-pink-50/50 to-white shadow-lg border-b-2 border-pink-200">
+      <div className="bg-gradient-to-r from-white via-amber-50/60 to-white shadow-lg border-b-2 border-primary-100">
         <div className="container mx-auto px-6 py-6 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-extrabold bg-gradient-to-r from-gray-900 via-pink-600 to-gray-900 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-extrabold bg-gradient-to-r from-gray-900 via-primary-600 to-accent-600 bg-clip-text text-transparent">
               Admin Dashboard
             </h1>
             <p className="text-gray-600 mt-1 font-medium">Manage your platform</p>
@@ -53,34 +53,34 @@ export default function AdminDashboard() {
       <div className="container mx-auto px-6 py-8">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-gradient-to-br from-white to-pink-50/50 rounded-2xl shadow-xl p-6 border-2 border-pink-100 hover:border-pink-300 transition-all hover:shadow-2xl">
+          <div className="bg-gradient-to-br from-white to-amber-50/50 rounded-2xl shadow-xl p-6 border-2 border-primary-100 hover:border-primary-300 transition-all hover:shadow-2xl">
             <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center">
+              <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-accent-500 rounded-xl flex items-center justify-center">
                 <span className="text-2xl">⏳</span>
               </div>
             </div>
             <p className="text-gray-600 text-sm font-semibold mb-2">Pending Vendor Approvals</p>
             <p className="text-4xl font-extrabold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">{stats.pendingApprovals}</p>
           </div>
-          <div className="bg-gradient-to-br from-white to-pink-50/50 rounded-2xl shadow-xl p-6 border-2 border-pink-100 hover:border-pink-300 transition-all hover:shadow-2xl">
+          <div className="bg-gradient-to-br from-white to-amber-50/50 rounded-2xl shadow-xl p-6 border-2 border-primary-100 hover:border-primary-300 transition-all hover:shadow-2xl">
             <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-amber-500 rounded-xl flex items-center justify-center">
+              <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-accent-500 rounded-xl flex items-center justify-center">
                 <span className="text-2xl">🔐</span>
               </div>
             </div>
             <p className="text-gray-600 text-sm font-semibold mb-2">Pending Admin Approvals</p>
             <p className="text-4xl font-extrabold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">{stats.pendingAdminApprovals || 0}</p>
           </div>
-          <div className="bg-gradient-to-br from-white to-pink-50/50 rounded-2xl shadow-xl p-6 border-2 border-pink-100 hover:border-pink-300 transition-all hover:shadow-2xl">
+          <div className="bg-gradient-to-br from-white to-amber-50/50 rounded-2xl shadow-xl p-6 border-2 border-primary-100 hover:border-primary-300 transition-all hover:shadow-2xl">
             <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-red-400 to-pink-500 rounded-xl flex items-center justify-center">
+              <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-accent-500 rounded-xl flex items-center justify-center">
                 <span className="text-2xl">🚩</span>
               </div>
             </div>
             <p className="text-gray-600 text-sm font-semibold mb-2">Flagged Reviews</p>
             <p className="text-4xl font-extrabold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">{stats.flaggedReviews}</p>
           </div>
-          <div className="bg-gradient-to-br from-white to-pink-50/50 rounded-2xl shadow-xl p-6 border-2 border-pink-100 hover:border-pink-300 transition-all hover:shadow-2xl">
+          <div className="bg-gradient-to-br from-white to-amber-50/50 rounded-2xl shadow-xl p-6 border-2 border-primary-100 hover:border-primary-300 transition-all hover:shadow-2xl">
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-xl flex items-center justify-center">
                 <span className="text-2xl">👥</span>
@@ -92,7 +92,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Action Cards - Redesigned */}
-        <div className="bg-gradient-to-br from-white to-pink-50/30 rounded-2xl shadow-xl p-8 border-2 border-pink-100">
+        <div className="bg-gradient-to-br from-white to-amber-50/40 rounded-2xl shadow-xl p-8 border-2 border-primary-100">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Admin Actions</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
             <Link
@@ -109,14 +109,14 @@ export default function AdminDashboard() {
             </Link>
             <Link
               to="/admin/vendors"
-              className="group bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl p-6 border-2 border-pink-200 hover:border-pink-400 transition-all hover:shadow-xl transform hover:-translate-y-1"
+              className="group bg-gradient-to-br from-primary-50 to-accent-50 rounded-2xl p-6 border-2 border-primary-200 hover:border-primary-400 transition-all hover:shadow-xl transform hover:-translate-y-1"
             >
-              <div className="w-14 h-14 bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <div className="w-14 h-14 bg-gradient-to-br from-primary-600 to-accent-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-pink-600 transition-colors">Vendor Approvals</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-primary-700 transition-colors">Vendor Approvals</h3>
               <p className="text-sm text-gray-600">Review and approve vendors</p>
             </Link>
             <Link

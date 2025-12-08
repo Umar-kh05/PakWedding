@@ -265,7 +265,7 @@ export default function VendorProfilePage() {
                 >
                   <h3 className="text-2xl font-bold text-gray-900 mb-4">{pkg.name}</h3>
                   <div className="mb-6">
-                    <span className="text-4xl font-bold text-pink-600">Rs. {pkg.price.toLocaleString()}</span>
+                    <span className="text-4xl font-bold text-primary-700">Rs. {pkg.price.toLocaleString()}</span>
                   </div>
                   {pkg.description && (
                     <p className="text-gray-600 mb-4 text-sm">{pkg.description}</p>
@@ -284,7 +284,7 @@ export default function VendorProfilePage() {
                   )}
                   <button
                     onClick={handleBookNowClick}
-                    className="block w-full bg-pink-600 hover:bg-pink-700 text-white text-center font-semibold py-3 rounded-lg transition-colors mt-auto"
+                    className="block w-full bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 hover:from-primary-700 hover:via-accent-700 hover:to-primary-700 text-white text-center font-semibold py-3 rounded-lg transition-colors mt-auto"
                   >
                     Select Package
                   </button>

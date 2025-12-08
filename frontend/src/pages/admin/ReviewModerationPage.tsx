@@ -52,23 +52,23 @@ export default function ReviewModerationPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 py-8 px-4">
       <div className="max-w-7xl mx-auto">
-        <div className="bg-gradient-to-r from-white via-pink-50/50 to-white rounded-2xl shadow-xl p-8 border-2 border-pink-100 mb-8">
-          <h1 className="text-3xl font-extrabold bg-gradient-to-r from-gray-900 via-pink-600 to-gray-900 bg-clip-text text-transparent mb-2">
+        <div className="bg-gradient-to-r from-white via-amber-50/60 to-white rounded-2xl shadow-xl p-8 border-2 border-primary-100 mb-8">
+          <h1 className="text-3xl font-extrabold bg-gradient-to-r from-gray-900 via-primary-600 to-accent-600 bg-clip-text text-transparent mb-2">
             Review Moderation
           </h1>
           <p className="text-gray-600 font-medium">Moderate and manage user reviews</p>
         </div>
 
         {/* Filter Tabs */}
-        <div className="bg-white rounded-2xl shadow-lg p-4 mb-6 border-2 border-pink-100">
+        <div className="bg-white rounded-2xl shadow-lg p-4 mb-6 border-2 border-primary-100">
           <div className="flex gap-4">
             {(['all', 'low_rated'] as const).map((status) => (
               <button
                 key={status}
                 onClick={() => setFilter(status)}
                 className={`px-6 py-2 rounded-xl font-semibold transition-all capitalize ${filter === status
-                    ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-lg'
-                    : 'bg-pink-50 text-gray-700 hover:bg-pink-100'
+                    ? 'bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 text-white shadow-lg'
+                    : 'bg-primary-50 text-gray-700 hover:bg-primary-100'
                   }`}
               >
                 {status === 'low_rated' ? 'Low Rated (< 3 stars)' : 'All Reviews'}
@@ -83,7 +83,7 @@ export default function ReviewModerationPage() {
             <p className="text-gray-600">Loading reviews...</p>
           </div>
         ) : filteredReviews.length === 0 ? (
-          <div className="bg-white rounded-2xl shadow-lg p-12 text-center border-2 border-pink-100">
+          <div className="bg-white rounded-2xl shadow-lg p-12 text-center border-2 border-primary-100">
             <p className="text-gray-600 text-lg">No reviews found</p>
           </div>
         ) : (
@@ -91,7 +91,7 @@ export default function ReviewModerationPage() {
             {filteredReviews.map((review) => (
               <div
                 key={review.id || review._id}
-                className="bg-gradient-to-br from-white to-pink-50/30 rounded-2xl shadow-lg p-6 border-2 border-pink-100 hover:border-pink-300 transition-all"
+                className="bg-gradient-to-br from-white to-amber-50/40 rounded-2xl shadow-lg p-6 border-2 border-primary-100 hover:border-primary-300 transition-all"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
@@ -100,7 +100,7 @@ export default function ReviewModerationPage() {
                         {review.user_name || `User ${review.user_id.substring(0, 8)}...`}
                       </h3>
                       <span className="text-gray-500">reviewed</span>
-                      <span className="font-semibold text-pink-600">
+                      <span className="font-semibold text-primary-600">
                         {review.vendor_name || `Vendor ${review.vendor_id.substring(0, 8)}...`}
                       </span>
                       <div className="flex items-center gap-1">

@@ -49,21 +49,21 @@ export default function UserManagementPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 py-8 px-4">
       <div className="max-w-7xl mx-auto">
-        <div className="bg-gradient-to-r from-white via-pink-50/50 to-white rounded-2xl shadow-xl p-8 border-2 border-pink-100 mb-8">
-          <h1 className="text-3xl font-extrabold bg-gradient-to-r from-gray-900 via-pink-600 to-gray-900 bg-clip-text text-transparent mb-2">
+        <div className="bg-gradient-to-r from-white via-amber-50/60 to-white rounded-2xl shadow-xl p-8 border-2 border-primary-100 mb-8">
+          <h1 className="text-3xl font-extrabold bg-gradient-to-r from-gray-900 via-primary-600 to-accent-600 bg-clip-text text-transparent mb-2">
             User Management
           </h1>
           <p className="text-gray-600 font-medium">Manage all platform users</p>
         </div>
 
         {/* Search */}
-        <div className="bg-white rounded-2xl shadow-lg p-4 mb-6 border-2 border-pink-100">
+        <div className="bg-white rounded-2xl shadow-lg p-4 mb-6 border-2 border-primary-100">
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search users by name or email..."
-            className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-pink-600"
+            className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-primary-600"
           />
         </div>
 
@@ -73,10 +73,10 @@ export default function UserManagementPage() {
             <p className="text-gray-600">Loading users...</p>
           </div>
         ) : (
-          <div className="bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-pink-100">
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-primary-100">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gradient-to-r from-pink-50 to-purple-50">
+                <thead className="bg-gradient-to-r from-primary-50 to-orange-50">
                   <tr>
                     <th className="px-6 py-4 text-left text-sm font-bold text-gray-900">Name</th>
                     <th className="px-6 py-4 text-left text-sm font-bold text-gray-900">Email</th>
@@ -85,9 +85,9 @@ export default function UserManagementPage() {
                     <th className="px-6 py-4 text-left text-sm font-bold text-gray-900">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-pink-100">
+                <tbody className="divide-y divide-primary-100">
                   {filteredUsers.map((user) => (
-                    <tr key={user.id} className="hover:bg-pink-50/30 transition-colors">
+                    <tr key={user.id} className="hover:bg-primary-50/40 transition-colors">
                       <td className="px-6 py-4 font-semibold text-gray-900">{user.full_name}</td>
                       <td className="px-6 py-4 text-gray-600">{user.email}</td>
                       <td className="px-6 py-4">

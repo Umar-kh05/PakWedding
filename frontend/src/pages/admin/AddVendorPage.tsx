@@ -252,7 +252,7 @@ export default function AddVendorPage() {
                   name="business_name"
                   value={formData.business_name}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                   required
                 />
               </div>
@@ -266,7 +266,7 @@ export default function AddVendorPage() {
                   name="contact_person"
                   value={formData.contact_person}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                   required
                 />
               </div>
@@ -280,7 +280,7 @@ export default function AddVendorPage() {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                   required
                 />
               </div>
@@ -294,7 +294,7 @@ export default function AddVendorPage() {
                   name="phone_number"
                   value={formData.phone_number}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                   required
                 />
               </div>
@@ -308,7 +308,7 @@ export default function AddVendorPage() {
                   name="business_address"
                   value={formData.business_address}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                   required
                 />
               </div>
@@ -321,7 +321,7 @@ export default function AddVendorPage() {
                   name="service_category"
                   value={formData.service_category}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                   required
                 >
                   <option value="">Select a category</option>
@@ -340,7 +340,7 @@ export default function AddVendorPage() {
                   value={formData.description}
                   onChange={handleChange}
                   rows={4}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                   placeholder="Brief description of the vendor's services..."
                 />
               </div>
@@ -410,7 +410,7 @@ export default function AddVendorPage() {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                   required
                   minLength={6}
                 />
@@ -426,7 +426,7 @@ export default function AddVendorPage() {
                   name="confirm_password"
                   value={formData.confirm_password}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600"
                   required
                 />
               </div>
@@ -436,7 +436,7 @@ export default function AddVendorPage() {
               <button
                 type="submit"
                 disabled={loading || uploadingImage}
-                className={`flex-1 bg-pink-600 hover:bg-pink-700 text-white py-3 rounded-lg font-semibold transition-colors ${
+                className={`flex-1 bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 hover:from-primary-700 hover:via-accent-700 hover:to-primary-700 text-white py-3 rounded-lg font-semibold transition-colors ${
                   loading || uploadingImage ? 'opacity-50 cursor-not-allowed' : ''
                 }`}
               >

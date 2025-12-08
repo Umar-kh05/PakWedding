@@ -13,7 +13,8 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="bg-[#F4E9DB] border-b border-[#D72626]/20 shadow-sm">
+    <nav className="bg-white border-b border-[#D72626]/20 shadow-sm">
+
       <div className="container mx-auto px-10 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link
