@@ -105,13 +105,13 @@ export default function VendorApprovalsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 py-6 sm:py-8 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
-        <div className="bg-gradient-to-r from-white via-amber-50/60 to-white rounded-2xl shadow-xl p-8 border-2 border-primary-100 mb-8">
-          <h1 className="text-3xl font-extrabold bg-gradient-to-r from-gray-900 via-primary-600 to-accent-600 bg-clip-text text-transparent mb-2">
+        <div className="bg-gradient-to-r from-white via-amber-50/60 to-white rounded-2xl shadow-xl p-6 sm:p-8 border-2 border-primary-100 mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-extrabold bg-gradient-to-r from-gray-900 via-primary-600 to-accent-600 bg-clip-text text-transparent mb-2">
             Vendor Approvals
           </h1>
-          <p className="text-gray-600 font-medium">Review and approve vendor registrations</p>
+          <p className="text-sm sm:text-base text-gray-600 font-medium">Review and approve vendor registrations</p>
         </div>
 
         {/* Messages */}

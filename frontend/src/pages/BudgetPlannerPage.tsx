@@ -94,13 +94,13 @@ export default function BudgetPlannerPage() {
   const remainingAllocated = totalBudget ? totalBudget * (1 - totalAllocated) : 0
 
   return (
-    <div className="bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 min-h-screen py-10 px-4">
+    <div className="bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 min-h-screen py-6 sm:py-8 md:py-10 px-4 sm:px-6">
       <div className="max-w-5xl mx-auto space-y-6">
-        <div className="text-center mb-8">
-          <h1 className="text-5xl font-extrabold bg-gradient-to-r from-gray-900 via-[#D72626] to-gray-900 bg-clip-text text-transparent mb-4">
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-gray-900 via-[#D72626] to-gray-900 bg-clip-text text-transparent mb-3 sm:mb-4">
             Budget Planner
           </h1>
-          <p className="text-xl text-gray-700 font-medium">
+          <p className="text-base sm:text-lg md:text-xl text-gray-700 font-medium">
             Plan and track your wedding expenses
           </p>
         </div>

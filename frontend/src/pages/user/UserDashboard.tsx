@@ -68,18 +68,18 @@ export default function UserDashboard() {
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
       {/* Modern Elegant Header */}
       <div className="bg-gradient-to-r from-white via-amber-50/60 to-white shadow-md border-b-2 border-primary-100">
-        <div className="container mx-auto max-w-7xl px-4 py-6">
+        <div className="container mx-auto max-w-7xl px-4 sm:px-6 py-4 sm:py-6">
           <div>
-            <h1 className="text-4xl font-extrabold text-gray-900">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900">
               Welcome back, {userName}!
             </h1>
-            <p className="text-gray-600 text-lg mt-1">Let's plan your perfect wedding</p>
+            <p className="text-gray-600 text-base sm:text-lg mt-1">Let's plan your perfect wedding</p>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="py-10 px-4">
+      <div className="py-6 sm:py-8 md:py-10 px-4 sm:px-6">
         <div className="container mx-auto max-w-7xl">
 
         {/* Summary Cards */}

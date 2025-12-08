@@ -268,14 +268,14 @@ export default function ChecklistPage() {
   }
 
   return (
-    <div className="bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 min-h-screen py-8 px-4">
+    <div className="bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 min-h-screen py-6 sm:py-8 px-4 sm:px-6">
       <div className="container mx-auto max-w-6xl">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-extrabold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent mb-2">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent mb-2 leading-normal pb-2">
             Wedding Checklist
           </h1>
-          <p className="text-gray-600">Stay organized and track your wedding planning progress</p>
+          <p className="text-sm sm:text-base text-gray-600">Stay organized and track your wedding planning progress</p>
         </div>
 
         {/* Stats Cards */}
@@ -284,8 +284,8 @@ export default function ChecklistPage() {
             <div className="text-3xl font-bold text-primary-600 mb-1">{stats.total}</div>
             <div className="text-sm text-gray-600 font-medium">Total Items</div>
           </div>
-          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-green-100">
-            <div className="text-3xl font-bold text-green-600 mb-1">{stats.completed}</div>
+          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-primary-100">
+            <div className="text-3xl font-bold text-primary-600 mb-1">{stats.completed}</div>
             <div className="text-sm text-gray-600 font-medium">Completed</div>
           </div>
           <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-yellow-100">
@@ -457,7 +457,7 @@ export default function ChecklistPage() {
                 key={item.id}
                 className={`bg-white rounded-xl shadow-lg p-5 border-2 transition-all duration-300 hover:shadow-xl ${
                   item.is_completed 
-                    ? 'border-green-200 bg-green-50/30' 
+                    ? 'border-primary-200 bg-primary-50/30' 
                     : 'border-gray-200 hover:border-primary-300'
                 }`}
               >
@@ -518,7 +518,7 @@ export default function ChecklistPage() {
                   )}
                   
                   {item.is_completed && item.completed_at && (
-                    <p className="text-xs text-green-600">
+                    <p className="text-xs text-primary-600">
                       ✅ Completed on {new Date(item.completed_at).toLocaleDateString()}
                     </p>
                   )}

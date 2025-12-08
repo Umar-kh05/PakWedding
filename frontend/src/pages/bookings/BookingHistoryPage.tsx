@@ -105,14 +105,14 @@ export default function BookingHistoryPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 py-6 sm:py-8 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="bg-gradient-to-r from-white via-pink-50/50 to-white rounded-2xl shadow-xl p-8 border-2 border-pink-100 mb-8">
-          <h1 className="text-3xl font-extrabold bg-gradient-to-r from-gray-900 via-pink-600 to-gray-900 bg-clip-text text-transparent mb-2">
+        <div className="bg-gradient-to-r from-white via-pink-50/50 to-white rounded-2xl shadow-xl p-6 sm:p-8 border-2 border-pink-100 mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-extrabold bg-gradient-to-r from-gray-900 via-pink-600 to-gray-900 bg-clip-text text-transparent mb-2">
             Booking History
           </h1>
-          <p className="text-gray-600 font-medium">View and manage all your bookings</p>
+          <p className="text-sm sm:text-base text-gray-600 font-medium">View and manage all your bookings</p>
         </div>
 
         {/* Success Message */}
