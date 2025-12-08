@@ -23,7 +23,20 @@ const api = axios.create({
 
 // Add token to requests
 api.interceptors.request.use((config) => {
-  const token = useAuthStore.getState().token
+  const authStore = useAuthStore.getState()
+  
+  // Check if session has expired
+  if (authStore.checkSessionExpiry()) {
+    // Session expired, redirect to login
+    const currentPath = window.location.pathname
+    const isOnLoginPage = currentPath === '/login' || currentPath === '/admin/login' || currentPath === '/register' || currentPath === '/vendor/register'
+    if (!isOnLoginPage) {
+      window.location.href = '/login'
+    }
+    return Promise.reject(new Error('Session expired'))
+  }
+  
+  const token = authStore.token
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
     // Debug logging for checklist requests

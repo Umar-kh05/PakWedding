@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { persist, createJSONStorage } from 'zustand/middleware'
 
 interface User {
   id: string
@@ -11,20 +11,49 @@ interface User {
 interface AuthState {
   user: User | null
   token: string | null
+  loginTime: number | null
   setAuth: (user: User, token: string) => void
   logout: () => void
+  checkSessionExpiry: () => boolean
 }
+
+// Session timeout: 2 hours (in milliseconds)
+const SESSION_TIMEOUT = 2 * 60 * 60 * 1000
 
 export const useAuthStore = create<AuthState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       user: null,
       token: null,
-      setAuth: (user, token) => set({ user, token }),
-      logout: () => set({ user: null, token: null }),
+      loginTime: null,
+      setAuth: (user, token) => {
+        set({ 
+          user, 
+          token, 
+          loginTime: Date.now() 
+        })
+      },
+      logout: () => {
+        set({ user: null, token: null, loginTime: null })
+      },
+      checkSessionExpiry: () => {
+        const { loginTime } = get()
+        if (!loginTime) return false
+        
+        const now = Date.now()
+        const elapsed = now - loginTime
+        
+        if (elapsed > SESSION_TIMEOUT) {
+          // Session expired
+          get().logout()
+          return true
+        }
+        return false
+      },
     }),
     {
       name: 'auth-storage',
+      storage: createJSONStorage(() => sessionStorage), // Use sessionStorage instead of localStorage
     }
   )
 )
