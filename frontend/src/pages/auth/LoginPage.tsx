@@ -23,7 +23,17 @@ export default function LoginPage() {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
 
+      // Clear any old token data before setting new auth
+      console.log('[LOGIN] Setting new auth token')
       setAuth(response.data.user, response.data.access_token)
+      
+      // Verify token was stored
+      const storedToken = useAuthStore.getState().token
+      if (storedToken) {
+        console.log('[LOGIN] Token stored successfully:', storedToken.substring(0, 20) + '...')
+      } else {
+        console.error('[LOGIN] Token was not stored!')
+      }
 
       // Redirect based on role
       if (response.data.user.role === 'vendor') {

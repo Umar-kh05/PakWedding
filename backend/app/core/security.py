@@ -30,8 +30,12 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
     else:
         expire = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     
-    to_encode.update({"exp": expire})
+    # Convert datetime to Unix timestamp (seconds since epoch)
+    expire_timestamp = int(expire.timestamp())
+    to_encode.update({"exp": expire_timestamp})
+    
     encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+    print(f"[AUTH] Token created, expires at: {expire} (timestamp: {expire_timestamp})")
     return encoded_jwt
 
 
@@ -40,5 +44,7 @@ def decode_token(token: str) -> Optional[dict]:
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         return payload
-    except JWTError:
+    except JWTError as e:
+        # Log the specific error for debugging
+        print(f"[AUTH ERROR] Token validation failed: {type(e).__name__}: {str(e)}")
         return None

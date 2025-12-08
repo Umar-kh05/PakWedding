@@ -42,7 +42,7 @@ const PRIORITY_COLORS = {
 }
 
 export default function ChecklistPage() {
-  const { user } = useAuthStore()
+  const { user, token } = useAuthStore()
   const [items, setItems] = useState<ChecklistItem[]>([])
   const [stats, setStats] = useState<ChecklistStats>({ total: 0, completed: 0, remaining: 0, completion_percentage: 0 })
   const [loading, setLoading] = useState(true)
@@ -60,23 +60,92 @@ export default function ChecklistPage() {
   })
 
   useEffect(() => {
-    if (user) {
-      loadChecklist()
-      loadStats()
+    // Wait for auth store to hydrate from localStorage
+    const checkAndLoad = async () => {
+      if (!user) {
+        setLoading(false)
+        return
+      }
+      
+      // Check token from store
+      let currentToken = token || useAuthStore.getState().token
+      
+      // If no token, wait for Zustand persist to hydrate (up to 1 second)
+      if (!currentToken) {
+        for (let i = 0; i < 10; i++) {
+          await new Promise(resolve => setTimeout(resolve, 100))
+          currentToken = useAuthStore.getState().token
+          if (currentToken) break
+        }
+      }
+      
+      if (currentToken) {
+        await loadChecklist()
+        await loadStats()
+      } else {
+        console.warn('Token not available - user may need to log in')
+        setLoading(false)
+      }
     }
-  }, [user, selectedCategory])
+    
+    checkAndLoad()
+  }, [user, token, selectedCategory])
 
   const loadChecklist = async () => {
     try {
       setLoading(true)
+      const currentToken = useAuthStore.getState().token
+      if (!currentToken) {
+        console.warn('No authentication token found - skipping load')
+        setItems([])
+        setLoading(false)
+        return
+      }
       const params: any = {}
       if (selectedCategory) {
         params.category = selectedCategory
       }
-      const response = await api.get('/checklist', { params })
+      // Use trailing slash to avoid FastAPI redirect issues
+      const response = await api.get('/checklist/', { params })
       setItems(response.data || [])
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error loading checklist:', error)
+      console.error('Error details:', {
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        url: error.config?.url,
+        headers: error.config?.headers
+      })
+      
+      if (error.response?.status === 401) {
+        // Check if we actually sent a token (not just a hydration issue)
+        const sentToken = useAuthStore.getState().token
+        console.log('Token check:', {
+          hasToken: !!sentToken,
+          tokenPreview: sentToken ? sentToken.substring(0, 30) + '...' : 'none',
+          authHeader: error.config?.headers?.Authorization ? 'present' : 'missing'
+        })
+        
+        if (sentToken) {
+          // Token was sent but rejected - check error details
+          const errorDetail = error.response?.data?.detail || 'Unknown error'
+          console.error('Token was sent but rejected. Error detail:', errorDetail)
+          
+          // Only redirect if it's actually a credentials error, not a different 401
+          if (errorDetail.includes('credentials') || errorDetail.includes('expired') || errorDetail.includes('invalid')) {
+            if (!window.location.href.includes('/login')) {
+              alert('Your session has expired. Please log in again to access your checklist.')
+              window.location.href = '/login'
+            }
+          } else {
+            console.warn('401 error but not a credentials issue:', errorDetail)
+          }
+        } else {
+          // No token was sent - might be hydration issue, don't redirect
+          console.warn('401 error but no token was sent - may be hydration issue')
+        }
+      }
       setItems([])
     } finally {
       setLoading(false)
@@ -85,16 +154,32 @@ export default function ChecklistPage() {
 
   const loadStats = async () => {
     try {
+      const token = useAuthStore.getState().token
+      if (!token) {
+        console.warn('No authentication token found - skipping stats load')
+        return
+      }
       const response = await api.get('/checklist/stats')
       setStats(response.data)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error loading stats:', error)
+      if (error.response?.status === 401) {
+        console.warn('Stats load failed with 401 - token may be expired')
+        // Don't redirect here, let loadChecklist handle it
+      }
     }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
+      const token = useAuthStore.getState().token
+      if (!token) {
+        alert('Your session has expired. Please log in again.')
+        window.location.href = '/login'
+        return
+      }
+      
       const payload: any = {
         title: formData.title,
         category: formData.category,
@@ -115,7 +200,12 @@ export default function ChecklistPage() {
       loadChecklist()
       loadStats()
     } catch (error: any) {
-      alert(error.response?.data?.detail || 'Failed to save checklist item')
+      if (error.response?.status === 401) {
+        alert('Your session has expired. Please log in again.')
+        window.location.href = '/login'
+      } else {
+        alert(error.response?.data?.detail || 'Failed to save checklist item')
+      }
     }
   }
 

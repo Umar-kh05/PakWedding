@@ -59,9 +59,11 @@ class ChecklistService:
         
         update_dict["updated_at"] = datetime.utcnow()
         
-        result = await self.checklist_repo.update_one(
+        # Use find_one_and_update to get the updated document
+        result = await self.checklist_repo.collection.find_one_and_update(
             {"_id": ObjectId(item_id), "user_id": ObjectId(user_id)},
-            {"$set": update_dict}
+            {"$set": update_dict},
+            return_document=True  # Return the updated document
         )
         
         if result:
@@ -74,8 +76,10 @@ class ChecklistService:
     async def delete_checklist_item(self, item_id: str, user_id: str) -> bool:
         """Delete a checklist item"""
         try:
-            result = await self.checklist_repo.delete_one({"_id": ObjectId(item_id), "user_id": ObjectId(user_id)})
-            return result is not None
+            result = await self.checklist_repo.collection.delete_one(
+                {"_id": ObjectId(item_id), "user_id": ObjectId(user_id)}
+            )
+            return result.deleted_count > 0
         except:
             return False
     

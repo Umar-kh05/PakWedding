@@ -26,6 +26,10 @@ api.interceptors.request.use((config) => {
   const token = useAuthStore.getState().token
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
+    // Debug logging for checklist requests
+    if (config.url?.includes('/checklist')) {
+      console.log('[API] Making checklist request with token:', token.substring(0, 20) + '...')
+    }
   } else {
     console.warn('No token found in auth store for request:', config.url)
   }
@@ -34,6 +38,20 @@ api.interceptors.request.use((config) => {
   // FastAPI redirects /api/bookings to /api/bookings/, which loses Authorization header
   if (config.method === 'post' && config.url && 
       config.url.endsWith('/bookings') && 
+      !config.url.endsWith('/')) {
+    config.url = config.url + '/'
+  }
+  
+  // Ensure trailing slash for POST requests to checklist endpoint
+  if (config.method === 'post' && config.url && 
+      config.url.endsWith('/checklist') && 
+      !config.url.endsWith('/')) {
+    config.url = config.url + '/'
+  }
+  
+  // Ensure trailing slash for GET requests to checklist endpoint (FastAPI may redirect)
+  if (config.method === 'get' && config.url && 
+      config.url === '/checklist' && 
       !config.url.endsWith('/')) {
     config.url = config.url + '/'
   }
