@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
-    <footer className="bg-[#121212] text-white py-16 mt-0">
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
+    <footer className="bg-[#121212] text-white py-8 mt-0">
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
 
         <div>
           <h3 className="text-lg font-semibold mb-4">Company</h3>
@@ -45,7 +45,7 @@ export default function Footer() {
 
       </div>
 
-      <div className="border-t border-gray-700 mt-10 pt-6 text-center text-gray-500 text-sm">
+      <div className="border-t border-gray-700 mt-6 pt-4 text-center text-gray-500 text-sm">
         © 2025 PakWedding. All rights reserved. Made with ❤️ in Pakistan.
       </div>
     </footer>

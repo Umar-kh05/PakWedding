@@ -64,7 +64,7 @@ export default function HomePage() {
   }, [])
 
   return (
-    <div className="bg-gradient-to-b from-[#FFF7F1] via-[#F4E9DB]/20 to-[#FFF7F1]">
+    <div className="bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 min-h-screen">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 pt-20 pb-32 overflow-hidden">
         {/* Decorative background elements */}
@@ -131,20 +131,20 @@ export default function HomePage() {
             {/* Right Content - Wedding Planner Preview */}
             <div className="relative h-full min-h-[600px] flex items-center justify-center lg:justify-end">
               {/* Soft Background Glows */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] bg-gradient-to-tr from-rose-200/20 via-pink-200/15 to-amber-200/20 rounded-full blur-[100px] -z-10 animate-pulse"></div>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] bg-gradient-to-tr from-primary-200/20 via-accent-200/15 to-amber-200/20 rounded-full blur-[100px] -z-10 animate-pulse"></div>
               
               {/* Wedding Planner Card Container */}
               <div className="relative w-full max-w-md transform transition-all duration-700 hover:scale-[1.02]">
                 
                 {/* Main Wedding Card */}
-                <div className="bg-white/95 backdrop-blur-xl border-2 border-rose-100/60 p-8 rounded-[32px] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.1)] relative z-20 hover:shadow-[0_30px_70px_-15px_rgba(0,0,0,0.15)] transition-all duration-500">
+                <div className="bg-white/95 backdrop-blur-xl border-2 border-primary-100/60 p-8 rounded-[32px] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.1)] relative z-20 hover:shadow-[0_30px_70px_-15px_rgba(0,0,0,0.15)] transition-all duration-500">
                   
                   {/* Header with Icon */}
                   <div className="text-center mb-8">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-rose-100 to-pink-100 rounded-full mb-4 shadow-lg">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary-100 to-accent-100 rounded-full mb-4 shadow-lg">
                       <span className="text-3xl">💕</span>
                     </div>
-                    <h3 className="text-2xl font-bold bg-gradient-to-r from-rose-600 via-pink-500 to-rose-600 bg-clip-text text-transparent">
+                    <h3 className="text-2xl font-bold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent">
                       Your Dream Wedding
                     </h3>
                     <p className="text-sm text-gray-500 mt-2 font-medium">Start planning your perfect day</p>
@@ -159,7 +159,7 @@ export default function HomePage() {
                           cx="64"
                           cy="64"
                           r="56"
-                          stroke="#FFE4E6"
+                          stroke="#FEE2E2"
                           strokeWidth="10"
                           fill="none"
                         />
@@ -177,15 +177,15 @@ export default function HomePage() {
                         />
                         <defs>
                           <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#FB7185" />
-                            <stop offset="50%" stopColor="#F472B6" />
-                            <stop offset="100%" stopColor="#FB923C" />
+                            <stop offset="0%" stopColor="#D72626" />
+                            <stop offset="50%" stopColor="#F26D46" />
+                            <stop offset="100%" stopColor="#F6A423" />
                           </linearGradient>
                         </defs>
                       </svg>
                       {/* Center Text */}
                       <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <div className="text-3xl font-bold bg-gradient-to-r from-rose-500 to-pink-500 bg-clip-text text-transparent">70%</div>
+                        <div className="text-3xl font-bold bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">70%</div>
                         <div className="text-xs text-gray-500 font-medium mt-1">Progress</div>
                       </div>
                     </div>
@@ -194,7 +194,7 @@ export default function HomePage() {
                   {/* Wedding Checklist */}
                   <div className="space-y-3 mb-6">
                     <h4 className="text-sm font-bold text-gray-700 mb-4 flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-gradient-to-r from-rose-400 to-pink-400"></span>
+                      <span className="w-2 h-2 rounded-full bg-gradient-to-r from-primary-500 to-accent-500"></span>
                       Wedding Planning Steps
                     </h4>
                     
@@ -203,7 +203,7 @@ export default function HomePage() {
                       { icon: '🍽️', text: 'Finalize Menu', status: 'in-progress' },
                       { icon: '💌', text: 'Send Invites', status: 'pending' }
                     ].map((item, i) => (
-                      <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-gradient-to-r from-rose-50/50 to-pink-50/50 hover:from-rose-50 hover:to-pink-50 transition-all duration-300 group">
+                      <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-gradient-to-r from-primary-50/50 to-accent-50/50 hover:from-primary-50 hover:to-accent-50 transition-all duration-300 group">
                         <span className="text-2xl group-hover:scale-110 transition-transform duration-300">{item.icon}</span>
                         <span className={`flex-1 text-sm font-medium ${
                           item.status === 'complete' ? 'text-gray-400 line-through' : 'text-gray-700'
@@ -232,11 +232,11 @@ export default function HomePage() {
                   </div>
 
                   {/* Wedding Stats */}
-                  <div className="grid grid-cols-2 gap-3 pt-6 border-t border-rose-100">
-                    <div className="text-center p-4 rounded-2xl bg-gradient-to-br from-rose-50 to-pink-50 hover:shadow-md transition-all duration-300 group">
+                  <div className="grid grid-cols-2 gap-3 pt-6 border-t border-primary-100">
+                    <div className="text-center p-4 rounded-2xl bg-gradient-to-br from-primary-50 to-accent-50 hover:shadow-md transition-all duration-300 group">
                       <div className="text-2xl mb-1 group-hover:scale-110 transition-transform duration-300">💝</div>
                       <div className="text-lg font-bold text-gray-800">8</div>
-                      <div className="text-xs text-rose-600 font-medium">Vendors Selected</div>
+                      <div className="text-xs text-primary-600 font-medium">Vendors Selected</div>
                     </div>
                     <div className="text-center p-4 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 hover:shadow-md transition-all duration-300 group">
                       <div className="text-2xl mb-1 group-hover:scale-110 transition-transform duration-300">📆</div>
@@ -247,13 +247,13 @@ export default function HomePage() {
                 </div>
 
                 {/* Floating Decorative Elements */}
-                <div className="absolute -right-8 top-16 bg-white p-3 rounded-2xl shadow-xl border-2 border-rose-100 z-30 animate-[bounce_3s_infinite] hidden lg:block">
+                <div className="absolute -right-8 top-16 bg-white p-3 rounded-2xl shadow-xl border-2 border-primary-100 z-30 animate-[bounce_3s_infinite] hidden lg:block">
                   <div className="flex items-center gap-2">
                     <span className="text-2xl">✨</span>
                   </div>
                 </div>
 
-                <div className="absolute -left-8 bottom-24 bg-white p-3 rounded-2xl shadow-xl border-2 border-pink-100 z-30 animate-[bounce_4s_infinite] hidden lg:block">
+                <div className="absolute -left-8 bottom-24 bg-white p-3 rounded-2xl shadow-xl border-2 border-primary-100 z-30 animate-[bounce_4s_infinite] hidden lg:block">
                   <div className="flex items-center gap-2">
                     <span className="text-2xl">🌸</span>
                   </div>
@@ -272,7 +272,7 @@ export default function HomePage() {
       </section>
 
       {/* Visual Showcase */}
-      <section className="py-24 bg-gradient-to-b from-[#FFF7F1]/40 via-white to-[#F4E9DB]/30 relative">
+      <section className="py-24 bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 relative">
         {/* Subtle pattern overlay */}
         <div className="absolute inset-0 opacity-[0.02] bg-[radial-gradient(circle_at_1px_1px,_rgb(0,0,0)_1px,_transparent_0)] [background-size:40px_40px]"></div>
         <div className="container mx-auto px-6 relative z-10">
@@ -289,7 +289,7 @@ export default function HomePage() {
             {showcaseImages.map((item, index) => (
               <div
                 key={index}
-                className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl hover:shadow-primary-600/40 transition-all duration-500 transform hover:-translate-y-2 border-2 border-transparent hover:border-primary-300"
+                className="group relative overflow-hidden rounded-2xl bg-white shadow-xl hover:shadow-2xl hover:shadow-primary-600/40 transition-all duration-500 transform hover:-translate-y-2 border-2 border-white hover:border-primary-300"
               >
                 <div className="aspect-[4/3] overflow-hidden bg-gray-100">
                   <img
@@ -303,7 +303,7 @@ export default function HomePage() {
                   <h3 className="text-2xl font-bold text-white mb-2 drop-shadow-lg group-hover:text-primary-200 transition-colors duration-300">
                     {item.title}
                   </h3>
-                  <p className="text-rose-200 text-sm font-medium drop-shadow-md group-hover:text-rose-100 transition-colors duration-300">
+                  <p className="text-primary-200 text-sm font-medium drop-shadow-md group-hover:text-primary-100 transition-colors duration-300">
                     {item.description}
                   </p>
                 </div>
@@ -327,7 +327,7 @@ export default function HomePage() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-24 bg-gradient-to-br from-rose-50 via-amber-50/50 to-rose-50 relative overflow-hidden">
+      <section className="py-24 bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute top-0 left-0 w-72 h-72 bg-amber-200/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 right-0 w-72 h-72 bg-primary-200/10 rounded-full blur-3xl"></div>
@@ -347,7 +347,7 @@ export default function HomePage() {
                 icon: '🔍',
                 title: 'Find Best Vendors',
                 description: 'Browse through 1000+ wedding vendors across Pakistan. All vendors are reviewed by real couples.',
-                gradient: 'from-primary-500 to-rose-500'
+                gradient: 'from-primary-500 to-accent-500'
               },
               {
                 icon: '💰',
@@ -359,12 +359,12 @@ export default function HomePage() {
                 icon: '📋',
                 title: 'Easy Management',
                 description: 'Stay organized with our wedding planning checklists and manage everything in one place.',
-                gradient: 'from-rose-500 to-primary-500'
+                gradient: 'from-accent-500 to-primary-500'
               }
             ].map((feature, index) => (
               <div
                 key={index}
-                className="group relative overflow-hidden bg-white rounded-2xl shadow-xl hover:shadow-2xl hover:shadow-primary-600/30 transition-all duration-500 transform hover:-translate-y-2 border-2 border-gray-100 hover:border-primary-300"
+                className="group relative overflow-hidden bg-white rounded-2xl shadow-xl hover:shadow-2xl hover:shadow-primary-600/30 transition-all duration-500 transform hover:-translate-y-2 border-2 border-white hover:border-primary-300"
               >
                 <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-15 transition-opacity duration-500`}></div>
                 <div className="relative p-8">
@@ -385,7 +385,7 @@ export default function HomePage() {
       </section>
 
       {/* How It Works */}
-      <section className="py-24 bg-gradient-to-b from-white via-[#FFF7F1]/30 to-white relative">
+      <section className="py-24 bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 relative">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-5xl font-extrabold bg-gradient-to-r from-gray-900 via-amber-600 to-gray-900 bg-clip-text text-transparent mb-4">
@@ -398,14 +398,14 @@ export default function HomePage() {
 
           <div className="grid md:grid-cols-4 gap-6 max-w-6xl mx-auto">
             {[
-              { step: '1', title: 'Sign Up', description: 'Create your free account', icon: '👤', gradient: 'from-primary-500 to-primary-600', ring: 'ring-primary-100', badge: 'from-primary-600 to-primary-700' },
-              { step: '2', title: 'Browse', description: 'Search vendors by category', icon: '🔍', gradient: 'from-amber-500 to-amber-600', ring: 'ring-amber-100', badge: 'from-amber-600 to-amber-700' },
-              { step: '3', title: 'Book', description: 'Send booking requests', icon: '📅', gradient: 'from-rose-500 to-rose-600', ring: 'ring-rose-100', badge: 'from-rose-600 to-rose-700' },
-              { step: '4', title: 'Plan', description: 'Manage everything', icon: '✨', gradient: 'from-primary-500 to-primary-600', ring: 'ring-primary-100', badge: 'from-primary-600 to-primary-700' }
+              { step: '1', title: 'Sign Up', description: 'Create your free account', icon: '👤', gradient: 'from-primary-600 to-primary-700', ring: 'ring-primary-100', badge: 'from-primary-700 to-primary-800' },
+              { step: '2', title: 'Browse', description: 'Search vendors by category', icon: '🔍', gradient: 'from-accent-600 to-accent-700', ring: 'ring-accent-100', badge: 'from-accent-700 to-accent-800' },
+              { step: '3', title: 'Book', description: 'Send booking requests', icon: '📅', gradient: 'from-primary-600 to-accent-600', ring: 'ring-primary-100', badge: 'from-primary-700 to-accent-700' },
+              { step: '4', title: 'Plan', description: 'Manage everything', icon: '✨', gradient: 'from-accent-600 to-primary-600', ring: 'ring-accent-100', badge: 'from-accent-700 to-primary-700' }
             ].map((item, index) => (
               <div
                 key={index}
-                className="group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl hover:shadow-primary-600/30 transition-all duration-500 transform hover:-translate-y-2 border-2 border-gray-100 hover:border-primary-300"
+                className="group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl hover:shadow-primary-600/30 transition-all duration-500 transform hover:-translate-y-2 border-2 border-white hover:border-primary-300"
               >
                 <div className="text-center">
                   <div className="relative inline-block mb-6">
@@ -428,7 +428,7 @@ export default function HomePage() {
       </section>
 
       {/* Auto-Moving Testimonials */}
-      <section className="py-24 bg-gradient-to-br from-rose-50 via-amber-50/50 to-rose-50 relative overflow-hidden">
+      <section className="py-24 bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 relative overflow-hidden">
         <div className="absolute top-10 left-10 w-64 h-64 bg-amber-200/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 right-10 w-64 h-64 bg-primary-200/10 rounded-full blur-3xl"></div>
         <div className="container mx-auto px-6 relative z-10">
@@ -442,7 +442,7 @@ export default function HomePage() {
           </div>
 
           <div className="max-w-4xl mx-auto">
-            <div className="relative bg-white rounded-3xl p-12 shadow-2xl border-2 border-rose-100 hover:border-primary-300 transition-all duration-300">
+            <div className="relative bg-white rounded-3xl p-12 shadow-2xl border-2 border-white hover:border-primary-300 transition-all duration-300">
               {/* Testimonial Content */}
               <div className="text-center">
                 <div className="flex justify-center gap-1 mb-6">
@@ -482,7 +482,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-b from-white via-[#FFF7F1]/20 to-white relative overflow-hidden">
+      <section className="py-24 bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 relative overflow-hidden">
         {/* Subtle decorative elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-10 right-10 w-96 h-96 bg-amber-200/10 rounded-full blur-3xl"></div>

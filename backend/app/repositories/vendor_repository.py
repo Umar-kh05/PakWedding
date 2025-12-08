@@ -58,8 +58,8 @@ class VendorRepository(BaseRepository):
         )
     
     async def get_pending_approvals(self, skip: int = 0, limit: int = 100):
-        """Get vendors pending approval"""
-        return await self.find_many({"is_approved": False}, skip, limit)
+        """Get vendors pending approval (exclude rejected/inactive)"""
+        return await self.find_many({"is_approved": False, "is_active": True}, skip, limit)
     
     async def approve_vendor(self, vendor_id: str):
         """Approve a vendor - sets is_approved to True and ensures is_active is True"""

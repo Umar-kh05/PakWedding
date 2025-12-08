@@ -98,7 +98,7 @@ export default function RegisterPage() {
               type="text"
               value={formData.full_name}
               onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
               placeholder="Enter your full name"
               required
             />
@@ -110,7 +110,7 @@ export default function RegisterPage() {
               type="email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
               placeholder="Enter your email"
               required
               onBlur={(e) => checkEmail(e.target.value)}
@@ -123,7 +123,7 @@ export default function RegisterPage() {
               type="tel"
               value={formData.phone_number}
               onChange={(e) => setFormData({ ...formData, phone_number: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
               placeholder="Enter your phone number"
             />
           </div>
@@ -136,7 +136,7 @@ export default function RegisterPage() {
                 onClick={() => setFormData({ ...formData, role: 'user' })}
                 className={`px-4 py-3 rounded-lg font-semibold transition-all ${
                   formData.role === 'user'
-                    ? 'bg-pink-600 text-white shadow-lg'
+                    ? 'bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 text-white shadow-lg'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -147,7 +147,7 @@ export default function RegisterPage() {
                 onClick={() => setFormData({ ...formData, role: 'admin' })}
                 className={`px-4 py-3 rounded-lg font-semibold transition-all ${
                   formData.role === 'admin'
-                    ? 'bg-pink-600 text-white shadow-lg'
+                    ? 'bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 text-white shadow-lg'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -167,7 +167,7 @@ export default function RegisterPage() {
               type="password"
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
               placeholder="Create a password"
               required
             />
@@ -179,7 +179,7 @@ export default function RegisterPage() {
               type="password"
               value={formData.confirm_password}
               onChange={(e) => setFormData({ ...formData, confirm_password: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
               placeholder="Confirm your password"
               required
             />
@@ -187,7 +187,7 @@ export default function RegisterPage() {
 
           <button
             type="submit"
-            className="w-full bg-pink-600 hover:bg-pink-700 text-white py-3 rounded-lg font-semibold transition-colors"
+            className="w-full bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 hover:from-primary-700 hover:via-accent-700 hover:to-primary-700 text-white py-3 rounded-lg font-semibold transition-colors shadow-lg"
           >
             Sign Up
           </button>
