@@ -191,7 +191,7 @@ export default function VendorProfilePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 flex items-center justify-center">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-pink-200 border-t-pink-600 mb-4"></div>
           <p className="text-gray-600 font-medium text-lg">Loading profile...</p>
@@ -201,7 +201,7 @@ export default function VendorProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
       <div className="container mx-auto px-6 py-8">
         {/* Header */}
         <div className="mb-8">
@@ -214,7 +214,7 @@ export default function VendorProfilePage() {
             </svg>
             Back to Dashboard
           </button>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
             Manage Profile
           </h1>
           <p className="text-gray-600 mt-2">Update your business information and settings</p>
@@ -359,7 +359,7 @@ export default function VendorProfilePage() {
               <button
                 type="submit"
                 disabled={saving}
-                className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition-all"
+                className="w-full bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition-all"
               >
                 {saving ? 'Saving...' : 'Save Changes'}
               </button>
@@ -414,7 +414,7 @@ export default function VendorProfilePage() {
               <button
                 type="submit"
                 disabled={saving}
-                className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition-all"
+                className="w-full bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition-all"
               >
                 {saving ? 'Updating...' : 'Update Password'}
               </button>
@@ -450,7 +450,7 @@ export default function VendorProfilePage() {
               <button
                 type="submit"
                 disabled={saving || !imageFile}
-                className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition-all"
+                className="w-full bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition-all"
               >
                 {saving ? 'Uploading...' : 'Upload Image'}
               </button>

@@ -64,7 +64,7 @@ export default function HomePage() {
   }, [])
 
   return (
-    <div className="bg-gradient-to-b from-rose-50/30 via-white to-rose-50/20">
+    <div className="bg-gradient-to-b from-[#FFF7F1] via-[#F4E9DB]/20 to-[#FFF7F1]">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 pt-20 pb-32 overflow-hidden">
         {/* Decorative background elements */}
@@ -105,7 +105,7 @@ export default function HomePage() {
                 </Link>
                 <Link
                   to="/budget-planner"
-                  className="bg-white border-2 border-amber-600 text-amber-700 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-amber-50 hover:border-amber-700 hover:text-amber-800 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
+                  className="bg-white border-2 border-[#D72626] text-[#D72626] px-8 py-4 rounded-xl text-lg font-semibold hover:bg-[#FEECEC] hover:border-[#D72626] hover:text-[#D72626] transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
                 >
                   Budget Planner
                 </Link>
@@ -113,133 +113,155 @@ export default function HomePage() {
 
               {/* Stats */}
               <div className="grid grid-cols-3 gap-8 pt-6">
-                <div className="text-center p-4 rounded-xl bg-white backdrop-blur-sm border-2 border-amber-100 hover:border-amber-300 hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                  <div className="text-4xl font-bold bg-gradient-to-r from-red-700 to-amber-600 bg-clip-text text-transparent">1000+</div>
+                <div className="text-center p-4 rounded-xl bg-white backdrop-blur-sm border-2 border-[#F7A76C]/30 hover:border-[#F7A76C] hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                  <div className="text-4xl font-bold bg-gradient-to-r from-[#D72626] to-[#F26D46] bg-clip-text text-transparent">1000+</div>
                   <div className="text-sm text-gray-700 font-semibold mt-1">Vendors</div>
                 </div>
-                <div className="text-center p-4 rounded-xl bg-white backdrop-blur-sm border-2 border-amber-100 hover:border-amber-300 hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                  <div className="text-4xl font-bold bg-gradient-to-r from-red-700 to-amber-600 bg-clip-text text-transparent">5000+</div>
+                <div className="text-center p-4 rounded-xl bg-white backdrop-blur-sm border-2 border-[#F7A76C]/30 hover:border-[#F7A76C] hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                  <div className="text-4xl font-bold bg-gradient-to-r from-[#D72626] to-[#F26D46] bg-clip-text text-transparent">5000+</div>
                   <div className="text-sm text-gray-700 font-semibold mt-1">Happy Couples</div>
                 </div>
-                <div className="text-center p-4 rounded-xl bg-white backdrop-blur-sm border-2 border-amber-100 hover:border-amber-300 hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                  <div className="text-4xl font-bold bg-gradient-to-r from-red-700 to-amber-600 bg-clip-text text-transparent">50+</div>
+                <div className="text-center p-4 rounded-xl bg-white backdrop-blur-sm border-2 border-[#F7A76C]/30 hover:border-[#F7A76C] hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                  <div className="text-4xl font-bold bg-gradient-to-r from-[#D72626] to-[#F26D46] bg-clip-text text-transparent">50+</div>
                   <div className="text-sm text-gray-700 font-semibold mt-1">Cities</div>
                 </div>
               </div>
             </div>
 
-            {/* Right Content - Abstract Design */}
-            <div className="relative h-full min-h-[600px] flex items-center justify-center lg:justify-end perspective-1000">
-              {/* Background Glows */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-tr from-primary-200/30 via-rose-200/20 to-amber-200/30 rounded-full blur-[80px] -z-10 animate-pulse"></div>
+            {/* Right Content - Wedding Planner Preview */}
+            <div className="relative h-full min-h-[600px] flex items-center justify-center lg:justify-end">
+              {/* Soft Background Glows */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] bg-gradient-to-tr from-rose-200/20 via-pink-200/15 to-amber-200/20 rounded-full blur-[100px] -z-10 animate-pulse"></div>
               
-              {/* 3D Container */}
-              <div className="relative w-full max-w-md transform transition-transform duration-700 hover:scale-[1.02] hover:rotate-1">
+              {/* Wedding Planner Card Container */}
+              <div className="relative w-full max-w-md transform transition-all duration-700 hover:scale-[1.02]">
                 
-                {/* Main Glass Card (The 'App') */}
-                <div className="bg-white/90 backdrop-blur-2xl border border-white/60 p-6 rounded-3xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)] relative z-20">
-                  {/* Fake Window Controls */}
-                  <div className="flex items-center justify-between mb-8 pb-4 border-b border-gray-100/80">
-                    <div className="flex gap-2">
-                      <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                      <div className="w-3 h-3 rounded-full bg-amber-400"></div>
-                      <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                {/* Main Wedding Card */}
+                <div className="bg-white/95 backdrop-blur-xl border-2 border-rose-100/60 p-8 rounded-[32px] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.1)] relative z-20 hover:shadow-[0_30px_70px_-15px_rgba(0,0,0,0.15)] transition-all duration-500">
+                  
+                  {/* Header with Icon */}
+                  <div className="text-center mb-8">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-rose-100 to-pink-100 rounded-full mb-4 shadow-lg">
+                      <span className="text-3xl">💕</span>
                     </div>
-                    <div className="text-xs font-medium text-gray-400 uppercase tracking-widest">Dashboard</div>
-                    <div className="w-8 h-8 rounded-full bg-gray-100"></div>
+                    <h3 className="text-2xl font-bold bg-gradient-to-r from-rose-600 via-pink-500 to-rose-600 bg-clip-text text-transparent">
+                      Your Dream Wedding
+                    </h3>
+                    <p className="text-sm text-gray-500 mt-2 font-medium">Start planning your perfect day</p>
                   </div>
 
-                  {/* Dashboard Grid */}
-                  <div className="space-y-4">
-                    {/* Top Row: Budget & Stats */}
-                    <div className="grid grid-cols-2 gap-4">
-                      {/* Budget Card */}
-                      <div className="col-span-2 bg-gradient-to-br from-gray-50 to-white p-5 rounded-2xl border border-gray-100 shadow-sm group hover:border-primary-200 transition-all duration-300">
-                        <div className="flex justify-between items-start mb-4">
-                          <div>
-                            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Total Budget</p>
-                            <h3 className="text-2xl font-bold text-gray-800">PKR 1.5M</h3>
-                          </div>
-                          <div className="p-2 bg-green-50 text-green-600 rounded-lg group-hover:scale-110 transition-transform">
-                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                          </div>
-                        </div>
-                        <div className="w-full bg-gray-100 rounded-full h-2 mb-2 overflow-hidden">
-                          <div className="bg-primary-500 h-2 rounded-full w-[65%] shadow-[0_0_10px_rgba(220,38,38,0.5)]"></div>
-                        </div>
-                        <div className="flex justify-between text-xs text-gray-500 font-medium">
-                          <span>Spent: 975k</span>
-                          <span>65%</span>
-                        </div>
-                      </div>
-
-                      {/* Count Cards */}
-                      <div className="bg-rose-50 p-4 rounded-2xl border border-rose-100 flex flex-col items-center justify-center text-center hover:shadow-md transition-shadow">
-                        <span className="text-2xl mb-1">❤️</span>
-                        <span className="text-sm font-bold text-gray-800">12 Vendors</span>
-                        <span className="text-[10px] text-rose-600 font-medium bg-rose-100 px-2 py-0.5 rounded-full mt-1">Shortlisted</span>
-                      </div>
-                      <div className="bg-amber-50 p-4 rounded-2xl border border-amber-100 flex flex-col items-center justify-center text-center hover:shadow-md transition-shadow">
-                        <span className="text-2xl mb-1">📅</span>
-                        <span className="text-sm font-bold text-gray-800">24 Oct</span>
-                        <span className="text-[10px] text-amber-700 font-medium bg-amber-100 px-2 py-0.5 rounded-full mt-1">Save the Date</span>
+                  {/* Elegant Progress Circle */}
+                  <div className="flex justify-center mb-8">
+                    <div className="relative">
+                      {/* Progress Ring */}
+                      <svg className="transform -rotate-90 w-32 h-32">
+                        <circle
+                          cx="64"
+                          cy="64"
+                          r="56"
+                          stroke="#FFE4E6"
+                          strokeWidth="10"
+                          fill="none"
+                        />
+                        <circle
+                          cx="64"
+                          cy="64"
+                          r="56"
+                          stroke="url(#gradient)"
+                          strokeWidth="10"
+                          fill="none"
+                          strokeDasharray="351.86"
+                          strokeDashoffset="105.56"
+                          strokeLinecap="round"
+                          className="transition-all duration-1000 ease-out"
+                        />
+                        <defs>
+                          <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#FB7185" />
+                            <stop offset="50%" stopColor="#F472B6" />
+                            <stop offset="100%" stopColor="#FB923C" />
+                          </linearGradient>
+                        </defs>
+                      </svg>
+                      {/* Center Text */}
+                      <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <div className="text-3xl font-bold bg-gradient-to-r from-rose-500 to-pink-500 bg-clip-text text-transparent">70%</div>
+                        <div className="text-xs text-gray-500 font-medium mt-1">Progress</div>
                       </div>
                     </div>
+                  </div>
 
-                    {/* Task List */}
-                    <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
-                      <h4 className="text-sm font-bold text-gray-800 mb-4 flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-primary-500"></span>
-                        Priority Tasks
-                      </h4>
-                      <div className="space-y-3">
-                        {[
-                          { text: 'Book Venue', done: true, tag: 'Done' },
-                          { text: 'Finalize Menu', done: false, tag: 'Urgent' },
-                          { text: 'Send Invites', done: false, tag: 'Pending' }
-                        ].map((task, i) => (
-                          <div key={i} className="flex items-center justify-between group cursor-default">
-                            <div className="flex items-center gap-3">
-                              <div className={`w-5 h-5 rounded-md border flex items-center justify-center transition-colors ${task.done ? 'bg-primary-500 border-primary-500 text-white' : 'border-gray-300 group-hover:border-primary-400'}`}>
-                                {task.done && <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
-                              </div>
-                              <span className={`text-sm ${task.done ? 'text-gray-400 line-through' : 'text-gray-700 font-medium'}`}>{task.text}</span>
-                            </div>
-                            <span className={`text-[10px] px-2 py-1 rounded-md font-medium ${
-                              task.tag === 'Done' ? 'bg-green-100 text-green-700' :
-                              task.tag === 'Urgent' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-600'
-                            }`}>
-                              {task.tag}
-                            </span>
+                  {/* Wedding Checklist */}
+                  <div className="space-y-3 mb-6">
+                    <h4 className="text-sm font-bold text-gray-700 mb-4 flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-gradient-to-r from-rose-400 to-pink-400"></span>
+                      Wedding Planning Steps
+                    </h4>
+                    
+                    {[
+                      { icon: '💒', text: 'Book Venue', status: 'complete' },
+                      { icon: '🍽️', text: 'Finalize Menu', status: 'in-progress' },
+                      { icon: '💌', text: 'Send Invites', status: 'pending' }
+                    ].map((item, i) => (
+                      <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-gradient-to-r from-rose-50/50 to-pink-50/50 hover:from-rose-50 hover:to-pink-50 transition-all duration-300 group">
+                        <span className="text-2xl group-hover:scale-110 transition-transform duration-300">{item.icon}</span>
+                        <span className={`flex-1 text-sm font-medium ${
+                          item.status === 'complete' ? 'text-gray-400 line-through' : 'text-gray-700'
+                        }`}>
+                          {item.text}
+                        </span>
+                        {item.status === 'complete' && (
+                          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center shadow-lg">
+                            <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                            </svg>
                           </div>
-                        ))}
+                        )}
+                        {item.status === 'in-progress' && (
+                          <span className="px-3 py-1 text-xs font-semibold bg-gradient-to-r from-amber-100 to-orange-100 text-amber-700 rounded-full">
+                            In Progress
+                          </span>
+                        )}
+                        {item.status === 'pending' && (
+                          <span className="px-3 py-1 text-xs font-semibold bg-gray-100 text-gray-600 rounded-full">
+                            Pending
+                          </span>
+                        )}
                       </div>
+                    ))}
+                  </div>
+
+                  {/* Wedding Stats */}
+                  <div className="grid grid-cols-2 gap-3 pt-6 border-t border-rose-100">
+                    <div className="text-center p-4 rounded-2xl bg-gradient-to-br from-rose-50 to-pink-50 hover:shadow-md transition-all duration-300 group">
+                      <div className="text-2xl mb-1 group-hover:scale-110 transition-transform duration-300">💝</div>
+                      <div className="text-lg font-bold text-gray-800">8</div>
+                      <div className="text-xs text-rose-600 font-medium">Vendors Selected</div>
+                    </div>
+                    <div className="text-center p-4 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 hover:shadow-md transition-all duration-300 group">
+                      <div className="text-2xl mb-1 group-hover:scale-110 transition-transform duration-300">📆</div>
+                      <div className="text-lg font-bold text-gray-800">45</div>
+                      <div className="text-xs text-amber-700 font-medium">Days to Go</div>
                     </div>
                   </div>
                 </div>
 
-                {/* Floating Elements / Decor */}
-                <div className="absolute -right-12 top-20 bg-white p-4 rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] border border-gray-100 z-30 animate-[bounce_4s_infinite] hidden lg:block">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-400 to-rose-500 flex items-center justify-center text-white shadow-lg shadow-primary-500/30">
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
-                    </div>
-                    <div>
-                      <div className="text-sm font-bold text-gray-800">New Message</div>
-                      <div className="text-xs text-gray-500">Decor vendor replied</div>
-                    </div>
+                {/* Floating Decorative Elements */}
+                <div className="absolute -right-8 top-16 bg-white p-3 rounded-2xl shadow-xl border-2 border-rose-100 z-30 animate-[bounce_3s_infinite] hidden lg:block">
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">✨</span>
                   </div>
                 </div>
 
-                <div className="absolute -left-10 bottom-32 bg-white p-4 rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] border border-gray-100 z-30 animate-[bounce_5s_infinite] hidden lg:block">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    </div>
-                    <div>
-                      <div className="text-sm font-bold text-gray-800">Checklist</div>
-                      <div className="text-xs text-green-600 font-medium">Task Completed!</div>
-                    </div>
+                <div className="absolute -left-8 bottom-24 bg-white p-3 rounded-2xl shadow-xl border-2 border-pink-100 z-30 animate-[bounce_4s_infinite] hidden lg:block">
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">🌸</span>
+                  </div>
+                </div>
+
+                <div className="absolute -right-6 bottom-16 bg-white p-3 rounded-2xl shadow-xl border-2 border-amber-100 z-30 animate-[bounce_5s_infinite] hidden lg:block">
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">💐</span>
                   </div>
                 </div>
 
@@ -250,7 +272,7 @@ export default function HomePage() {
       </section>
 
       {/* Visual Showcase */}
-      <section className="py-24 bg-gradient-to-b from-rose-50/40 via-white to-rose-50/30 relative">
+      <section className="py-24 bg-gradient-to-b from-[#FFF7F1]/40 via-white to-[#F4E9DB]/30 relative">
         {/* Subtle pattern overlay */}
         <div className="absolute inset-0 opacity-[0.02] bg-[radial-gradient(circle_at_1px_1px,_rgb(0,0,0)_1px,_transparent_0)] [background-size:40px_40px]"></div>
         <div className="container mx-auto px-6 relative z-10">
@@ -295,7 +317,7 @@ export default function HomePage() {
           <div className="text-center mt-12">
             <Link
               to="/vendors"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-primary-600 via-amber-600 to-primary-600 text-white px-10 py-4 rounded-xl text-lg font-bold hover:from-primary-700 hover:via-amber-700 hover:to-primary-700 transition-all duration-300 shadow-xl hover:shadow-2xl hover:shadow-primary-600/50 transform hover:scale-105"
+              className="inline-flex items-center gap-2 px-10 py-4 rounded-xl text-white text-lg font-bold bg-gradient-to-r from-[#D72626] via-[#F26D46] to-[#F7A76C] hover:opacity-90 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105"
             >
               Browse All Vendors
               <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
@@ -363,7 +385,7 @@ export default function HomePage() {
       </section>
 
       {/* How It Works */}
-      <section className="py-24 bg-gradient-to-b from-white via-rose-50/30 to-white relative">
+      <section className="py-24 bg-gradient-to-b from-white via-[#FFF7F1]/30 to-white relative">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-5xl font-extrabold bg-gradient-to-r from-gray-900 via-amber-600 to-gray-900 bg-clip-text text-transparent mb-4">
@@ -460,12 +482,12 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-b from-white via-amber-50/20 to-white relative overflow-hidden">
+      <section className="py-24 bg-gradient-to-b from-white via-[#FFF7F1]/20 to-white relative overflow-hidden">
         {/* Subtle decorative elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-10 right-10 w-96 h-96 bg-amber-200/10 rounded-full blur-3xl"></div>
           <div className="absolute bottom-10 left-10 w-96 h-96 bg-red-200/10 rounded-full blur-3xl"></div>
-        </div>
+            </div>
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
@@ -481,19 +503,19 @@ export default function HomePage() {
 
             {/* Elegant buttons */}
             <div className="flex flex-wrap justify-center gap-4 mb-12">
-              <Link
-                to="/register"
+                <Link
+                  to="/register"
                 className="group bg-gradient-to-r from-red-700 to-red-600 text-white px-10 py-4 rounded-xl text-lg font-semibold hover:from-red-800 hover:to-red-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-red-600/30 transform hover:scale-105 flex items-center gap-2"
-              >
-                Get Started Free
+                >
+                  Get Started Free
                 <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
-              </Link>
-              <Link
-                to="/vendors"
-                className="bg-white border-2 border-gray-300 text-gray-700 px-10 py-4 rounded-xl text-lg font-semibold hover:bg-gray-50 hover:border-red-700 hover:text-red-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
-              >
-                Browse Vendors
-              </Link>
+                </Link>
+                <Link
+                  to="/vendors"
+                className="bg-white border-2 border-[#D72626] text-[#D72626] px-10 py-4 rounded-xl text-lg font-semibold hover:bg-[#FEECEC] hover:border-[#D72626] transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
+                >
+                  Browse Vendors
+                </Link>
             </div>
 
             {/* Trust indicators */}

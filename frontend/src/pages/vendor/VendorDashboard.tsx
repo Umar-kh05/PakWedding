@@ -43,12 +43,12 @@ export default function VendorDashboard() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50/30 to-pink-50">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
       {/* Header */}
-      <div className="bg-gradient-to-r from-white via-pink-50/50 to-white shadow-lg border-b-2 border-pink-200">
+      <div className="bg-[#F4E9DB] shadow-lg border-b-2 border-[#D72626]/20">
         <div className="container mx-auto px-6 py-6 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-extrabold bg-gradient-to-r from-gray-900 via-pink-600 to-gray-900 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-extrabold bg-gradient-to-r from-gray-900 via-[#D72626] to-gray-900 bg-clip-text text-transparent">
               Vendor Dashboard
             </h1>
             <p className="text-gray-600 mt-1 font-medium">Welcome back, {user?.full_name || 'Vendor'}</p>
@@ -88,7 +88,7 @@ export default function VendorDashboard() {
               </div>
             </div>
             <p className="text-gray-600 text-sm font-semibold mb-2">Total Bookings</p>
-            <p className="text-4xl font-extrabold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+            <p className="text-4xl font-extrabold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
               {loading ? '...' : stats.totalBookings}
             </p>
           </div>
@@ -99,7 +99,7 @@ export default function VendorDashboard() {
               </div>
             </div>
             <p className="text-gray-600 text-sm font-semibold mb-2">Pending Requests</p>
-            <p className="text-4xl font-extrabold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+            <p className="text-4xl font-extrabold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
               {loading ? '...' : stats.pendingRequests}
             </p>
           </div>
@@ -110,7 +110,7 @@ export default function VendorDashboard() {
               </div>
             </div>
             <p className="text-gray-600 text-sm font-semibold mb-2">Average Rating</p>
-            <p className="text-4xl font-extrabold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+            <p className="text-4xl font-extrabold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
               {loading ? '...' : stats.averageRating.toFixed(1)}
             </p>
           </div>
@@ -121,7 +121,7 @@ export default function VendorDashboard() {
               </div>
             </div>
             <p className="text-gray-600 text-sm font-semibold mb-2">Total Revenue</p>
-            <p className="text-4xl font-extrabold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+            <p className="text-4xl font-extrabold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
               {loading ? '...' : stats.totalRevenue}
             </p>
           </div>
@@ -157,9 +157,9 @@ export default function VendorDashboard() {
             </Link>
             <Link
               to="/vendor/packages"
-              className="group bg-gradient-to-br from-purple-50 to-indigo-50 rounded-2xl p-6 border-2 border-purple-200 hover:border-purple-400 transition-all hover:shadow-xl transform hover:-translate-y-1"
+              className="group bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl p-6 border-2 border-orange-200 hover:border-orange-400 transition-all hover:shadow-xl transform hover:-translate-y-1"
             >
-              <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                 </svg>

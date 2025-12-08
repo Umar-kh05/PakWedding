@@ -50,4 +50,3 @@ Depend on abstractions, not concretions:
 
 ### Middleware Pattern
 - authMiddleware, roleMiddleware, errorHandler
-

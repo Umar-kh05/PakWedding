@@ -37,7 +37,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50/30 to-pink-50">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
       {/* Header */}
       <div className="bg-gradient-to-r from-white via-pink-50/50 to-white shadow-lg border-b-2 border-pink-200">
         <div className="container mx-auto px-6 py-6 flex items-center justify-between">
@@ -60,7 +60,7 @@ export default function AdminDashboard() {
               </div>
             </div>
             <p className="text-gray-600 text-sm font-semibold mb-2">Pending Vendor Approvals</p>
-            <p className="text-4xl font-extrabold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">{stats.pendingApprovals}</p>
+            <p className="text-4xl font-extrabold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">{stats.pendingApprovals}</p>
           </div>
           <div className="bg-gradient-to-br from-white to-pink-50/50 rounded-2xl shadow-xl p-6 border-2 border-pink-100 hover:border-pink-300 transition-all hover:shadow-2xl">
             <div className="flex items-center justify-between mb-4">
@@ -69,7 +69,7 @@ export default function AdminDashboard() {
               </div>
             </div>
             <p className="text-gray-600 text-sm font-semibold mb-2">Pending Admin Approvals</p>
-            <p className="text-4xl font-extrabold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">{stats.pendingAdminApprovals || 0}</p>
+            <p className="text-4xl font-extrabold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">{stats.pendingAdminApprovals || 0}</p>
           </div>
           <div className="bg-gradient-to-br from-white to-pink-50/50 rounded-2xl shadow-xl p-6 border-2 border-pink-100 hover:border-pink-300 transition-all hover:shadow-2xl">
             <div className="flex items-center justify-between mb-4">
@@ -78,7 +78,7 @@ export default function AdminDashboard() {
               </div>
             </div>
             <p className="text-gray-600 text-sm font-semibold mb-2">Flagged Reviews</p>
-            <p className="text-4xl font-extrabold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">{stats.flaggedReviews}</p>
+            <p className="text-4xl font-extrabold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">{stats.flaggedReviews}</p>
           </div>
           <div className="bg-gradient-to-br from-white to-pink-50/50 rounded-2xl shadow-xl p-6 border-2 border-pink-100 hover:border-pink-300 transition-all hover:shadow-2xl">
             <div className="flex items-center justify-between mb-4">
@@ -87,7 +87,7 @@ export default function AdminDashboard() {
               </div>
             </div>
             <p className="text-gray-600 text-sm font-semibold mb-2">Active Users</p>
-            <p className="text-4xl font-extrabold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">{stats.activeUsers.toLocaleString()}</p>
+            <p className="text-4xl font-extrabold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">{stats.activeUsers.toLocaleString()}</p>
           </div>
         </div>
 
@@ -121,9 +121,9 @@ export default function AdminDashboard() {
             </Link>
             <Link
               to="/admin/users"
-              className="group bg-gradient-to-br from-purple-50 to-indigo-50 rounded-2xl p-6 border-2 border-purple-200 hover:border-purple-400 transition-all hover:shadow-xl transform hover:-translate-y-1"
+              className="group bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl p-6 border-2 border-orange-200 hover:border-orange-400 transition-all hover:shadow-xl transform hover:-translate-y-1"
             >
-              <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>

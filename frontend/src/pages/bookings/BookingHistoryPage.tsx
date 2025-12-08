@@ -105,7 +105,7 @@ export default function BookingHistoryPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50/30 to-pink-50 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 py-8 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="bg-gradient-to-r from-white via-pink-50/50 to-white rounded-2xl shadow-xl p-8 border-2 border-pink-100 mb-8">
@@ -144,7 +144,7 @@ export default function BookingHistoryPage() {
                 onClick={() => setFilter(status)}
                 className={`px-6 py-2 rounded-xl font-semibold transition-all capitalize ${
                   filter === status
-                    ? 'bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow-lg'
+                    ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-lg'
                     : 'bg-pink-50 text-gray-700 hover:bg-pink-100'
                 }`}
               >
@@ -166,7 +166,7 @@ export default function BookingHistoryPage() {
             <p className="text-gray-600 mb-6">Start booking vendors for your wedding!</p>
             <Link
               to="/vendors"
-              className="inline-block bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-8 py-3 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl"
+              className="inline-block bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white px-8 py-3 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl"
             >
               Browse Vendors
             </Link>
@@ -218,7 +218,7 @@ export default function BookingHistoryPage() {
                   <div className="flex gap-3 flex-wrap">
                     <Link
                       to={`/vendors/${booking.vendor_id}`}
-                      className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-6 py-2 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl"
+                      className="bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white px-6 py-2 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl"
                     >
                       View Vendor
                     </Link>

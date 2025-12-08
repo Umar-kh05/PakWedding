@@ -94,10 +94,10 @@ export default function BudgetPlannerPage() {
   const remainingAllocated = totalBudget ? totalBudget * (1 - totalAllocated) : 0
 
   return (
-    <div className="bg-gradient-to-b from-pink-50/30 via-white to-pink-50/20 min-h-screen py-10 px-4">
+    <div className="bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 min-h-screen py-10 px-4">
       <div className="max-w-5xl mx-auto space-y-6">
         <div className="text-center mb-8">
-          <h1 className="text-5xl font-extrabold bg-gradient-to-r from-gray-900 via-pink-600 to-gray-900 bg-clip-text text-transparent mb-4">
+          <h1 className="text-5xl font-extrabold bg-gradient-to-r from-gray-900 via-[#D72626] to-gray-900 bg-clip-text text-transparent mb-4">
             Budget Planner
           </h1>
           <p className="text-xl text-gray-700 font-medium">
@@ -123,7 +123,7 @@ export default function BudgetPlannerPage() {
               />
               <button
                 type="submit"
-                className="h-14 px-8 bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold rounded-xl hover:from-pink-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl"
+                className="h-14 px-8 rounded-xl text-white font-semibold bg-gradient-to-r from-[#D72626] via-[#F26D46] to-[#F7A76C] hover:opacity-90 transition-all shadow-lg hover:shadow-xl"
               >
                 Continue
               </button>
@@ -132,7 +132,7 @@ export default function BudgetPlannerPage() {
         ) : (
           <>
             {/* Total Budget Card */}
-            <div className="bg-gradient-to-r from-pink-600 to-purple-600 rounded-2xl shadow-2xl p-8 text-white relative overflow-hidden">
+            <div className="bg-gradient-to-r from-[#D72626] via-[#F26D46] to-[#F7A76C] rounded-2xl shadow-2xl p-8 text-white relative overflow-hidden">
               <div className="absolute inset-0 opacity-20">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl"></div>
                 <div className="absolute bottom-0 left-0 w-64 h-64 bg-white rounded-full blur-3xl"></div>
@@ -285,7 +285,7 @@ export default function BudgetPlannerPage() {
                     <div className="flex gap-2">
                       <button
                         onClick={handleAddCategory}
-                        className="flex-1 bg-gradient-to-r from-pink-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-pink-700 hover:to-purple-700 transition-all"
+                        className="flex-1 px-6 py-3 rounded-xl text-white font-semibold bg-gradient-to-r from-[#D72626] via-[#F26D46] to-[#F7A76C] hover:opacity-90 transition-all"
                       >
                         Add Category
                       </button>

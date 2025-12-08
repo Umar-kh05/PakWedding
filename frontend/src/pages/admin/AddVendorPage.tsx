@@ -211,7 +211,7 @@ export default function AddVendorPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">

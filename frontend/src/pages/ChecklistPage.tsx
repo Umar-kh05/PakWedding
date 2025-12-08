@@ -169,7 +169,7 @@ export default function ChecklistPage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-rose-50/30 via-white to-accent-50/30">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
         <div className="text-center">
           <p className="text-xl text-gray-600 mb-4">Please log in to access your checklist</p>
         </div>
@@ -178,7 +178,7 @@ export default function ChecklistPage() {
   }
 
   return (
-    <div className="bg-gradient-to-br from-rose-50/30 via-white to-accent-50/30 min-h-screen py-8 px-4">
+    <div className="bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 min-h-screen py-8 px-4">
       <div className="container mx-auto max-w-6xl">
         {/* Header */}
         <div className="mb-8">

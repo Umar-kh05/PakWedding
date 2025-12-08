@@ -89,7 +89,7 @@ export default function BookingPage() {
   // Success View
   if (bookingSuccess) {
     return (
-      <div className="bg-gray-50 min-h-screen py-12 px-4 flex items-center justify-center">
+      <div className="bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 min-h-screen py-12 px-4 flex items-center justify-center">
         <div className="bg-white rounded-xl shadow-lg p-12 max-w-md w-full text-center">
           {/* Success Icon */}
           <div className="flex justify-center mb-6">
@@ -127,7 +127,7 @@ export default function BookingPage() {
 
   // Booking Form View
   return (
-    <div className="bg-gray-50 min-h-screen py-12 px-4">
+    <div className="bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 min-h-screen py-12 px-4">
       <div className="max-w-2xl mx-auto">
         <div className="bg-white rounded-xl shadow-lg p-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-8">Book Your Service</h1>

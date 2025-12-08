@@ -256,14 +256,14 @@ export default function BrowseVendorsPage() {
   }
 
   return (
-    <div className="bg-gradient-to-b from-pink-50/30 via-white to-pink-50/20 min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
       {/* Header Section */}
       <div className="container mx-auto px-6 py-12 relative">
         {/* Decorative background */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-pink-200/20 rounded-full blur-3xl -z-0"></div>
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-200/20 rounded-full blur-3xl -z-0"></div>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-[#F7A76C]/10 rounded-full blur-3xl -z-0"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#D72626]/5 rounded-full blur-3xl -z-0"></div>
         <div className="relative z-10">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-pink-600 to-gray-900 bg-clip-text text-transparent mb-3">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-[#D72626] to-gray-900 bg-clip-text text-transparent mb-3">
             Find Your Perfect Wedding Vendors
           </h1>
           <p className="text-gray-700 font-medium mb-8">
@@ -282,7 +282,7 @@ export default function BrowseVendorsPage() {
           />
           <button 
             type="submit"
-            className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white h-14 px-12 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
+            className="px-12 h-14 rounded-xl text-white font-semibold bg-gradient-to-r from-[#D72626] via-[#F26D46] to-[#F7A76C] hover:opacity-90 transition-all shadow-lg hover:shadow-xl"
           >
             Search
           </button>
@@ -430,7 +430,7 @@ export default function BrowseVendorsPage() {
                         setSelectedVendor(vendor)
                         setIsBookingModalOpen(true)
                       }}
-                      className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-semibold transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg cursor-pointer z-10"
+                      className="bg-gradient-to-r from-[#D72626] via-[#F26D46] to-[#F7A76C] hover:from-red-700 hover:to-orange-700 text-white px-6 py-3 rounded-lg font-semibold transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg cursor-pointer z-10"
                       style={{ pointerEvents: 'auto' }}
                     >
                       Book Now
@@ -439,7 +439,7 @@ export default function BrowseVendorsPage() {
                     <Link
                       to="/login"
                       onClick={(e) => e.stopPropagation()}
-                      className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-semibold transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg cursor-pointer z-10"
+                      className="bg-gradient-to-r from-[#D72626] via-[#F26D46] to-[#F7A76C] hover:from-red-700 hover:to-orange-700 text-white px-6 py-3 rounded-lg font-semibold transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg cursor-pointer z-10"
                       style={{ pointerEvents: 'auto' }}
                     >
                       Login to Book
@@ -448,7 +448,7 @@ export default function BrowseVendorsPage() {
                 </div>
               </div>
               <div className="p-6 bg-gradient-to-br from-white to-pink-50/30">
-                <p className="text-sm font-semibold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-2">{vendor.service_category}</p>
+                <p className="text-sm font-semibold bg-gradient-to-r from-[#D72626] via-[#F26D46] to-[#F7A76C] bg-clip-text text-transparent mb-2">{vendor.service_category}</p>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">{vendor.business_name}</h3>
                 <div className="flex items-center gap-3 text-sm text-gray-600 mb-3">
                   <span className="flex items-center gap-1">
@@ -471,7 +471,7 @@ export default function BrowseVendorsPage() {
                     const standardPackage = vendor.packages.find((pkg: any) => pkg.name === 'Standard')
                     if (standardPackage) {
                       return (
-                        <div className="bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent font-bold text-lg mb-4">
+                        <div className="bg-gradient-to-r from-[#D72626] via-[#F26D46] to-[#F7A76C] bg-clip-text text-transparent font-bold text-lg mb-4">
                           Rs. {standardPackage.price.toLocaleString()}
                         </div>
                       )
@@ -479,7 +479,7 @@ export default function BrowseVendorsPage() {
                     // Fallback to first package if Standard not found
                     if (vendor.packages[0]) {
                       return (
-                        <div className="bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent font-bold text-lg mb-4">
+                        <div className="bg-gradient-to-r from-[#D72626] via-[#F26D46] to-[#F7A76C] bg-clip-text text-transparent font-bold text-lg mb-4">
                           Rs. {vendor.packages[0].price.toLocaleString()}
                         </div>
                       )
@@ -487,7 +487,7 @@ export default function BrowseVendorsPage() {
                   }
                   // Default fallback if no packages
                   return (
-                    <div className="bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent font-bold text-lg mb-4">
+                    <div className="bg-gradient-to-r from-[#D72626] via-[#F26D46] to-[#F7A76C] bg-clip-text text-transparent font-bold text-lg mb-4">
                       Contact for pricing
                     </div>
                   )
@@ -495,7 +495,7 @@ export default function BrowseVendorsPage() {
                 <div className="flex gap-3">
                   <Link
                     to={`/vendors/${vendor._id || vendor.id}`}
-                    className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent font-semibold hover:underline flex-1"
+                    className="inline-flex items-center gap-2 bg-gradient-to-r from-[#D72626] via-[#F26D46] to-[#F7A76C] bg-clip-text text-transparent font-semibold hover:underline flex-1"
                   >
                     View Profile →
                   </Link>
@@ -506,7 +506,7 @@ export default function BrowseVendorsPage() {
                         setSelectedVendor(vendor)
                         setIsBookingModalOpen(true)
                       }}
-                      className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-all shadow-md cursor-pointer"
+                      className="bg-gradient-to-r from-[#D72626] via-[#F26D46] to-[#F7A76C] hover:from-red-700 hover:to-orange-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-all shadow-md cursor-pointer"
                       style={{ pointerEvents: 'auto' }}
                     >
                       Book
@@ -553,7 +553,7 @@ export default function BrowseVendorsPage() {
                         onClick={() => setCurrentPage(page)}
                         className={`w-10 h-10 rounded-lg transition-all ${
                           page === currentPage
-                            ? 'bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow-lg'
+                            ? 'bg-gradient-to-r from-[#D72626] via-[#F26D46] to-[#F7A76C] text-white shadow-lg'
                             : 'border-2 border-gray-200 text-gray-600 hover:border-pink-300 hover:bg-pink-50'
                         }`}
                       >

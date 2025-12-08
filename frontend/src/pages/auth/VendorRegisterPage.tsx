@@ -88,7 +88,7 @@ export default function VendorRegisterPage() {
   // Success View
   if (registrationSuccess) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center py-12 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 flex items-center justify-center py-12 px-4">
         <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-2xl p-8 md:p-12">
           <div className="text-center">
             {/* Success Icon */}
@@ -100,7 +100,7 @@ export default function VendorRegisterPage() {
               </div>
             </div>
             
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-4">
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent mb-4">
               Registration Successful!
             </h2>
             
@@ -125,7 +125,7 @@ export default function VendorRegisterPage() {
             <div className="flex gap-4 justify-center">
               <button
                 onClick={() => navigate('/login')}
-                className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-8 py-3 rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl"
+                className="bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white px-8 py-3 rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl"
               >
                 Go to Login
               </button>
@@ -143,9 +143,9 @@ export default function VendorRegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 py-12 px-4">
       <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-xl p-8">
-        <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-2">
+        <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent mb-2">
           Vendor Registration
         </h2>
         <p className="text-center text-gray-600 mb-8">

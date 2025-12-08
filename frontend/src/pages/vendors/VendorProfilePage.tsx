@@ -65,7 +65,7 @@ export default function VendorProfilePage() {
 
   if (loading) {
     return (
-      <div className="bg-gradient-to-br from-rose-50 via-white to-accent-50 min-h-screen flex items-center justify-center">
+      <div className="bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-primary-200 border-t-primary-600 mb-4"></div>
           <p className="text-gray-600 font-medium text-lg">Loading vendor details...</p>
@@ -76,7 +76,7 @@ export default function VendorProfilePage() {
 
   if (error || !vendor) {
     return (
-      <div className="bg-gradient-to-br from-rose-50 via-white to-accent-50 min-h-screen flex items-center justify-center">
+      <div className="bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 min-h-screen flex items-center justify-center">
         <div className="text-center bg-white rounded-2xl shadow-xl p-8 border-2 border-primary-100">
           <div className="text-6xl mb-4">😕</div>
           <p className="text-primary-600 text-xl font-bold mb-2">{error || 'Vendor not found'}</p>
@@ -106,7 +106,7 @@ export default function VendorProfilePage() {
   const packages = vendor.packages || []
 
   return (
-    <div className="bg-gradient-to-br from-rose-50/30 via-white to-accent-50/30 min-h-screen">
+    <div className="bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 min-h-screen">
       {/* Breadcrumbs */}
       <div className="bg-gradient-to-r from-white via-rose-50/50 to-white border-b border-rose-100/60 py-4 shadow-sm">
         <div className="container mx-auto px-6">

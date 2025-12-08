@@ -1,10 +1,10 @@
 export default function AboutPage() {
   return (
-    <div className="bg-gradient-to-b from-pink-50/30 via-white to-pink-50/20 min-h-screen py-12 px-4">
+    <div className="bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 min-h-screen py-12 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Hero Section */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl font-extrabold bg-gradient-to-r from-gray-900 via-pink-600 to-gray-900 bg-clip-text text-transparent mb-6">
+          <h1 className="text-5xl font-extrabold bg-gradient-to-r from-gray-900 via-[#D72626] to-gray-900 bg-clip-text text-transparent mb-6">
             About PakWedding
           </h1>
           <p className="text-xl text-gray-700 font-medium max-w-3xl mx-auto leading-relaxed">
@@ -71,13 +71,13 @@ export default function AboutPage() {
         </div>
 
         {/* Stats Section */}
-        <div className="bg-gradient-to-r from-pink-600 to-purple-600 rounded-2xl shadow-2xl p-10 text-white mb-12 relative overflow-hidden">
-          <div className="absolute inset-0 opacity-20">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl"></div>
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-white rounded-full blur-3xl"></div>
+        <div className="bg-gradient-to-br from-white to-[#FFF7F1] rounded-2xl shadow-xl p-10 mb-12 border-2 border-[#F7A76C]/30 relative overflow-hidden">
+          <div className="absolute inset-0 opacity-5">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#F26D46] rounded-full blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#F7A76C] rounded-full blur-3xl"></div>
           </div>
           <div className="relative z-10">
-            <h2 className="text-3xl font-bold mb-8 text-center">Our Impact</h2>
+            <h2 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-[#D72626] to-[#F26D46] bg-clip-text text-transparent">Our Impact</h2>
             <div className="grid md:grid-cols-4 gap-6">
               {[
                 { number: '1000+', label: 'Vendors' },
@@ -85,9 +85,9 @@ export default function AboutPage() {
                 { number: '50+', label: 'Cities' },
                 { number: '10K+', label: 'Bookings' }
               ].map((stat, index) => (
-                <div key={index} className="text-center">
-                  <div className="text-5xl font-extrabold mb-2">{stat.number}</div>
-                  <div className="text-pink-100 font-semibold">{stat.label}</div>
+                <div key={index} className="text-center p-4 rounded-xl bg-white/60 backdrop-blur-sm border border-[#F7A76C]/20 hover:border-[#F7A76C] hover:shadow-lg transition-all duration-300">
+                  <div className="text-5xl font-extrabold mb-2 bg-gradient-to-r from-[#D72626] to-[#F26D46] bg-clip-text text-transparent">{stat.number}</div>
+                  <div className="text-[#2A2A2A] font-semibold">{stat.label}</div>
                 </div>
               ))}
             </div>
@@ -99,7 +99,7 @@ export default function AboutPage() {
           <h2 className="text-3xl font-bold text-gray-900 mb-6">Why Choose PakWedding?</h2>
           <div className="space-y-4">
             <div className="flex items-start gap-4">
-              <div className="w-8 h-8 bg-gradient-to-r from-pink-600 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
+              <div className="w-8 h-8 bg-gradient-to-r from-[#D72626] to-[#F26D46] rounded-lg flex items-center justify-center flex-shrink-0">
                 <span className="text-white font-bold">✓</span>
               </div>
               <div>
@@ -108,7 +108,7 @@ export default function AboutPage() {
               </div>
             </div>
             <div className="flex items-start gap-4">
-              <div className="w-8 h-8 bg-gradient-to-r from-pink-600 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
+              <div className="w-8 h-8 bg-gradient-to-r from-[#D72626] to-[#F26D46] rounded-lg flex items-center justify-center flex-shrink-0">
                 <span className="text-white font-bold">✓</span>
               </div>
               <div>
@@ -117,7 +117,7 @@ export default function AboutPage() {
               </div>
             </div>
             <div className="flex items-start gap-4">
-              <div className="w-8 h-8 bg-gradient-to-r from-pink-600 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
+              <div className="w-8 h-8 bg-gradient-to-r from-[#D72626] to-[#F26D46] rounded-lg flex items-center justify-center flex-shrink-0">
                 <span className="text-white font-bold">✓</span>
               </div>
               <div>
@@ -126,7 +126,7 @@ export default function AboutPage() {
               </div>
             </div>
             <div className="flex items-start gap-4">
-              <div className="w-8 h-8 bg-gradient-to-r from-pink-600 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
+              <div className="w-8 h-8 bg-gradient-to-r from-[#D72626] to-[#F26D46] rounded-lg flex items-center justify-center flex-shrink-0">
                 <span className="text-white font-bold">✓</span>
               </div>
               <div>

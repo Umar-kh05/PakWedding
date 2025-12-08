@@ -62,7 +62,7 @@ export default function FavoritesPage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-rose-50/30 via-white to-accent-50/30 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 flex items-center justify-center">
         <div className="text-center p-8 bg-white rounded-xl shadow-lg border border-rose-100">
           <p className="text-xl text-gray-700 mb-4">Please log in to view your favorites.</p>
           <Link to="/login" className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors shadow-md">
@@ -74,7 +74,7 @@ export default function FavoritesPage() {
   }
 
   return (
-    <div className="bg-gradient-to-br from-rose-50/30 via-white to-accent-50/30 min-h-screen py-12 px-4">
+    <div className="bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 min-h-screen py-12 px-4">
       <div className="container mx-auto max-w-6xl">
         <div className="mb-8">
           <h1 className="text-4xl font-extrabold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent mb-2">
@@ -140,7 +140,7 @@ export default function FavoritesPage() {
                     </button>
                   </div>
                   <div className="p-6 bg-gradient-to-br from-white to-pink-50/30">
-                    <p className="text-sm font-semibold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-2">
+                    <p className="text-sm font-semibold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent mb-2">
                       {vendor.service_category}
                     </p>
                     <h3 className="text-xl font-bold text-gray-900 mb-3">{vendor.business_name}</h3>
@@ -156,7 +156,7 @@ export default function FavoritesPage() {
                     </div>
                     <Link
                       to={`/vendors/${vendor._id || vendor.id}`}
-                      className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent font-semibold hover:underline"
+                      className="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent font-semibold hover:underline"
                     >
                       View Profile →
                     </Link>

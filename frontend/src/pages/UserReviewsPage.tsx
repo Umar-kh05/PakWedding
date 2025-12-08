@@ -60,7 +60,7 @@ export default function UserReviewsPage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-rose-50/30 via-white to-accent-50/30 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 flex items-center justify-center">
         <div className="text-center p-8 bg-white rounded-xl shadow-lg border border-rose-100">
           <p className="text-xl text-gray-700 mb-4">Please log in to view your reviews.</p>
           <Link to="/login" className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors shadow-md">
@@ -72,7 +72,7 @@ export default function UserReviewsPage() {
   }
 
   return (
-    <div className="bg-gradient-to-br from-rose-50/30 via-white to-accent-50/30 min-h-screen py-12 px-4">
+    <div className="bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 min-h-screen py-12 px-4">
       <div className="container mx-auto max-w-6xl">
         <div className="mb-8">
           <h1 className="text-4xl font-extrabold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent mb-2">
