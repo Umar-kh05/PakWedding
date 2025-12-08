@@ -16,7 +16,7 @@ export default function BookingHistoryPage() {
   const { user } = useAuthStore()
   const [bookings, setBookings] = useState<BookingDisplay[]>([])
   const [loading, setLoading] = useState(true)
-  const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'rejected' | 'confirmed' | 'completed' | 'cancelled'>('all')
+  const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'rejected' | 'completed'>('all')
   const [reviewModalOpen, setReviewModalOpen] = useState(false)
   const [selectedBooking, setSelectedBooking] = useState<BookingDisplay | null>(null)
   const [userReviews, setUserReviews] = useState<Review[]>([])
@@ -138,7 +138,7 @@ export default function BookingHistoryPage() {
         {/* Filter Tabs */}
         <div className="bg-white rounded-2xl shadow-lg p-4 mb-6 border-2 border-pink-100">
           <div className="flex gap-4 flex-wrap">
-            {(['all', 'pending', 'approved', 'rejected', 'confirmed', 'completed', 'cancelled'] as const).map((status) => (
+            {(['all', 'pending', 'approved', 'rejected', 'completed'] as const).map((status) => (
               <button
                 key={status}
                 onClick={() => setFilter(status)}

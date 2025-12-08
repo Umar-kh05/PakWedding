@@ -67,26 +67,13 @@ export default function UserDashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
       {/* Modern Elegant Header */}
-      <div className="bg-white border-b-4 border-[#D72626] shadow-lg">
-        <div className="container mx-auto max-w-7xl px-4 py-12">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-            <div>
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-16 h-16 bg-gradient-to-br from-[#D72626] to-[#F26D46] rounded-2xl flex items-center justify-center shadow-lg">
-                  <span className="text-3xl">👋</span>
-                </div>
-                <div>
-                  <h1 className="text-4xl font-extrabold text-gray-900">
-                    Welcome back, {userName}!
-                  </h1>
-                  <p className="text-gray-600 text-lg mt-1">Let's plan your perfect wedding</p>
-                </div>
-              </div>
-            </div>
-            <div className="bg-gradient-to-br from-[#FFF7F1] to-[#FEECEC] rounded-2xl px-8 py-5 border-2 border-[#F26D46]/30 shadow-md">
-              <p className="text-sm text-[#D72626] mb-1 font-semibold">Wedding Date</p>
-              <p className="text-2xl font-bold text-gray-900">Coming Soon 🎉</p>
-            </div>
+      <div className="bg-gradient-to-r from-white via-amber-50/60 to-white shadow-md border-b-2 border-primary-100">
+        <div className="container mx-auto max-w-7xl px-4 py-6">
+          <div>
+            <h1 className="text-4xl font-extrabold text-gray-900">
+              Welcome back, {userName}!
+            </h1>
+            <p className="text-gray-600 text-lg mt-1">Let's plan your perfect wedding</p>
           </div>
         </div>
       </div>
@@ -126,14 +113,14 @@ export default function UserDashboard() {
             {/* Favorites Card */}
             <Link
               to="/favorites"
-              className="group bg-white rounded-2xl shadow-lg p-6 border-l-4 border-[#F7A76C] hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+              className="group bg-white rounded-2xl shadow-lg p-6 border-l-4 border-accent-500 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer"
             >
               <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center justify-center w-14 h-14 bg-gradient-to-br from-[#F26D46] to-[#F7A76C] rounded-xl group-hover:scale-110 transition-transform">
+                <div className="flex items-center justify-center w-14 h-14 bg-gradient-to-br from-accent-600 to-accent-500 rounded-xl group-hover:scale-110 transition-transform">
                   <span className="text-3xl">❤️</span>
                 </div>
                 <div className="text-right">
-                  <div className="text-4xl font-extrabold text-[#F26D46]">{stats.favorites}</div>
+                  <div className="text-4xl font-extrabold text-accent-600">{stats.favorites}</div>
                 </div>
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-1">Favorites</h3>
@@ -141,13 +128,13 @@ export default function UserDashboard() {
             </Link>
 
             {/* Budget Card */}
-            <div className="group bg-white rounded-2xl shadow-lg p-6 border-l-4 border-[#F6A423] hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+            <div className="group bg-white rounded-2xl shadow-lg p-6 border-l-4 border-accent-500 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
               <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center justify-center w-14 h-14 bg-gradient-to-br from-[#F7A76C] to-[#F6A423] rounded-xl group-hover:scale-110 transition-transform">
+                <div className="flex items-center justify-center w-14 h-14 bg-gradient-to-br from-accent-600 to-primary-600 rounded-xl group-hover:scale-110 transition-transform">
                   <span className="text-3xl">💰</span>
                 </div>
                 <div className="text-right">
-                  <div className="text-2xl font-extrabold text-[#F6A423]">{stats.budget}</div>
+                  <div className="text-2xl font-extrabold text-accent-600">{stats.budget}</div>
                 </div>
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-1">Budget</h3>
@@ -176,51 +163,51 @@ export default function UserDashboard() {
         {/* Quick Actions Section - Redesigned */}
         <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-200">
           <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-            <span className="text-red-600">⚡</span>
+            <span className="text-primary-600">⚡</span>
             Quick Actions
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Link
               to="/vendors"
-              className="group bg-gradient-to-br from-[#FFF7F1] to-[#FEECEC] rounded-xl p-6 border border-[#D72626]/20 hover:border-[#D72626] hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-center"
+              className="group bg-gradient-to-br from-primary-50 to-accent-50 rounded-xl p-6 border border-primary-200 hover:border-primary-400 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-center"
             >
-              <div className="w-14 h-14 bg-gradient-to-br from-[#D72626] to-[#F26D46] rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform shadow-md">
+              <div className="w-14 h-14 bg-gradient-to-br from-primary-600 to-accent-600 rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform shadow-md">
                 <span className="text-3xl">🔍</span>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-[#D72626] transition-colors">Find Vendors</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">Find Vendors</h3>
               <p className="text-sm text-gray-600">Browse wedding vendors</p>
             </Link>
 
             <Link
               to="/bookings/history"
-              className="group bg-gradient-to-br from-[#FFF7F1] to-[#FEECEC] rounded-xl p-6 border border-[#F26D46]/20 hover:border-[#F26D46] hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-center"
+              className="group bg-gradient-to-br from-primary-50 to-accent-50 rounded-xl p-6 border border-accent-200 hover:border-accent-400 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-center"
             >
-              <div className="w-14 h-14 bg-gradient-to-br from-[#F26D46] to-[#F7A76C] rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform shadow-md">
+              <div className="w-14 h-14 bg-gradient-to-br from-accent-600 to-primary-600 rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform shadow-md">
                 <span className="text-3xl">📅</span>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-[#F26D46] transition-colors">View Bookings</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-accent-600 transition-colors">View Bookings</h3>
               <p className="text-sm text-gray-600">Check your bookings</p>
             </Link>
 
             <Link
               to="/budget-planner"
-              className="group bg-gradient-to-br from-[#FFF7F1] to-[#FEECEC] rounded-xl p-6 border border-[#F7A76C]/20 hover:border-[#F7A76C] hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-center"
+              className="group bg-gradient-to-br from-primary-50 to-accent-50 rounded-xl p-6 border border-accent-200 hover:border-accent-400 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-center"
             >
-              <div className="w-14 h-14 bg-gradient-to-br from-[#F7A76C] to-[#F6A423] rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform shadow-md">
+              <div className="w-14 h-14 bg-gradient-to-br from-accent-600 to-primary-600 rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform shadow-md">
                 <span className="text-3xl">💰</span>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-[#F6A423] transition-colors">Budget Planner</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-accent-600 transition-colors">Budget Planner</h3>
               <p className="text-sm text-gray-600">Plan your expenses</p>
             </Link>
 
             <Link
               to="/checklist"
-              className="group bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200 hover:border-green-400 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-center"
+              className="group bg-gradient-to-br from-primary-50 to-accent-50 rounded-xl p-6 border border-primary-200 hover:border-primary-400 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-center"
             >
-              <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform shadow-md">
+              <div className="w-14 h-14 bg-gradient-to-br from-primary-600 to-accent-600 rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform shadow-md">
                 <span className="text-3xl">✅</span>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-green-600 transition-colors">Checklist</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">Checklist</h3>
               <p className="text-sm text-gray-600">Track your progress</p>
             </Link>
           </div>
