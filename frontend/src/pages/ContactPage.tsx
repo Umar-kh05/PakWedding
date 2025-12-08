@@ -57,7 +57,7 @@ export default function ContactPage() {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-extrabold bg-gradient-to-r from-gray-900 via-[#D72626] to-gray-900 bg-clip-text text-transparent mb-4">
+          <h1 className="text-5xl font-extrabold bg-gradient-to-r from-gray-900 via-[#D72626] to-gray-900 bg-clip-text text-transparent mb-4 pb-2 leading-tight">
             Get In Touch
           </h1>
           <p className="text-xl text-gray-700 font-medium max-w-2xl mx-auto">

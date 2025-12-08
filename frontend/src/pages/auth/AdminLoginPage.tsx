@@ -134,7 +134,7 @@ export default function AdminLoginPage() {
         </form>
 
         <div className="mt-6 text-center">
-          <Link to="/login" className="text-sm text-pink-600 hover:text-pink-700">
+          <Link to="/login" className="text-sm text-[#D72626] hover:text-red-700 transition-colors font-semibold">
             Back to User Login
           </Link>
         </div>

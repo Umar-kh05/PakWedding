@@ -292,7 +292,7 @@ export default function VendorRegisterPage() {
         <div className="mt-6 text-center">
           <p className="text-gray-600 text-sm">
             Already a vendor?{' '}
-            <Link to="/login" className="text-pink-600 font-semibold hover:text-pink-700">
+            <Link to="/login" className="text-[#D72626] font-semibold hover:text-red-700 transition-colors">
               Login
             </Link>
           </p>

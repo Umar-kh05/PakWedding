@@ -333,8 +333,8 @@ export default function HomePage() {
         <div className="absolute bottom-0 right-0 w-72 h-72 bg-primary-200/10 rounded-full blur-3xl"></div>
         <div className="container mx-auto px-6 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-5xl font-extrabold text-gray-900 mb-4">
-              Why Choose <span className="bg-gradient-to-r from-primary-600 via-amber-600 to-primary-600 bg-clip-text text-transparent">PakWedding</span>?
+            <h2 className="text-5xl font-extrabold text-gray-900 mb-4 pb-1 leading-tight">
+              Why Choose <span className="bg-gradient-to-r from-primary-600 via-amber-600 to-primary-600 bg-clip-text text-transparent pb-1">PakWedding</span>?
             </h2>
             <p className="text-xl text-gray-700 font-medium">
               Everything you need in one place

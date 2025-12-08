@@ -196,13 +196,13 @@ export default function RegisterPage() {
         <div className="mt-6 text-center space-y-2">
           <p className="text-gray-600 text-sm">
             Already have an account?{' '}
-            <Link to="/login" className="text-pink-600 font-semibold hover:text-pink-700">
+            <Link to="/login" className="text-[#D72626] font-semibold hover:text-red-700 transition-colors">
               Login
             </Link>
           </p>
           <p className="text-gray-600 text-sm">
             Are you a vendor?{' '}
-            <Link to="/vendor/register" className="text-pink-600 font-semibold hover:text-pink-700">
+            <Link to="/vendor/register" className="text-[#D72626] font-semibold hover:text-red-700 transition-colors">
               Vendor Signup
             </Link>
           </p>

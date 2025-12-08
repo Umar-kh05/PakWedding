@@ -4,7 +4,7 @@ export default function AboutPage() {
       <div className="max-w-6xl mx-auto">
         {/* Hero Section */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl font-extrabold bg-gradient-to-r from-gray-900 via-[#D72626] to-gray-900 bg-clip-text text-transparent mb-6">
+          <h1 className="text-5xl font-extrabold bg-gradient-to-r from-gray-900 via-[#D72626] to-gray-900 bg-clip-text text-transparent mb-6 pb-2 leading-tight">
             About PakWedding
           </h1>
           <p className="text-xl text-gray-700 font-medium max-w-3xl mx-auto leading-relaxed">
@@ -77,7 +77,7 @@ export default function AboutPage() {
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#F7A76C] rounded-full blur-3xl"></div>
           </div>
           <div className="relative z-10">
-            <h2 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-[#D72626] to-[#F26D46] bg-clip-text text-transparent">Our Impact</h2>
+            <h2 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-[#D72626] to-[#F26D46] bg-clip-text text-transparent pb-1 leading-normal">Our Impact</h2>
             <div className="grid md:grid-cols-4 gap-6">
               {[
                 { number: '1000+', label: 'Vendors' },
@@ -96,7 +96,7 @@ export default function AboutPage() {
 
         {/* Team Section */}
         <div className="bg-white rounded-2xl shadow-xl p-10 border border-gray-100">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Why Choose PakWedding?</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-6 pb-1 leading-normal">Why Choose PakWedding?</h2>
           <div className="space-y-4">
             <div className="flex items-start gap-4">
               <div className="w-8 h-8 bg-gradient-to-r from-[#D72626] to-[#F26D46] rounded-lg flex items-center justify-center flex-shrink-0">
