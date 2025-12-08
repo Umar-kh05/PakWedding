@@ -37,13 +37,31 @@ api.interceptors.request.use((config) => {
   }
   
   const token = authStore.token
+  
+  // List of public endpoints that don't require authentication
+  const publicEndpoints = [
+    '/auth/login',
+    '/auth/register',
+    '/auth/check-email',
+    '/vendors',
+  ]
+  
+  // Check if URL matches public endpoint pattern (e.g., /vendors or /vendors/123)
+  const isPublicEndpoint = publicEndpoints.some(endpoint => {
+    if (config.url) {
+      return config.url.startsWith(endpoint) || config.url === endpoint
+    }
+    return false
+  })
+  
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
     // Debug logging for checklist requests
     if (config.url?.includes('/checklist')) {
       console.log('[API] Making checklist request with token:', token.substring(0, 20) + '...')
     }
-  } else {
+  } else if (!isPublicEndpoint) {
+    // Only warn for protected endpoints that require authentication
     console.warn('No token found in auth store for request:', config.url)
   }
   
@@ -87,16 +105,18 @@ api.interceptors.response.use(
       // 3. Error is from booking endpoints (let component handle it)
       // 4. Error is from checklist endpoints (let component handle it)
       // 5. Error is from favorites/reviews endpoints (let component handle it)
-      // 6. No token exists (user not logged in, so no need to logout)
+      // 6. Error is from admin endpoints (let component handle it)
+      // 7. No token exists (user not logged in, so no need to logout)
       const isAuthEndpoint = requestUrl.includes('/auth/')
       const isBookingError = requestUrl.includes('/bookings')
       const isChecklistError = requestUrl.includes('/checklist')
       const isFavoritesError = requestUrl.includes('/favorites')
       const isReviewsError = requestUrl.includes('/reviews')
+      const isAdminError = requestUrl.includes('/admin/')
       const isOnLoginPage = currentPath === '/login' || currentPath === '/admin/login' || currentPath === '/register' || currentPath === '/vendor/register'
       
       // Only logout if we have a token (user was logged in) and it's not an expected error
-      if (token && !isOnLoginPage && !isAuthEndpoint && !isBookingError && !isChecklistError && !isFavoritesError && !isReviewsError) {
+      if (token && !isOnLoginPage && !isAuthEndpoint && !isBookingError && !isChecklistError && !isFavoritesError && !isReviewsError && !isAdminError) {
         useAuthStore.getState().logout()
         window.location.href = '/'
       }

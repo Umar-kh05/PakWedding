@@ -53,7 +53,41 @@ export default function AdminLoginPage() {
         return
       }
 
+      // Set auth and verify token is stored
+      console.log('[ADMIN LOGIN] Setting auth with user:', response.data.user.email, 'Role:', response.data.user.role)
+      console.log('[ADMIN LOGIN] Token received:', response.data.access_token.substring(0, 20) + '...')
+      
       setAuth(response.data.user, response.data.access_token)
+      
+      // Wait for zustand persist to save to localStorage
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      // Verify token was stored before navigating
+      const storedToken = useAuthStore.getState().token
+      const storedUser = useAuthStore.getState().user
+      
+      console.log('[ADMIN LOGIN] After setAuth - Token in store:', storedToken ? storedToken.substring(0, 20) + '...' : 'MISSING')
+      console.log('[ADMIN LOGIN] After setAuth - User in store:', storedUser ? `${storedUser.email} (${storedUser.role})` : 'MISSING')
+      
+      // Also check localStorage directly
+      const lsData = localStorage.getItem('auth-storage')
+      console.log('[ADMIN LOGIN] LocalStorage content:', lsData ? 'Present' : 'Missing')
+      
+      if (!storedToken) {
+        console.error('[ADMIN LOGIN] Token was not stored!')
+        setError('Failed to save authentication. Please try again.')
+        setLoading(false)
+        return
+      }
+      
+      if (!storedUser || storedUser.role !== 'admin') {
+        console.error('[ADMIN LOGIN] User was not stored correctly!')
+        setError('Failed to save user data. Please try again.')
+        setLoading(false)
+        return
+      }
+      
+      console.log('[ADMIN LOGIN] ✓ Token and user stored successfully, navigating to dashboard')
       navigate('/admin/dashboard')
     } catch (err: any) {
       console.error('Login error:', err)
