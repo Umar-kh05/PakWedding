@@ -54,7 +54,12 @@ export default function AdminLoginPage() {
       }
 
       setAuth(response.data.user, response.data.access_token)
-      navigate('/admin/dashboard')
+      
+      // Wait a moment for sessionStorage to be updated
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      // Use window.location for immediate redirect
+      window.location.href = '/admin/dashboard'
     } catch (err: any) {
       console.error('Login error:', err)
       let errorMessage = 'Login failed. Please check your credentials and try again.'

@@ -43,6 +43,11 @@ export const useAuthStore = create<AuthState>()(
         const now = Date.now()
         const elapsed = now - loginTime
         
+        // Don't expire if login was less than 5 seconds ago (to avoid immediate expiry after login)
+        if (elapsed < 5000) {
+          return false
+        }
+        
         if (elapsed > SESSION_TIMEOUT) {
           // Session expired
           get().logout()
