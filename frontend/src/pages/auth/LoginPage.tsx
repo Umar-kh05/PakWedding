@@ -27,6 +27,9 @@ export default function LoginPage() {
       console.log('[LOGIN] Setting new auth token')
       setAuth(response.data.user, response.data.access_token)
       
+      // Wait a moment for sessionStorage to be updated
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
       // Verify token was stored
       const storedToken = useAuthStore.getState().token
       if (storedToken) {
@@ -35,13 +38,13 @@ export default function LoginPage() {
         console.error('[LOGIN] Token was not stored!')
       }
 
-      // Redirect based on role
+      // Redirect based on role - use window.location for immediate redirect
       if (response.data.user.role === 'vendor') {
-        navigate('/vendor/dashboard')
+        window.location.href = '/vendor/dashboard'
       } else if (response.data.user.role === 'admin') {
-        navigate('/admin/dashboard')
+        window.location.href = '/admin/dashboard'
       } else {
-        navigate('/dashboard')
+        window.location.href = '/dashboard'
       }
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Login failed')
