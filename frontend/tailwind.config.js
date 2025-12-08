@@ -32,16 +32,16 @@ export default {
           900: '#713f12',
         },
         accent: {
-          50: '#fdf4ff',
-          100: '#fae8ff',
-          200: '#f5d0fe',
-          300: '#f0abfc',
-          400: '#e879f9',
-          500: '#d946ef',
-          600: '#c026d3', // Elegant purple accent
-          700: '#a21caf',
-          800: '#86198f',
-          900: '#701a75',
+          50: '#fff7ed',
+          100: '#ffedd5',
+          200: '#fed7aa',
+          300: '#fdba74',
+          400: '#fb923c',
+          500: '#f97316',
+          600: '#ea580c', // Elegant orange accent (matches theme)
+          700: '#c2410c',
+          800: '#9a3412',
+          900: '#7c2d12',
         },
         pink: {
           50: '#fdf2f8',

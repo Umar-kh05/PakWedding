@@ -286,7 +286,7 @@ export default function HomePage() {
                   </p>
                 </div>
                 {/* Accent overlay on hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary-500/0 to-accent-500/0 group-hover:from-primary-500/15 group-hover:to-accent-500/15 transition-all duration-500"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-primary-500/0 to-amber-500/0 group-hover:from-primary-500/15 group-hover:to-amber-500/15 transition-all duration-500"></div>
               </div>
             ))}
           </div>
@@ -295,7 +295,7 @@ export default function HomePage() {
           <div className="text-center mt-12">
             <Link
               to="/vendors"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 text-white px-10 py-4 rounded-xl text-lg font-bold hover:from-primary-700 hover:via-accent-700 hover:to-primary-700 transition-all duration-300 shadow-xl hover:shadow-2xl hover:shadow-primary-600/50 transform hover:scale-105"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-primary-600 via-amber-600 to-primary-600 text-white px-10 py-4 rounded-xl text-lg font-bold hover:from-primary-700 hover:via-amber-700 hover:to-primary-700 transition-all duration-300 shadow-xl hover:shadow-2xl hover:shadow-primary-600/50 transform hover:scale-105"
             >
               Browse All Vendors
               <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
@@ -305,14 +305,14 @@ export default function HomePage() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-24 bg-gradient-to-br from-rose-50 via-accent-50/50 to-rose-50 relative overflow-hidden">
+      <section className="py-24 bg-gradient-to-br from-rose-50 via-amber-50/50 to-rose-50 relative overflow-hidden">
         {/* Decorative elements */}
-        <div className="absolute top-0 left-0 w-72 h-72 bg-accent-200/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 left-0 w-72 h-72 bg-amber-200/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 right-0 w-72 h-72 bg-primary-200/10 rounded-full blur-3xl"></div>
         <div className="container mx-auto px-6 relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-5xl font-extrabold text-gray-900 mb-4">
-              Why Choose <span className="bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent">PakWedding</span>?
+              Why Choose <span className="bg-gradient-to-r from-primary-600 via-amber-600 to-primary-600 bg-clip-text text-transparent">PakWedding</span>?
             </h2>
             <p className="text-xl text-gray-700 font-medium">
               Everything you need in one place
@@ -331,7 +331,7 @@ export default function HomePage() {
                 icon: '💰',
                 title: 'Budget Planning',
                 description: 'Plan and track your wedding budget with our comprehensive budget planner tool.',
-                gradient: 'from-accent-500 to-primary-500'
+                gradient: 'from-amber-500 to-primary-500'
               },
               {
                 icon: '📋',
@@ -349,7 +349,7 @@ export default function HomePage() {
                   <div className={`w-16 h-16 bg-gradient-to-br ${feature.gradient} rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-lg group-hover:scale-110 group-hover:shadow-xl group-hover:shadow-primary-500/50 transition-all duration-300`}>
                     {feature.icon}
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:bg-gradient-to-r group-hover:from-primary-600 group-hover:via-accent-600 group-hover:to-primary-600 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:bg-gradient-to-r group-hover:from-primary-600 group-hover:via-amber-600 group-hover:to-primary-600 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
                     {feature.title}
                   </h3>
                   <p className="text-gray-700 leading-relaxed font-medium">
@@ -366,7 +366,7 @@ export default function HomePage() {
       <section className="py-24 bg-gradient-to-b from-white via-rose-50/30 to-white relative">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-5xl font-extrabold bg-gradient-to-r from-gray-900 via-accent-600 to-gray-900 bg-clip-text text-transparent mb-4">
+            <h2 className="text-5xl font-extrabold bg-gradient-to-r from-gray-900 via-amber-600 to-gray-900 bg-clip-text text-transparent mb-4">
               How It Works
             </h2>
             <p className="text-xl text-gray-700 font-medium">
@@ -377,7 +377,7 @@ export default function HomePage() {
           <div className="grid md:grid-cols-4 gap-6 max-w-6xl mx-auto">
             {[
               { step: '1', title: 'Sign Up', description: 'Create your free account', icon: '👤', gradient: 'from-primary-500 to-primary-600', ring: 'ring-primary-100', badge: 'from-primary-600 to-primary-700' },
-              { step: '2', title: 'Browse', description: 'Search vendors by category', icon: '🔍', gradient: 'from-accent-500 to-accent-600', ring: 'ring-accent-100', badge: 'from-accent-600 to-accent-700' },
+              { step: '2', title: 'Browse', description: 'Search vendors by category', icon: '🔍', gradient: 'from-amber-500 to-amber-600', ring: 'ring-amber-100', badge: 'from-amber-600 to-amber-700' },
               { step: '3', title: 'Book', description: 'Send booking requests', icon: '📅', gradient: 'from-rose-500 to-rose-600', ring: 'ring-rose-100', badge: 'from-rose-600 to-rose-700' },
               { step: '4', title: 'Plan', description: 'Manage everything', icon: '✨', gradient: 'from-primary-500 to-primary-600', ring: 'ring-primary-100', badge: 'from-primary-600 to-primary-700' }
             ].map((item, index) => (
@@ -394,7 +394,7 @@ export default function HomePage() {
                       {item.step}
                     </div>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:bg-gradient-to-r group-hover:from-primary-600 group-hover:via-accent-600 group-hover:to-primary-600 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                  <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:bg-gradient-to-r group-hover:from-primary-600 group-hover:via-amber-600 group-hover:to-primary-600 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
                     {item.title}
                   </h3>
                   <p className="text-gray-700 font-medium">{item.description}</p>
@@ -406,8 +406,8 @@ export default function HomePage() {
       </section>
 
       {/* Auto-Moving Testimonials */}
-      <section className="py-24 bg-gradient-to-br from-rose-50 via-accent-50/50 to-rose-50 relative overflow-hidden">
-        <div className="absolute top-10 left-10 w-64 h-64 bg-accent-200/10 rounded-full blur-3xl"></div>
+      <section className="py-24 bg-gradient-to-br from-rose-50 via-amber-50/50 to-rose-50 relative overflow-hidden">
+        <div className="absolute top-10 left-10 w-64 h-64 bg-amber-200/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 right-10 w-64 h-64 bg-primary-200/10 rounded-full blur-3xl"></div>
         <div className="container mx-auto px-6 relative z-10">
           <div className="text-center mb-16">
@@ -432,7 +432,7 @@ export default function HomePage() {
                   "{testimonials[currentTestimonial].text}"
                 </p>
                 <div className="space-y-2">
-                  <p className="text-xl font-bold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent">
+                  <p className="text-xl font-bold bg-gradient-to-r from-primary-600 via-amber-600 to-primary-600 bg-clip-text text-transparent">
                     {testimonials[currentTestimonial].name}
                   </p>
                   <p className="text-gray-600">
