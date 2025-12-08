@@ -11,7 +11,7 @@ interface DashboardStats {
 }
 
 export default function AdminDashboard() {
-  const { logout, user, token } = useAuthStore()
+  const { logout } = useAuthStore()
   const [stats, setStats] = useState<DashboardStats>({
     pendingApprovals: 0,
     pendingAdminApprovals: 0,
@@ -19,78 +19,36 @@ export default function AdminDashboard() {
     activeUsers: 0
   })
   const [loading, setLoading] = useState(true)
-  const [isRedirecting, setIsRedirecting] = useState(false)
 
   useEffect(() => {
-    // Get fresh state from store (may be more up-to-date than component state)
-    const authState = useAuthStore.getState()
-    const currentToken = authState.token
-    const currentUser = authState.user
-    
-    console.log('[ADMIN DASHBOARD] Mounting - Token:', currentToken ? 'Present' : 'Missing', 'User:', currentUser?.role)
-    
-    // Check if user is authenticated and is admin before loading stats
-    if (!currentToken || !currentUser || currentUser.role !== 'admin') {
-      console.error('[ADMIN DASHBOARD] Not authenticated or not admin - Token:', !!currentToken, 'User:', currentUser?.role)
-      // Only redirect once if we're sure there's no token
-      if (!currentToken && !isRedirecting) {
-        console.error('[ADMIN DASHBOARD] Redirecting to login...')
-        setIsRedirecting(true)
-        logout()
-        window.location.href = '/admin/login'
-      }
-      return
-    }
-    
-    // Load stats immediately if authenticated
-    console.log('[ADMIN DASHBOARD] Authenticated, loading stats...')
+    // Load stats immediately - ProtectedRoute already verified authentication
+    console.log('[ADMIN DASHBOARD] Component mounted, loading stats...')
     loadStats()
     
     const onFocus = () => {
-      const freshState = useAuthStore.getState()
-      if (freshState.token && freshState.user && freshState.user.role === 'admin') {
-        loadStats()
-      }
+      console.log('[ADMIN DASHBOARD] Window focused, refreshing stats...')
+      loadStats()
     }
     window.addEventListener('focus', onFocus)
     
     return () => {
       window.removeEventListener('focus', onFocus)
     }
-  }, []) // Empty dependency array - only run on mount
+  }, [])
 
   const loadStats = async () => {
-    // Get fresh token from store
-    const authState = useAuthStore.getState()
-    const currentToken = authState.token
-    const currentUser = authState.user
-    
-    if (!currentToken) {
-      console.error('[ADMIN DASHBOARD] No token available for API call')
-      return
-    }
-    
-    if (!currentUser || currentUser.role !== 'admin') {
-      console.error('[ADMIN DASHBOARD] User is not admin')
-      return
-    }
-    
     try {
       setLoading(true)
-      console.log('[ADMIN DASHBOARD] Loading stats with token:', currentToken.substring(0, 20) + '...')
       const { data } = await api.get<DashboardStats>('/admin/stats')
-      console.log('[ADMIN DASHBOARD] Stats loaded successfully:', data)
+      console.log('[ADMIN DASHBOARD] Stats loaded successfully')
       setStats(data)
     } catch (error: any) {
       console.error('[ADMIN DASHBOARD] Error loading stats:', error)
-      console.error('[ADMIN DASHBOARD] Error status:', error.response?.status)
-      console.error('[ADMIN DASHBOARD] Error message:', error.response?.data)
       
-      // Only redirect on 401 if we're sure the token is invalid
+      // On 401, logout and redirect (ProtectedRoute will handle redirect)
       if (error.response?.status === 401) {
-        console.error('[ADMIN DASHBOARD] 401 Unauthorized - redirecting to login')
+        console.error('[ADMIN DASHBOARD] Session expired, logging out')
         logout()
-        window.location.href = '/admin/login'
       }
     } finally {
       setLoading(false)

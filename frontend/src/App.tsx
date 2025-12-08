@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Layout from './components/Layout'
+import ProtectedRoute from './components/ProtectedRoute'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/auth/LoginPage'
 import AdminLoginPage from './pages/auth/AdminLoginPage'
@@ -51,12 +52,12 @@ function App() {
             <Route path="/vendor/profile" element={<VendorManageProfilePage />} />
             <Route path="/vendor/packages" element={<VendorPackagesPage />} />
             <Route path="/vendor/reviews" element={<VendorReviewsPage />} />
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
-            <Route path="/admin/vendors/add" element={<AddVendorPage />} />
-            <Route path="/admin/vendors" element={<VendorApprovalsPage />} />
-            <Route path="/admin/users" element={<UserManagementPage />} />
-            <Route path="/admin/reviews" element={<ReviewModerationPage />} />
-            <Route path="/admin/admin-approvals" element={<AdminApprovalsPage />} />
+            <Route path="/admin/dashboard" element={<ProtectedRoute requiredRole="admin"><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/admin/vendors/add" element={<ProtectedRoute requiredRole="admin"><AddVendorPage /></ProtectedRoute>} />
+            <Route path="/admin/vendors" element={<ProtectedRoute requiredRole="admin"><VendorApprovalsPage /></ProtectedRoute>} />
+            <Route path="/admin/users" element={<ProtectedRoute requiredRole="admin"><UserManagementPage /></ProtectedRoute>} />
+            <Route path="/admin/reviews" element={<ProtectedRoute requiredRole="admin"><ReviewModerationPage /></ProtectedRoute>} />
+            <Route path="/admin/admin-approvals" element={<ProtectedRoute requiredRole="admin"><AdminApprovalsPage /></ProtectedRoute>} />
             <Route path="/bookings/new" element={<BookingPage />} />
             <Route path="/bookings/history" element={<BookingHistoryPage />} />
             <Route path="/budget-planner" element={<BudgetPlannerPage />} />
