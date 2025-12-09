@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import api from '../../services/api'
+import Sidebar from '../../components/Sidebar'
 
 interface Vendor {
   id: string
@@ -25,6 +26,15 @@ export default function VendorApprovalsPage() {
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
   const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('pending')
+
+  const sidebarItems = [
+    { path: '/admin/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/admin/vendors', label: 'Vendor Approvals', icon: '✅' },
+    { path: '/admin/vendors/add', label: 'Add Vendor', icon: '➕' },
+    { path: '/admin/users', label: 'User Management', icon: '👥' },
+    { path: '/admin/reviews', label: 'Review Moderation', icon: '⭐' },
+    { path: '/admin/admin-approvals', label: 'Admin Approvals', icon: '🔐' },
+  ]
 
   useEffect(() => {
     loadVendors()
@@ -105,8 +115,11 @@ export default function VendorApprovalsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 py-6 sm:py-8 px-4 sm:px-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="flex min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
+      <Sidebar items={sidebarItems} title="Admin Dashboard" />
+      <div className="flex-1 flex flex-col overflow-y-auto">
+        <div className="py-6 sm:py-8 px-4 sm:px-6">
+          <div className="max-w-7xl mx-auto">
         <div className="bg-gradient-to-r from-white via-amber-50/60 to-white rounded-2xl shadow-xl p-6 sm:p-8 border-2 border-primary-100 mb-6 sm:mb-8">
           <h1 className="text-2xl sm:text-3xl font-extrabold bg-gradient-to-r from-gray-900 via-primary-600 to-accent-600 bg-clip-text text-transparent mb-2">
             Vendor Approvals
@@ -289,6 +302,8 @@ export default function VendorApprovalsPage() {
             })}
           </div>
         )}
+          </div>
+        </div>
       </div>
     </div>
   )

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getVendorBookings, approveBooking, rejectBooking, Booking } from '../../services/bookingService'
 import { useAuthStore } from '../../store/authStore'
+import Sidebar from '../../components/Sidebar'
 
 export default function VendorBookingsPage() {
   const { user } = useAuthStore()
@@ -8,6 +9,14 @@ export default function VendorBookingsPage() {
   const [loading, setLoading] = useState(false)
   const [statusFilter, setStatusFilter] = useState<string>('')
   const [error, setError] = useState('')
+
+  const sidebarItems = [
+    { path: '/vendor/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/vendor/bookings', label: 'Bookings', icon: '📅' },
+    { path: '/vendor/profile', label: 'Profile', icon: '👤' },
+    { path: '/vendor/packages', label: 'Packages', icon: '📦' },
+    { path: '/vendor/reviews', label: 'Reviews', icon: '⭐' },
+  ]
 
   useEffect(() => {
     if (user) {
@@ -93,14 +102,16 @@ export default function VendorBookingsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gray-900">Manage Bookings</h1>
+      <Sidebar items={sidebarItems} title="Vendor Dashboard" />
+      <div className="ml-64 flex flex-col overflow-y-auto">
+        {/* Header */}
+        <div className="bg-white shadow-sm border-b">
+          <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+            <h1 className="text-2xl font-bold text-gray-900">Manage Bookings</h1>
+          </div>
         </div>
-      </div>
 
-      <div className="container mx-auto px-6 py-8">
+        <div className="container mx-auto px-6 py-8">
         {/* Filter */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <div className="flex items-center gap-4">
@@ -202,6 +213,7 @@ export default function VendorBookingsPage() {
             ))}
           </div>
         )}
+        </div>
       </div>
     </div>
   )

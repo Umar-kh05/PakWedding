@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getVendorProfile, updateVendorPackages, Package } from '../../services/vendorService'
+import Sidebar from '../../components/Sidebar'
 
 export default function VendorPackagesPage() {
   const navigate = useNavigate()
@@ -9,6 +10,14 @@ export default function VendorPackagesPage() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
+
+  const sidebarItems = [
+    { path: '/vendor/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/vendor/bookings', label: 'Bookings', icon: '📅' },
+    { path: '/vendor/profile', label: 'Profile', icon: '👤' },
+    { path: '/vendor/packages', label: 'Packages', icon: '📦' },
+    { path: '/vendor/reviews', label: 'Reviews', icon: '⭐' },
+  ]
 
   useEffect(() => {
     loadPackages()
@@ -146,7 +155,9 @@ export default function VendorPackagesPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
-      <div className="container mx-auto px-6 py-8">
+      <Sidebar items={sidebarItems} title="Vendor Dashboard" />
+      <div className="ml-64 flex flex-col overflow-y-auto">
+        <div className="container mx-auto px-6 py-8">
         {/* Header */}
         <div className="mb-8">
           <button
@@ -279,6 +290,7 @@ export default function VendorPackagesPage() {
             </button>
           </div>
         </form>
+        </div>
       </div>
     </div>
   )

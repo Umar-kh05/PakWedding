@@ -99,13 +99,35 @@ export default function Layout({ children }: LayoutProps) {
     return () => clearTimeout(timer)
   }, [user, checkSessionExpiry, location.pathname])
 
+  // Check if current route is a dashboard page (should not show header/footer)
+  // Dashboard pages: user/admin/vendor dashboards and their related pages
+  // Public pages: home, about, contact, vendors listing, vendor profiles, auth pages
+  const isDashboardPage = 
+    location.pathname === '/dashboard' ||
+    location.pathname.startsWith('/vendor/dashboard') ||
+    location.pathname.startsWith('/vendor/bookings') ||
+    location.pathname.startsWith('/vendor/profile') ||
+    location.pathname.startsWith('/vendor/packages') ||
+    location.pathname.startsWith('/vendor/reviews') ||
+    location.pathname.startsWith('/admin/dashboard') ||
+    location.pathname.startsWith('/admin/vendors') ||
+    location.pathname.startsWith('/admin/users') ||
+    location.pathname.startsWith('/admin/reviews') ||
+    location.pathname.startsWith('/admin/admin-approvals') ||
+    location.pathname.startsWith('/bookings/') ||
+    location.pathname === '/bookings/new' ||
+    location.pathname === '/budget-planner' ||
+    location.pathname === '/checklist' ||
+    location.pathname === '/favorites' ||
+    location.pathname === '/reviews'
+
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      {!isDashboardPage && <Navbar />}
       <main className="flex-grow">
         {children}
       </main>
-      <Footer />
+      {!isDashboardPage && <Footer />}
     </div>
   )
 }

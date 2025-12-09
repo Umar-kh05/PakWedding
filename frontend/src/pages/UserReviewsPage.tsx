@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import api from '../services/api'
 import { fetchVendors, Vendor } from '../services/vendorService'
+import Sidebar from '../components/Sidebar'
 
 interface Review {
   id: string
@@ -17,6 +18,15 @@ export default function UserReviewsPage() {
   const [reviews, setReviews] = useState<Review[]>([])
   const [vendors, setVendors] = useState<Record<string, Vendor>>({})
   const [loading, setLoading] = useState(true)
+
+  const sidebarItems = [
+    { path: '/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/bookings/history', label: 'My Bookings', icon: '📅' },
+    { path: '/budget-planner', label: 'Budget Planner', icon: '💰' },
+    { path: '/checklist', label: 'Checklist', icon: '✅' },
+    { path: '/favorites', label: 'Favorites', icon: '❤️' },
+    { path: '/reviews', label: 'My Reviews', icon: '⭐' },
+  ]
 
   useEffect(() => {
     if (user) {
@@ -72,8 +82,11 @@ export default function UserReviewsPage() {
   }
 
   return (
-    <div className="bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 min-h-screen py-12 px-4">
-      <div className="container mx-auto max-w-6xl">
+    <div className="flex min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
+      <Sidebar items={sidebarItems} title="User Dashboard" />
+      <div className="flex-1 flex flex-col overflow-y-auto">
+        <div className="py-12 px-4">
+          <div className="container mx-auto max-w-6xl">
         <div className="mb-8">
           <h1 className="text-4xl font-extrabold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent mb-2">
             My Reviews
@@ -176,6 +189,8 @@ export default function UserReviewsPage() {
             })}
           </div>
         )}
+          </div>
+        </div>
       </div>
     </div>
   )

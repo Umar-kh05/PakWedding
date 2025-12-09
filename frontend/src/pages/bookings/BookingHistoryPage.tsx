@@ -5,6 +5,7 @@ import { useAuthStore } from '../../store/authStore'
 import { reviewService, Review } from '../../services/reviewService'
 import ReviewModal from '../../components/ReviewModal'
 import api from '../../services/api'
+import Sidebar from '../../components/Sidebar'
 
 interface BookingDisplay extends Booking {
   vendor_name?: string
@@ -21,6 +22,15 @@ export default function BookingHistoryPage() {
   const [selectedBooking, setSelectedBooking] = useState<BookingDisplay | null>(null)
   const [userReviews, setUserReviews] = useState<Review[]>([])
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
+
+  const sidebarItems = [
+    { path: '/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/bookings/history', label: 'My Bookings', icon: '📅' },
+    { path: '/budget-planner', label: 'Budget Planner', icon: '💰' },
+    { path: '/checklist', label: 'Checklist', icon: '✅' },
+    { path: '/favorites', label: 'Favorites', icon: '❤️' },
+    { path: '/reviews', label: 'My Reviews', icon: '⭐' },
+  ]
 
   useEffect(() => {
     if (user) {
@@ -105,8 +115,11 @@ export default function BookingHistoryPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 py-6 sm:py-8 px-4 sm:px-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="flex min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
+      <Sidebar items={sidebarItems} title="User Dashboard" />
+      <div className="flex-1 flex flex-col overflow-y-auto">
+        <div className="py-6 sm:py-8 px-4 sm:px-6">
+          <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="bg-gradient-to-r from-white via-pink-50/50 to-white rounded-2xl shadow-xl p-6 sm:p-8 border-2 border-pink-100 mb-6 sm:mb-8">
           <h1 className="text-2xl sm:text-3xl font-extrabold bg-gradient-to-r from-gray-900 via-pink-600 to-gray-900 bg-clip-text text-transparent mb-2">
@@ -284,6 +297,8 @@ export default function BookingHistoryPage() {
           }}
         />
       )}
-    </div>
+          </div>
+        </div>
+      </div>
   )
 }

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import api from '../../services/api'
+import Sidebar from '../../components/Sidebar'
 
 interface User {
   id: string
@@ -14,6 +15,15 @@ export default function UserManagementPage() {
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
+
+  const sidebarItems = [
+    { path: '/admin/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/admin/vendors', label: 'Vendor Approvals', icon: '✅' },
+    { path: '/admin/vendors/add', label: 'Add Vendor', icon: '➕' },
+    { path: '/admin/users', label: 'User Management', icon: '👥' },
+    { path: '/admin/reviews', label: 'Review Moderation', icon: '⭐' },
+    { path: '/admin/admin-approvals', label: 'Admin Approvals', icon: '🔐' },
+  ]
 
   useEffect(() => {
     loadUsers()
@@ -47,8 +57,11 @@ export default function UserManagementPage() {
   )
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 py-8 px-4">
-      <div className="max-w-7xl mx-auto">
+    <div className="flex min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
+      <Sidebar items={sidebarItems} title="Admin Dashboard" />
+      <div className="flex-1 flex flex-col overflow-y-auto">
+        <div className="py-8 px-4">
+          <div className="max-w-7xl mx-auto">
         <div className="bg-gradient-to-r from-white via-amber-50/60 to-white rounded-2xl shadow-xl p-8 border-2 border-primary-100 mb-8">
           <h1 className="text-3xl font-extrabold bg-gradient-to-r from-gray-900 via-primary-600 to-accent-600 bg-clip-text text-transparent mb-2">
             User Management
@@ -91,7 +104,7 @@ export default function UserManagementPage() {
                       <td className="px-6 py-4 font-semibold text-gray-900">{user.full_name}</td>
                       <td className="px-6 py-4 text-gray-600">{user.email}</td>
                       <td className="px-6 py-4">
-                        <span className="px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700 capitalize">
+                        <span className="px-3 py-1 rounded-full text-xs font-semibold bg-rose-100 text-[#D72626] capitalize">
                           {user.role}
                         </span>
                       </td>
@@ -119,6 +132,8 @@ export default function UserManagementPage() {
             </div>
           </div>
         )}
+          </div>
+        </div>
       </div>
     </div>
   )

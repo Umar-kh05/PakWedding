@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuthStore } from '../store/authStore'
 import api from '../services/api'
+import Sidebar from '../components/Sidebar'
 
 interface ChecklistItem {
   id: string
@@ -49,6 +50,15 @@ export default function ChecklistPage() {
   const [selectedCategory, setSelectedCategory] = useState('')
   const [showAddForm, setShowAddForm] = useState(false)
   const [editingItem, setEditingItem] = useState<ChecklistItem | null>(null)
+
+  const sidebarItems = [
+    { path: '/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/bookings/history', label: 'My Bookings', icon: '📅' },
+    { path: '/budget-planner', label: 'Budget Planner', icon: '💰' },
+    { path: '/checklist', label: 'Checklist', icon: '✅' },
+    { path: '/favorites', label: 'Favorites', icon: '❤️' },
+    { path: '/reviews', label: 'My Reviews', icon: '⭐' },
+  ]
   
   const [formData, setFormData] = useState({
     title: '',
@@ -268,8 +278,11 @@ export default function ChecklistPage() {
   }
 
   return (
-    <div className="bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 min-h-screen py-6 sm:py-8 px-4 sm:px-6">
-      <div className="container mx-auto max-w-6xl">
+    <div className="flex min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
+      <Sidebar items={sidebarItems} title="User Dashboard" />
+      <div className="flex-1 flex flex-col overflow-y-auto">
+        <div className="py-6 sm:py-8 px-4 sm:px-6">
+          <div className="container mx-auto max-w-6xl">
         {/* Header */}
         <div className="mb-6 sm:mb-8">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent mb-2 leading-normal pb-2">
@@ -527,6 +540,8 @@ export default function ChecklistPage() {
             ))}
           </div>
         )}
+          </div>
+        </div>
       </div>
     </div>
   )

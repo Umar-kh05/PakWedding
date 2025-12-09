@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { getVendorProfile, updateVendorProfile, Vendor } from '../../services/vendorService'
 import { getUserProfile, updatePassword } from '../../services/userService'
 import api from '../../services/api'
+import Sidebar from '../../components/Sidebar'
 
 export default function VendorProfilePage() {
   const navigate = useNavigate()
@@ -12,6 +13,14 @@ export default function VendorProfilePage() {
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<'profile' | 'password' | 'image'>('profile')
+
+  const sidebarItems = [
+    { path: '/vendor/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/vendor/bookings', label: 'Bookings', icon: '📅' },
+    { path: '/vendor/profile', label: 'Profile', icon: '👤' },
+    { path: '/vendor/packages', label: 'Packages', icon: '📦' },
+    { path: '/vendor/reviews', label: 'Reviews', icon: '⭐' },
+  ]
 
   const [profileData, setProfileData] = useState({
     business_name: '',
@@ -202,7 +211,9 @@ export default function VendorProfilePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
-      <div className="container mx-auto px-6 py-8">
+      <Sidebar items={sidebarItems} title="Vendor Dashboard" />
+      <div className="ml-64 flex flex-col overflow-y-auto">
+        <div className="container mx-auto px-6 py-8">
         {/* Header */}
         <div className="mb-8">
           <button
@@ -457,6 +468,7 @@ export default function VendorProfilePage() {
             </form>
           </div>
         )}
+        </div>
       </div>
     </div>
   )

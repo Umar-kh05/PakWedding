@@ -1,9 +1,20 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../../services/api'
+import Sidebar from '../../components/Sidebar'
 
 export default function AddVendorPage() {
   const navigate = useNavigate()
+  
+  const sidebarItems = [
+    { path: '/admin/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/admin/vendors', label: 'Vendor Approvals', icon: '✅' },
+    { path: '/admin/vendors/add', label: 'Add Vendor', icon: '➕' },
+    { path: '/admin/users', label: 'User Management', icon: '👥' },
+    { path: '/admin/reviews', label: 'Review Moderation', icon: '⭐' },
+    { path: '/admin/admin-approvals', label: 'Admin Approvals', icon: '🔐' },
+  ]
+
   const [formData, setFormData] = useState({
     business_name: '',
     contact_person: '',
@@ -211,9 +222,11 @@ export default function AddVendorPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+    <div className="flex min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
+      <Sidebar items={sidebarItems} title="Admin Dashboard" />
+      <div className="flex-1 flex flex-col overflow-y-auto">
+        {/* Header */}
+        <div className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <h1 className="text-2xl font-bold text-gray-900">Add New Vendor</h1>
           <button
@@ -455,6 +468,7 @@ export default function AddVendorPage() {
               </button>
             </div>
           </form>
+        </div>
         </div>
       </div>
     </div>

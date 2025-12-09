@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Sidebar from '../components/Sidebar'
 
 interface Category {
   name: string
@@ -21,6 +22,15 @@ export default function BudgetPlannerPage() {
   const [editingCategory, setEditingCategory] = useState<string | null>(null)
   const [newCategoryName, setNewCategoryName] = useState('')
   const [newCategoryRatio, setNewCategoryRatio] = useState('')
+
+  const sidebarItems = [
+    { path: '/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/bookings/history', label: 'My Bookings', icon: '📅' },
+    { path: '/budget-planner', label: 'Budget Planner', icon: '💰' },
+    { path: '/checklist', label: 'Checklist', icon: '✅' },
+    { path: '/favorites', label: 'Favorites', icon: '❤️' },
+    { path: '/reviews', label: 'My Reviews', icon: '⭐' },
+  ]
 
   const currency = (value: number) => `Rs. ${Math.round(value).toLocaleString('en-PK')}`
 
@@ -94,8 +104,11 @@ export default function BudgetPlannerPage() {
   const remainingAllocated = totalBudget ? totalBudget * (1 - totalAllocated) : 0
 
   return (
-    <div className="bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 min-h-screen py-6 sm:py-8 md:py-10 px-4 sm:px-6">
-      <div className="max-w-5xl mx-auto space-y-6">
+    <div className="flex min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
+      <Sidebar items={sidebarItems} title="User Dashboard" />
+      <div className="flex-1 flex flex-col overflow-y-auto">
+        <div className="py-6 sm:py-8 md:py-10 px-4 sm:px-6">
+          <div className="max-w-5xl mx-auto space-y-6">
         <div className="text-center mb-6 sm:mb-8">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-gray-900 via-[#D72626] to-gray-900 bg-clip-text text-transparent mb-3 sm:mb-4 pb-2 leading-tight">
             Budget Planner
@@ -322,6 +335,8 @@ export default function BudgetPlannerPage() {
             </div>
           </>
         )}
+          </div>
+        </div>
       </div>
     </div>
   )

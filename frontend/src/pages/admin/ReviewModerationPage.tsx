@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import api from '../../services/api'
+import Sidebar from '../../components/Sidebar'
 
 interface Review {
   id: string
@@ -17,6 +18,15 @@ export default function ReviewModerationPage() {
   const [reviews, setReviews] = useState<Review[]>([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState<'all' | 'low_rated'>('all')
+
+  const sidebarItems = [
+    { path: '/admin/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/admin/vendors', label: 'Vendor Approvals', icon: '✅' },
+    { path: '/admin/vendors/add', label: 'Add Vendor', icon: '➕' },
+    { path: '/admin/users', label: 'User Management', icon: '👥' },
+    { path: '/admin/reviews', label: 'Review Moderation', icon: '⭐' },
+    { path: '/admin/admin-approvals', label: 'Admin Approvals', icon: '🔐' },
+  ]
 
   useEffect(() => {
     loadReviews()
@@ -50,8 +60,11 @@ export default function ReviewModerationPage() {
     : reviews.filter(r => r.rating < 3)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 py-8 px-4">
-      <div className="max-w-7xl mx-auto">
+    <div className="flex min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
+      <Sidebar items={sidebarItems} title="Admin Dashboard" />
+      <div className="flex-1 flex flex-col overflow-y-auto">
+        <div className="py-8 px-4">
+          <div className="max-w-7xl mx-auto">
         <div className="bg-gradient-to-r from-white via-amber-50/60 to-white rounded-2xl shadow-xl p-8 border-2 border-primary-100 mb-8">
           <h1 className="text-3xl font-extrabold bg-gradient-to-r from-gray-900 via-primary-600 to-accent-600 bg-clip-text text-transparent mb-2">
             Review Moderation
@@ -145,6 +158,8 @@ export default function ReviewModerationPage() {
             ))}
           </div>
         )}
+          </div>
+        </div>
       </div>
     </div>
   )
