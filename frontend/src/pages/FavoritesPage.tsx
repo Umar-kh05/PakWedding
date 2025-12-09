@@ -29,21 +29,37 @@ export default function FavoritesPage() {
   ]
 
   useEffect(() => {
-    if (user && token) {
-      loadFavorites()
-    } else {
-      setLoading(false)
+    const checkAndLoad = async () => {
+      if (!user) {
+        setLoading(false)
+        return
+      }
+      
+      // Check token from store
+      let currentToken = token || useAuthStore.getState().token
+      
+      // If no token, wait for Zustand persist to hydrate (up to 1 second)
+      if (!currentToken) {
+        for (let i = 0; i < 10; i++) {
+          await new Promise(resolve => setTimeout(resolve, 100))
+          currentToken = useAuthStore.getState().token
+          if (currentToken) break
+        }
+      }
+      
+      if (currentToken) {
+        await loadFavorites()
+      } else {
+        console.warn('Token not available - user may need to log in')
+        setLoading(false)
+      }
     }
+    
+    checkAndLoad()
   }, [user, token])
 
   const loadFavorites = async () => {
     try {
-      if (!user || !token) {
-        setLoading(false)
-        window.location.href = '/login'
-        return
-      }
-
       setLoading(true)
       const response = await api.get('/favorites')
       const favoritesData = response.data || []
@@ -61,11 +77,19 @@ export default function FavoritesPage() {
       setVendors(vendorMap)
     } catch (err: any) {
       if (err.response?.status === 401) {
-        useAuthStore.getState().logout()
-        window.location.href = '/login'
-        return
+        // Only redirect if it's actually a credentials error, not a hydration issue
+        const errorDetail = err.response?.data?.detail || 'Unknown error'
+        if (errorDetail.includes('credentials') || errorDetail.includes('expired') || errorDetail.includes('invalid')) {
+          useAuthStore.getState().logout()
+          if (!window.location.href.includes('/login')) {
+            window.location.href = '/login'
+          }
+        } else {
+          console.warn('401 error but not a credentials issue:', errorDetail)
+        }
+      } else {
+        console.error('Error loading favorites:', err)
       }
-      console.error('Error loading favorites:', err)
     } finally {
       setLoading(false)
     }

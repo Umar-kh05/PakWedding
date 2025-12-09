@@ -25,6 +25,7 @@ export default function BookingHistoryPage() {
 
   const sidebarItems = [
     { path: '/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/vendors', label: 'Find Vendors', icon: '🔍' },
     { path: '/bookings/history', label: 'My Bookings', icon: '📅' },
     { path: '/budget-planner', label: 'Budget Planner', icon: '💰' },
     { path: '/checklist', label: 'Checklist', icon: '✅' },
@@ -118,14 +119,25 @@ export default function BookingHistoryPage() {
     <div className="flex min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
       <Sidebar items={sidebarItems} title="User Dashboard" />
       <div className="flex-1 flex flex-col overflow-y-auto">
-        <div className="py-6 sm:py-8 px-4 sm:px-6">
-          <div className="max-w-7xl mx-auto">
+        <div className="py-6 sm:py-8 px-6 sm:px-8">
+          <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="bg-gradient-to-r from-white via-pink-50/50 to-white rounded-2xl shadow-xl p-6 sm:p-8 border-2 border-pink-100 mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-extrabold bg-gradient-to-r from-gray-900 via-pink-600 to-gray-900 bg-clip-text text-transparent mb-2">
+        <div className="mb-6 sm:mb-8 space-y-2 text-left">
+          <Link
+            to="/dashboard"
+            className="inline-flex items-center gap-2 text-[#D72626] hover:text-[#F26D46] font-semibold transition-colors w-fit"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to Dashboard
+          </Link>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent leading-tight">
             Booking History
           </h1>
-          <p className="text-sm sm:text-base text-gray-600 font-medium">View and manage all your bookings</p>
+          <p className="text-sm sm:text-base text-gray-700 font-medium">
+            View and manage all your bookings
+          </p>
         </div>
 
         {/* Success Message */}

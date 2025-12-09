@@ -30,6 +30,7 @@ export default function BudgetPlannerPage() {
 
   const sidebarItems = [
     { path: '/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/vendors', label: 'Find Vendors', icon: '🔍' },
     { path: '/bookings/history', label: 'My Bookings', icon: '📅' },
     { path: '/budget-planner', label: 'Budget Planner', icon: '💰' },
     { path: '/checklist', label: 'Checklist', icon: '✅' },
@@ -134,7 +135,7 @@ export default function BudgetPlannerPage() {
 
         {!totalBudget ? (
           <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Set Your Budget</h2>
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-[#D72626] via-[#F26D46] to-[#F7A76C] bg-clip-text text-transparent mb-4">Set Your Budget</h2>
             <p className="text-gray-700 mb-6 font-medium">
               Enter your total wedding budget to generate personalized category allocations.
             </p>

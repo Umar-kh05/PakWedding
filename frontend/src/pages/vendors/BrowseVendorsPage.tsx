@@ -75,12 +75,9 @@ export default function BrowseVendorsPage() {
         const favoriteIds = new Set(favorites.map((f: any) => f.vendor_id))
         setFavoriteVendorIds(favoriteIds)
       } catch (err: any) {
-        if (err.response?.status === 401) {
-          useAuthStore.getState().logout()
-          window.location.href = '/login'
-          return
-        }
+        // If favorites fail (e.g., expired token), keep page usable and avoid redirect
         console.log('Error loading favorites:', err)
+        setFavoriteVendorIds(new Set())
       }
     }
     loadFavorites()
@@ -277,7 +274,7 @@ export default function BrowseVendorsPage() {
       {isAuthed && <Sidebar items={sidebarItems} title="User Dashboard" />}
       <div className="flex-1 flex flex-col overflow-y-auto">
       {/* Header Section */}
-      <div className="container mx-auto max-w-6xl px-4 sm:px-6 py-12 relative">
+      <div className="container mx-auto max-w-6xl px-6 sm:px-8 py-10 sm:py-12 relative">
         {/* Decorative background */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-[#F7A76C]/10 rounded-full blur-3xl -z-0"></div>
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#D72626]/5 rounded-full blur-3xl -z-0"></div>
@@ -394,14 +391,14 @@ export default function BrowseVendorsPage() {
       </div>
 
       {/* Results + Sort */}
-        <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-gray-700 text-sm mb-6">
+        <div className="container mx-auto px-6 sm:px-8 flex flex-col md:flex-row justify-between items-center text-gray-700 text-sm mb-6">
         <p className="font-semibold">
           {loading ? 'Loading vendors...' : `Showing ${Math.min((currentPage - 1) * vendorsPerPage + 1, filteredVendors.length)}-${Math.min(currentPage * vendorsPerPage, filteredVendors.length)} of ${filteredVendors.length} results`}
         </p>
       </div>
 
       {/* Vendors Grid */}
-      <div className="container mx-auto px-6 pb-12">
+      <div className="container mx-auto px-6 sm:px-8 pb-12">
         {filteredVendors.length === 0 && !loading ? (
           <div className="text-center py-16">
             <p className="text-2xl font-bold text-gray-400 mb-4">No vendors found</p>

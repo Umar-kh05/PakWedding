@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import api from '../services/api'
 import Sidebar from '../components/Sidebar'
@@ -53,6 +54,7 @@ export default function ChecklistPage() {
 
   const sidebarItems = [
     { path: '/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/vendors', label: 'Find Vendors', icon: '🔍' },
     { path: '/bookings/history', label: 'My Bookings', icon: '📅' },
     { path: '/budget-planner', label: 'Budget Planner', icon: '💰' },
     { path: '/checklist', label: 'Checklist', icon: '✅' },
@@ -284,7 +286,16 @@ export default function ChecklistPage() {
         <div className="py-6 sm:py-8 px-4 sm:px-6">
           <div className="container mx-auto max-w-6xl">
         {/* Header */}
-        <div className="mb-6 sm:mb-8">
+        <div className="mb-6 sm:mb-8 space-y-2">
+          <Link
+            to="/dashboard"
+            className="inline-flex items-center gap-2 text-[#D72626] hover:text-[#F26D46] font-semibold transition-colors w-fit"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to Dashboard
+          </Link>
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent mb-2 leading-normal pb-2">
             Wedding Checklist
           </h1>

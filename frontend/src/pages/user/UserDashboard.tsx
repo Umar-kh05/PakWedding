@@ -17,6 +17,7 @@ export default function UserDashboard() {
 
   const sidebarItems = [
     { path: '/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/vendors', label: 'Find Vendors', icon: '🔍' },
     { path: '/bookings/history', label: 'My Bookings', icon: '📅' },
     { path: '/budget-planner', label: 'Budget Planner', icon: '💰' },
     { path: '/checklist', label: 'Checklist', icon: '✅' },
@@ -83,7 +84,7 @@ export default function UserDashboard() {
         <div className="bg-gradient-to-r from-white via-amber-50/60 to-white shadow-md border-b-2 border-primary-100">
           <div className="container mx-auto max-w-7xl px-4 sm:px-6 py-4 sm:py-6">
             <div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-[#D72626] via-[#F26D46] to-[#F7A76C] bg-clip-text text-transparent">
                 Welcome back, {userName}!
               </h1>
               <p className="text-gray-600 text-base sm:text-lg mt-1">Let's plan your perfect wedding</p>
@@ -173,58 +174,6 @@ export default function UserDashboard() {
           </div>
         )}
 
-        {/* Quick Actions Section - Redesigned */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-            <span className="text-primary-600">⚡</span>
-            Quick Actions
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Link
-              to="/vendors"
-              className="group bg-gradient-to-br from-primary-50 to-accent-50 rounded-xl p-6 border border-primary-200 hover:border-primary-400 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-center"
-            >
-              <div className="w-14 h-14 bg-gradient-to-br from-primary-600 to-accent-600 rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform shadow-md">
-                <span className="text-3xl">🔍</span>
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">Find Vendors</h3>
-              <p className="text-sm text-gray-600">Browse wedding vendors</p>
-            </Link>
-
-            <Link
-              to="/bookings/history"
-              className="group bg-gradient-to-br from-primary-50 to-accent-50 rounded-xl p-6 border border-accent-200 hover:border-accent-400 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-center"
-            >
-              <div className="w-14 h-14 bg-gradient-to-br from-accent-600 to-primary-600 rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform shadow-md">
-                <span className="text-3xl">📅</span>
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-accent-600 transition-colors">View Bookings</h3>
-              <p className="text-sm text-gray-600">Check your bookings</p>
-            </Link>
-
-            <Link
-              to="/budget-planner"
-              className="group bg-gradient-to-br from-primary-50 to-accent-50 rounded-xl p-6 border border-accent-200 hover:border-accent-400 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-center"
-            >
-              <div className="w-14 h-14 bg-gradient-to-br from-accent-600 to-primary-600 rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform shadow-md">
-                <span className="text-3xl">💰</span>
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-accent-600 transition-colors">Budget Planner</h3>
-              <p className="text-sm text-gray-600">Plan your expenses</p>
-            </Link>
-
-            <Link
-              to="/checklist"
-              className="group bg-gradient-to-br from-primary-50 to-accent-50 rounded-xl p-6 border border-primary-200 hover:border-primary-400 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-center"
-            >
-              <div className="w-14 h-14 bg-gradient-to-br from-primary-600 to-accent-600 rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform shadow-md">
-                <span className="text-3xl">✅</span>
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">Checklist</h3>
-              <p className="text-sm text-gray-600">Track your progress</p>
-            </Link>
-          </div>
-        </div>
           </div>
         </div>
       </div>

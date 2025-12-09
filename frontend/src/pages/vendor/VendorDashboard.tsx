@@ -57,13 +57,13 @@ export default function VendorDashboard() {
       
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <div className="bg-[#F4E9DB] shadow-lg border-b-2 border-[#D72626]/20">
-          <div className="container mx-auto px-6 py-6">
+        <div className="bg-gradient-to-r from-white via-amber-50/60 to-white shadow-lg border-b-2 border-primary-100">
+          <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-6 text-left">
             <div>
-              <h1 className="text-3xl font-extrabold bg-gradient-to-r from-gray-900 via-[#D72626] to-gray-900 bg-clip-text text-transparent">
+              <h1 className="text-4xl font-extrabold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent">
                 Vendor Dashboard
               </h1>
-              <p className="text-gray-600 mt-1 font-medium">Welcome back, {user?.full_name || 'Vendor'}</p>
+              <p className="text-gray-700 mt-1 text-base font-medium">Welcome back, {user?.full_name || 'Vendor'}</p>
             </div>
           </div>
         </div>

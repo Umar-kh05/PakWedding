@@ -72,70 +72,54 @@ export default function AdminDashboard() {
       <div className="flex-1 flex flex-col">
         {/* Header */}
         <div className="bg-gradient-to-r from-white via-amber-50/60 to-white shadow-lg border-b-2 border-primary-100">
-          <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-6 flex flex-col gap-2 text-left">
-            <button
-              onClick={() => window.history.back()}
-              className="inline-flex items-center gap-2 text-[#D72626] hover:text-[#F26D46] font-semibold transition-colors w-fit"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-              Back to Dashboard
-            </button>
+          <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-6 text-left">
             <div>
               <h1 className="text-4xl font-extrabold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent">
                 Admin Dashboard
               </h1>
               <p className="text-gray-700 mt-1 text-base font-medium">Manage your platform</p>
             </div>
-            <button
-              onClick={loadStats}
-              className="bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 hover:from-primary-700 hover:via-accent-700 hover:to-primary-700 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-md hover:shadow-lg transition-all disabled:opacity-60 disabled:cursor-not-allowed w-fit"
-              disabled={loading}
-            >
-              {loading ? 'Refreshing...' : 'Refresh stats'}
-            </button>
           </div>
         </div>
 
         <div className="flex-1 w-full px-4 sm:px-6 py-6 sm:py-8 overflow-y-auto">
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            <div className="bg-gradient-to-br from-white to-amber-50/50 rounded-2xl shadow-2xl p-7 border-2 border-primary-200 hover:border-primary-300 transition-all hover:shadow-2xl">
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-accent-500 rounded-xl flex items-center justify-center">
-                  <span className="text-2xl">⏳</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="bg-gradient-to-br from-white to-rose-50/50 rounded-2xl shadow-xl p-8 border-2 border-rose-200 hover:border-[#D72626] transition-all hover:shadow-2xl">
+              <div className="flex items-center justify-between mb-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-[#D72626] to-rose-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <span className="text-4xl">⏳</span>
                 </div>
               </div>
-              <p className="text-gray-600 text-sm font-semibold mb-2">Pending Vendor Approvals</p>
-              <p className="text-4xl font-extrabold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">{stats.pendingApprovals}</p>
+              <p className="text-gray-600 text-base font-semibold mb-3">Pending Vendor Approvals</p>
+              <p className="text-5xl font-extrabold bg-gradient-to-r from-[#D72626] to-rose-600 bg-clip-text text-transparent">{stats.pendingApprovals}</p>
             </div>
-            <div className="bg-gradient-to-br from-white to-amber-50/50 rounded-2xl shadow-2xl p-7 border-2 border-primary-200 hover:border-primary-300 transition-all hover:shadow-2xl">
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-accent-500 rounded-xl flex items-center justify-center">
-                  <span className="text-2xl">🔐</span>
+            <div className="bg-gradient-to-br from-white to-orange-50/50 rounded-2xl shadow-xl p-8 border-2 border-orange-200 hover:border-orange-400 transition-all hover:shadow-2xl">
+              <div className="flex items-center justify-between mb-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <span className="text-4xl">🔐</span>
                 </div>
               </div>
-              <p className="text-gray-600 text-sm font-semibold mb-2">Pending Admin Approvals</p>
-              <p className="text-4xl font-extrabold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">{stats.pendingAdminApprovals || 0}</p>
+              <p className="text-gray-600 text-base font-semibold mb-3">Pending Admin Approvals</p>
+              <p className="text-5xl font-extrabold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">{stats.pendingAdminApprovals || 0}</p>
             </div>
-            <div className="bg-gradient-to-br from-white to-amber-50/50 rounded-2xl shadow-2xl p-7 border-2 border-primary-200 hover:border-primary-300 transition-all hover:shadow-2xl">
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-accent-500 rounded-xl flex items-center justify-center">
-                  <span className="text-2xl">🚩</span>
+            <div className="bg-gradient-to-br from-white to-amber-50/50 rounded-2xl shadow-xl p-8 border-2 border-amber-200 hover:border-amber-400 transition-all hover:shadow-2xl">
+              <div className="flex items-center justify-between mb-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <span className="text-4xl">🚩</span>
                 </div>
               </div>
-              <p className="text-gray-600 text-sm font-semibold mb-2">Flagged Reviews</p>
-              <p className="text-4xl font-extrabold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">{stats.flaggedReviews}</p>
+              <p className="text-gray-600 text-base font-semibold mb-3">Flagged Reviews</p>
+              <p className="text-5xl font-extrabold bg-gradient-to-r from-amber-600 to-yellow-600 bg-clip-text text-transparent">{stats.flaggedReviews}</p>
             </div>
-            <div className="bg-gradient-to-br from-white to-amber-50/50 rounded-2xl shadow-2xl p-7 border-2 border-primary-200 hover:border-primary-300 transition-all hover:shadow-2xl">
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-accent-500 rounded-xl flex items-center justify-center">
-                  <span className="text-2xl">👥</span>
+            <div className="bg-gradient-to-br from-white to-red-50/50 rounded-2xl shadow-xl p-8 border-2 border-red-200 hover:border-[#D72626] transition-all hover:shadow-2xl">
+              <div className="flex items-center justify-between mb-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-[#D72626] to-red-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <span className="text-4xl">👥</span>
                 </div>
               </div>
-              <p className="text-gray-600 text-sm font-semibold mb-2">Active Users</p>
-              <p className="text-4xl font-extrabold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">{stats.activeUsers.toLocaleString()}</p>
+              <p className="text-gray-600 text-base font-semibold mb-3">Active Users</p>
+              <p className="text-5xl font-extrabold bg-gradient-to-r from-[#D72626] to-red-600 bg-clip-text text-transparent">{stats.activeUsers.toLocaleString()}</p>
             </div>
           </div>
         </div>
