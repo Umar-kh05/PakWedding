@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -56,11 +57,20 @@ export default function ContactPage() {
     <div className="bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 min-h-screen py-12 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-extrabold bg-gradient-to-r from-gray-900 via-[#D72626] to-gray-900 bg-clip-text text-transparent mb-4 pb-2 leading-tight">
+        <div className="mb-12 space-y-3 text-left">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 text-[#D72626] hover:text-[#F26D46] font-semibold transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to Home
+          </Link>
+          <h1 className="text-5xl font-extrabold bg-gradient-to-r from-[#D72626] via-[#F26D46] to-[#D72626] bg-clip-text text-transparent mb-4 pb-2 leading-tight">
             Get In Touch
           </h1>
-          <p className="text-xl text-gray-700 font-medium max-w-2xl mx-auto">
+          <p className="text-xl text-gray-800 font-medium max-w-2xl">
             Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
           </p>
         </div>
@@ -68,8 +78,8 @@ export default function ContactPage() {
         <div className="grid md:grid-cols-2 gap-8">
           {/* Contact Information */}
           <div className="space-y-6">
-            <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Contact Information</h2>
+            <div className="bg-white rounded-2xl shadow-xl p-8 border-2 border-primary-200 text-left">
+              <h2 className="text-2xl font-bold text-[#D72626] mb-6">Contact Information</h2>
               
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
@@ -79,9 +89,9 @@ export default function ContactPage() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-bold text-gray-900 mb-1">Email</h3>
-                    <p className="text-gray-600">info@pakwedding.com</p>
-                    <p className="text-gray-600">support@pakwedding.com</p>
+                    <h3 className="font-bold text-[#D72626] mb-1">Email</h3>
+                    <p className="text-gray-800">info@pakwedding.com</p>
+                    <p className="text-gray-800">support@pakwedding.com</p>
                   </div>
                 </div>
 
@@ -92,9 +102,9 @@ export default function ContactPage() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-bold text-gray-900 mb-1">Phone</h3>
-                    <p className="text-gray-600">+92 300 1234567</p>
-                    <p className="text-gray-600">+92 321 9876543</p>
+                    <h3 className="font-bold text-[#D72626] mb-1">Phone</h3>
+                    <p className="text-gray-800">+92 300 1234567</p>
+                    <p className="text-gray-800">+92 321 9876543</p>
                   </div>
                 </div>
 
@@ -106,16 +116,16 @@ export default function ContactPage() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-bold text-gray-900 mb-1">Address</h3>
-                    <p className="text-gray-600">123 Wedding Street</p>
-                    <p className="text-gray-600">Lahore, Punjab, Pakistan</p>
+                    <h3 className="font-bold text-[#D72626] mb-1">Address</h3>
+                    <p className="text-gray-800">123 Wedding Street</p>
+                    <p className="text-gray-800">Lahore, Punjab, Pakistan</p>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-8 pt-8 border-t border-gray-200">
-                <h3 className="font-bold text-gray-900 mb-4">Business Hours</h3>
-                <div className="space-y-2 text-gray-600">
+              <div className="mt-8 pt-8 border-t border-primary-100">
+                <h3 className="font-bold text-[#D72626] mb-4">Business Hours</h3>
+                <div className="space-y-2 text-gray-800">
                   <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
                   <p>Saturday: 10:00 AM - 4:00 PM</p>
                   <p>Sunday: Closed</p>
@@ -125,8 +135,8 @@ export default function ContactPage() {
           </div>
 
           {/* Contact Form */}
-          <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Send us a Message</h2>
+          <div className="bg-white rounded-2xl shadow-xl p-8 border-2 border-primary-200 text-left">
+            <h2 className="text-2xl font-bold text-[#D72626] mb-6">Send us a Message</h2>
             
             {submitted && (
               <div className="mb-6 bg-green-50 border-2 border-green-200 text-green-800 px-4 py-3 rounded-xl">

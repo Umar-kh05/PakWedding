@@ -99,35 +99,42 @@ export default function Layout({ children }: LayoutProps) {
     return () => clearTimeout(timer)
   }, [user, checkSessionExpiry, location.pathname])
 
-  // Check if current route is a dashboard page (should not show header/footer)
-  // Dashboard pages: user/admin/vendor dashboards and their related pages
-  // Public pages: home, about, contact, vendors listing, vendor profiles, auth pages
-  const isDashboardPage = 
+  const token = useAuthStore.getState().token
+
+  // Hide header/footer only for authenticated dashboard/management areas.
+  const isUserSection =
     location.pathname === '/dashboard' ||
-    location.pathname.startsWith('/vendor/dashboard') ||
-    location.pathname.startsWith('/vendor/bookings') ||
-    location.pathname.startsWith('/vendor/profile') ||
-    location.pathname.startsWith('/vendor/packages') ||
-    location.pathname.startsWith('/vendor/reviews') ||
-    location.pathname.startsWith('/admin/dashboard') ||
-    location.pathname.startsWith('/admin/vendors') ||
-    location.pathname.startsWith('/admin/users') ||
-    location.pathname.startsWith('/admin/reviews') ||
-    location.pathname.startsWith('/admin/admin-approvals') ||
     location.pathname.startsWith('/bookings/') ||
     location.pathname === '/bookings/new' ||
     location.pathname === '/budget-planner' ||
     location.pathname === '/checklist' ||
     location.pathname === '/favorites' ||
-    location.pathname === '/reviews'
+    location.pathname === '/reviews' ||
+    location.pathname.startsWith('/vendors')
+
+  const isVendorSection =
+    location.pathname.startsWith('/vendor/dashboard') ||
+    location.pathname.startsWith('/vendor/bookings') ||
+    location.pathname.startsWith('/vendor/profile') ||
+    location.pathname.startsWith('/vendor/packages') ||
+    location.pathname.startsWith('/vendor/reviews')
+
+  const isAdminSection =
+    location.pathname.startsWith('/admin/dashboard') ||
+    location.pathname.startsWith('/admin/vendors') ||
+    location.pathname.startsWith('/admin/users') ||
+    location.pathname.startsWith('/admin/reviews') ||
+    location.pathname.startsWith('/admin/admin-approvals')
+
+  const hideHeaderFooter = !!(user && token) && (isUserSection || isVendorSection || isAdminSection)
 
   return (
     <div className="min-h-screen flex flex-col">
-      {!isDashboardPage && <Navbar />}
+      {!hideHeaderFooter && <Navbar />}
       <main className="flex-grow">
         {children}
       </main>
-      {!isDashboardPage && <Footer />}
+      {!hideHeaderFooter && <Footer />}
     </div>
   )
 }

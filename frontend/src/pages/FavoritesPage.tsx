@@ -16,9 +16,11 @@ export default function FavoritesPage() {
   const [favorites, setFavorites] = useState<Favorite[]>([])
   const [vendors, setVendors] = useState<Record<string, Vendor>>({})
   const [loading, setLoading] = useState(true)
+  const token = useAuthStore.getState().token
 
   const sidebarItems = [
     { path: '/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/vendors', label: 'Find Vendors', icon: '🔍' },
     { path: '/bookings/history', label: 'My Bookings', icon: '📅' },
     { path: '/budget-planner', label: 'Budget Planner', icon: '💰' },
     { path: '/checklist', label: 'Checklist', icon: '✅' },
@@ -27,15 +29,21 @@ export default function FavoritesPage() {
   ]
 
   useEffect(() => {
-    if (user) {
+    if (user && token) {
       loadFavorites()
     } else {
       setLoading(false)
     }
-  }, [user])
+  }, [user, token])
 
   const loadFavorites = async () => {
     try {
+      if (!user || !token) {
+        setLoading(false)
+        window.location.href = '/login'
+        return
+      }
+
       setLoading(true)
       const response = await api.get('/favorites')
       const favoritesData = response.data || []
@@ -52,6 +60,11 @@ export default function FavoritesPage() {
       })
       setVendors(vendorMap)
     } catch (err: any) {
+      if (err.response?.status === 401) {
+        useAuthStore.getState().logout()
+        window.location.href = '/login'
+        return
+      }
       console.error('Error loading favorites:', err)
     } finally {
       setLoading(false)
@@ -87,10 +100,19 @@ export default function FavoritesPage() {
     <div className="flex min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
       <Sidebar items={sidebarItems} title="User Dashboard" />
       <div className="flex-1 flex flex-col overflow-y-auto">
-        <div className="py-12 px-4">
+        <div className="py-12 px-4 sm:px-6">
           <div className="container mx-auto max-w-6xl">
-        <div className="mb-8">
-          <h1 className="text-4xl font-extrabold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent mb-2">
+        <div className="mb-8 flex flex-col gap-2">
+          <Link
+            to="/dashboard"
+            className="inline-flex items-center gap-2 text-[#D72626] hover:text-[#F26D46] font-semibold transition-colors w-fit"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to Dashboard
+          </Link>
+          <h1 className="text-4xl font-extrabold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent mb-2 leading-normal">
             My Favorites
           </h1>
           <p className="text-gray-600">Your saved wedding vendors</p>

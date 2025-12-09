@@ -5,6 +5,7 @@ import BookingModal from '../../components/BookingModal'
 import { useAuthStore } from '../../store/authStore'
 import { getRandomVendorImages, getVendorImagesByCategory } from '../../config/vendorImages'
 import api from '../../services/api'
+import Sidebar from '../../components/Sidebar'
 
 type UiVendor = Vendor & {
   rating?: number
@@ -28,6 +29,16 @@ export default function BrowseVendorsPage() {
   const [minRating, setMinRating] = useState<number>(0)
   const [sortBy, setSortBy] = useState<string>('popular')
   const [activeFilters, setActiveFilters] = useState<string[]>([])
+  const isAuthed = !!user
+  const sidebarItems = [
+    { path: '/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/vendors', label: 'Find Vendors', icon: '🔍' },
+    { path: '/bookings/history', label: 'My Bookings', icon: '📅' },
+    { path: '/budget-planner', label: 'Budget Planner', icon: '💰' },
+    { path: '/checklist', label: 'Checklist', icon: '✅' },
+    { path: '/favorites', label: 'Favorites', icon: '❤️' },
+    { path: '/reviews', label: 'My Reviews', icon: '⭐' },
+  ]
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1)
@@ -53,7 +64,8 @@ export default function BrowseVendorsPage() {
   // Load favorites when user is logged in
   useEffect(() => {
     const loadFavorites = async () => {
-      if (!user) {
+      const authToken = useAuthStore.getState().token
+      if (!user || !authToken) {
         setFavoriteVendorIds(new Set())
         return
       }
@@ -62,7 +74,12 @@ export default function BrowseVendorsPage() {
         const favorites = response.data || []
         const favoriteIds = new Set(favorites.map((f: any) => f.vendor_id))
         setFavoriteVendorIds(favoriteIds)
-      } catch (err) {
+      } catch (err: any) {
+        if (err.response?.status === 401) {
+          useAuthStore.getState().logout()
+          window.location.href = '/login'
+          return
+        }
         console.log('Error loading favorites:', err)
       }
     }
@@ -256,14 +273,25 @@ export default function BrowseVendorsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
+    <div className={`min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 ${isAuthed ? 'flex' : ''}`}>
+      {isAuthed && <Sidebar items={sidebarItems} title="User Dashboard" />}
+      <div className="flex-1 flex flex-col overflow-y-auto">
       {/* Header Section */}
-      <div className="container mx-auto px-6 py-12 relative">
+      <div className="container mx-auto max-w-6xl px-4 sm:px-6 py-12 relative">
         {/* Decorative background */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-[#F7A76C]/10 rounded-full blur-3xl -z-0"></div>
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#D72626]/5 rounded-full blur-3xl -z-0"></div>
         <div className="relative z-10">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-[#D72626] to-gray-900 bg-clip-text text-transparent mb-3">
+          <Link
+            to={isAuthed ? '/dashboard' : '/'}
+            className="inline-flex items-center gap-2 text-[#D72626] hover:text-[#F26D46] font-semibold transition-colors mb-3"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            {isAuthed ? 'Back to Dashboard' : 'Back to Home'}
+          </Link>
+          <h1 className="text-4xl font-extrabold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent mb-3 leading-normal">
             Find Your Perfect Wedding Vendors
           </h1>
           <p className="text-gray-700 font-medium mb-8">
@@ -593,6 +621,7 @@ export default function BrowseVendorsPage() {
             }}
           />
         )}
+      </div>
       </div>
     </div>
   )

@@ -1,5 +1,7 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
+import { useAuthStore } from '../store/authStore'
 
 interface Category {
   name: string
@@ -22,6 +24,9 @@ export default function BudgetPlannerPage() {
   const [editingCategory, setEditingCategory] = useState<string | null>(null)
   const [newCategoryName, setNewCategoryName] = useState('')
   const [newCategoryRatio, setNewCategoryRatio] = useState('')
+  const { user } = useAuthStore()
+  const token = useAuthStore.getState().token
+  const isAuthed = !!(user && token)
 
   const sidebarItems = [
     { path: '/dashboard', label: 'Dashboard', icon: '📊' },
@@ -104,13 +109,22 @@ export default function BudgetPlannerPage() {
   const remainingAllocated = totalBudget ? totalBudget * (1 - totalAllocated) : 0
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
-      <Sidebar items={sidebarItems} title="User Dashboard" />
+    <div className={`min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 ${isAuthed ? 'flex' : ''}`}>
+      {isAuthed && <Sidebar items={sidebarItems} title="User Dashboard" />}
       <div className="flex-1 flex flex-col overflow-y-auto">
         <div className="py-6 sm:py-8 md:py-10 px-4 sm:px-6">
-          <div className="max-w-5xl mx-auto space-y-6">
-        <div className="text-center mb-6 sm:mb-8">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-gray-900 via-[#D72626] to-gray-900 bg-clip-text text-transparent mb-3 sm:mb-4 pb-2 leading-tight">
+          <div className="max-w-6xl mx-auto space-y-6">
+        <div className="mb-8 space-y-2 text-left">
+          <Link
+            to={isAuthed ? '/dashboard' : '/'}
+            className="inline-flex items-center gap-2 text-[#D72626] hover:text-[#F26D46] font-semibold transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            {isAuthed ? 'Back to Dashboard' : 'Back to Home'}
+          </Link>
+          <h1 className="text-4xl font-extrabold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent leading-normal">
             Budget Planner
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-gray-700 font-medium">
