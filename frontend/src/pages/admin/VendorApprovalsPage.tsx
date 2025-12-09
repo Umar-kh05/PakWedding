@@ -120,11 +120,20 @@ export default function VendorApprovalsPage() {
       <div className="flex-1 flex flex-col overflow-y-auto">
         <div className="py-6 sm:py-8 px-4 sm:px-6">
           <div className="max-w-7xl mx-auto">
-        <div className="bg-gradient-to-r from-white via-amber-50/60 to-white rounded-2xl shadow-xl p-6 sm:p-8 border-2 border-primary-100 mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-extrabold bg-gradient-to-r from-gray-900 via-primary-600 to-accent-600 bg-clip-text text-transparent mb-2">
+        <div className="mb-6 flex flex-col gap-2 text-left">
+          <button
+            onClick={() => window.history.back()}
+            className="inline-flex items-center gap-2 text-[#D72626] hover:text-[#F26D46] font-semibold transition-colors w-fit"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to Dashboard
+          </button>
+          <h1 className="text-4xl font-extrabold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent leading-normal">
             Vendor Approvals
           </h1>
-          <p className="text-sm sm:text-base text-gray-600 font-medium">Review and approve vendor registrations</p>
+          <p className="text-base text-gray-700 font-medium">Review and approve vendor registrations</p>
         </div>
 
         {/* Messages */}

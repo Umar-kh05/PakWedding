@@ -43,19 +43,19 @@ export default function Sidebar({ items, title, userRole }: SidebarProps) {
               className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
                 isActive
                   ? 'bg-gradient-to-r from-[#D72626] to-rose-600 text-white shadow-md'
-                  : 'text-gray-700 hover:bg-rose-100 hover:text-[#D72626]'
+                  : 'text-gray-800 hover:bg-rose-50 hover:text-[#D72626]'
               }`}
             >
               <span
                 className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg font-semibold shadow-sm ${
                   isActive
                     ? 'bg-gradient-to-br from-[#F26D46] via-[#D72626] to-[#F7A76C] text-white'
-                    : 'bg-gradient-to-br from-white to-rose-50 text-[#D72626] border border-rose-100'
+                    : 'bg-white text-gray-800 border border-rose-100'
                 }`}
               >
                 {item.icon}
               </span>
-              <span className="font-medium">{item.label}</span>
+              <span className={`font-semibold ${isActive ? 'text-white' : 'text-gray-800'}`}>{item.label}</span>
             </Link>
           )
         })}

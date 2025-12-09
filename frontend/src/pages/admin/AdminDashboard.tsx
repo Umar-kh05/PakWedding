@@ -72,16 +72,25 @@ export default function AdminDashboard() {
       <div className="flex-1 flex flex-col">
         {/* Header */}
         <div className="bg-gradient-to-r from-white via-amber-50/60 to-white shadow-lg border-b-2 border-primary-100">
-          <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-6 flex flex-col gap-2 text-left">
+            <button
+              onClick={() => window.history.back()}
+              className="inline-flex items-center gap-2 text-[#D72626] hover:text-[#F26D46] font-semibold transition-colors w-fit"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Back to Dashboard
+            </button>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold bg-gradient-to-r from-gray-900 via-primary-600 to-accent-600 bg-clip-text text-transparent">
+              <h1 className="text-4xl font-extrabold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent">
                 Admin Dashboard
               </h1>
-              <p className="text-gray-600 mt-1 text-sm sm:text-base font-medium">Manage your platform</p>
+              <p className="text-gray-700 mt-1 text-base font-medium">Manage your platform</p>
             </div>
             <button
               onClick={loadStats}
-              className="bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 hover:from-primary-700 hover:via-accent-700 hover:to-primary-700 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-md hover:shadow-lg transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+              className="bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 hover:from-primary-700 hover:via-accent-700 hover:to-primary-700 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-md hover:shadow-lg transition-all disabled:opacity-60 disabled:cursor-not-allowed w-fit"
               disabled={loading}
             >
               {loading ? 'Refreshing...' : 'Refresh stats'}
@@ -91,8 +100,8 @@ export default function AdminDashboard() {
 
         <div className="flex-1 w-full px-4 sm:px-6 py-6 sm:py-8 overflow-y-auto">
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
-            <div className="bg-gradient-to-br from-white to-amber-50/50 rounded-2xl shadow-xl p-5 border-2 border-primary-100 hover:border-primary-300 transition-all hover:shadow-2xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div className="bg-gradient-to-br from-white to-amber-50/50 rounded-2xl shadow-2xl p-7 border-2 border-primary-200 hover:border-primary-300 transition-all hover:shadow-2xl">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-accent-500 rounded-xl flex items-center justify-center">
                   <span className="text-2xl">⏳</span>
@@ -101,7 +110,7 @@ export default function AdminDashboard() {
               <p className="text-gray-600 text-sm font-semibold mb-2">Pending Vendor Approvals</p>
               <p className="text-4xl font-extrabold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">{stats.pendingApprovals}</p>
             </div>
-            <div className="bg-gradient-to-br from-white to-amber-50/50 rounded-2xl shadow-xl p-5 border-2 border-primary-100 hover:border-primary-300 transition-all hover:shadow-2xl">
+            <div className="bg-gradient-to-br from-white to-amber-50/50 rounded-2xl shadow-2xl p-7 border-2 border-primary-200 hover:border-primary-300 transition-all hover:shadow-2xl">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-accent-500 rounded-xl flex items-center justify-center">
                   <span className="text-2xl">🔐</span>
@@ -110,7 +119,7 @@ export default function AdminDashboard() {
               <p className="text-gray-600 text-sm font-semibold mb-2">Pending Admin Approvals</p>
               <p className="text-4xl font-extrabold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">{stats.pendingAdminApprovals || 0}</p>
             </div>
-            <div className="bg-gradient-to-br from-white to-amber-50/50 rounded-2xl shadow-xl p-5 border-2 border-primary-100 hover:border-primary-300 transition-all hover:shadow-2xl">
+            <div className="bg-gradient-to-br from-white to-amber-50/50 rounded-2xl shadow-2xl p-7 border-2 border-primary-200 hover:border-primary-300 transition-all hover:shadow-2xl">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-accent-500 rounded-xl flex items-center justify-center">
                   <span className="text-2xl">🚩</span>
@@ -119,7 +128,7 @@ export default function AdminDashboard() {
               <p className="text-gray-600 text-sm font-semibold mb-2">Flagged Reviews</p>
               <p className="text-4xl font-extrabold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">{stats.flaggedReviews}</p>
             </div>
-            <div className="bg-gradient-to-br from-white to-amber-50/50 rounded-2xl shadow-xl p-5 border-2 border-primary-100 hover:border-primary-300 transition-all hover:shadow-2xl">
+            <div className="bg-gradient-to-br from-white to-amber-50/50 rounded-2xl shadow-2xl p-7 border-2 border-primary-200 hover:border-primary-300 transition-all hover:shadow-2xl">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-accent-500 rounded-xl flex items-center justify-center">
                   <span className="text-2xl">👥</span>

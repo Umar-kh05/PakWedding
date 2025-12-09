@@ -226,21 +226,29 @@ export default function AddVendorPage() {
       <Sidebar items={sidebarItems} title="Admin Dashboard" />
       <div className="flex-1 flex flex-col overflow-y-auto">
         {/* Header */}
-        <div className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gray-900">Add New Vendor</h1>
-          <button
-            onClick={() => navigate('/admin/dashboard')}
-            className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm transition-colors"
-          >
-            Back to Dashboard
-          </button>
+        <div className="py-6 sm:py-8 px-4 sm:px-6">
+          <div className="max-w-7xl mx-auto flex flex-col gap-2 text-left">
+            <button
+              onClick={() => navigate('/admin/dashboard')}
+              className="inline-flex items-center gap-2 text-[#D72626] hover:text-[#F26D46] font-semibold transition-colors w-fit"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Back to Dashboard
+            </button>
+            <h1 className="text-4xl font-extrabold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent leading-normal text-left">
+              Add New Vendor
+            </h1>
+            <p className="text-base text-gray-700 font-medium">
+              Create a new vendor account and set initial details
+            </p>
+          </div>
         </div>
-      </div>
 
-      <div className="container mx-auto px-6 py-8 max-w-3xl">
-        <div className="bg-white rounded-lg shadow-md p-8">
-          <h2 className="text-xl font-bold text-gray-900 mb-6">Vendor Information</h2>
+      <div className="container mx-auto px-6 pb-10 max-w-3xl">
+        <div className="bg-white rounded-2xl shadow-xl p-8 border-2 border-primary-100">
+          <h2 className="text-2xl font-bold text-[#D72626] mb-6">Vendor Information</h2>
 
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
