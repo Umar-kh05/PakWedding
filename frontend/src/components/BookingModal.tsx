@@ -243,12 +243,12 @@ export default function BookingModal({ vendorId, vendorName, isOpen, onClose, on
                     onClick={() => handlePackageSelect(pkg)}
                     className={`p-4 rounded-lg border-2 transition-all ${
                       selectedPackage?.name === pkg.name
-                        ? 'border-pink-600 bg-pink-50 shadow-md'
-                        : 'border-gray-200 hover:border-pink-300 bg-white'
+                        ? 'border-[#D72626] bg-gradient-to-br from-rose-50 to-orange-50/50 shadow-md'
+                        : 'border-gray-200 hover:border-[#D72626]/50 bg-white'
                     }`}
                   >
                     <div className="font-semibold text-gray-900 mb-1">{pkg.name}</div>
-                    <div className="text-pink-600 font-bold text-lg">Rs. {pkg.price.toLocaleString()}</div>
+                    <div className="text-[#D72626] font-bold text-lg">Rs. {pkg.price.toLocaleString()}</div>
                     {pkg.description && (
                       <div className="text-xs text-gray-500 mt-1">{pkg.description}</div>
                     )}
@@ -256,7 +256,7 @@ export default function BookingModal({ vendorId, vendorName, isOpen, onClose, on
                 ))}
               </div>
               {selectedPackage && (
-                <div className="mt-3 p-3 bg-pink-50 rounded-lg">
+                <div className="mt-3 p-3 bg-gradient-to-br from-rose-50 to-orange-50/50 rounded-lg border border-rose-200">
                   <div className="text-sm text-gray-700">
                     <span className="font-semibold">Selected:</span> {selectedPackage.name} - Rs. {selectedPackage.price.toLocaleString()}
                   </div>
@@ -266,7 +266,7 @@ export default function BookingModal({ vendorId, vendorName, isOpen, onClose, on
                       <ul className="text-xs text-gray-600 space-y-1">
                         {selectedPackage.features.map((feature, idx) => (
                           <li key={idx} className="flex items-start gap-1">
-                            <span className="text-pink-600">•</span>
+                            <span className="text-[#D72626]">•</span>
                             <span>{feature}</span>
                           </li>
                         ))}
@@ -287,7 +287,7 @@ export default function BookingModal({ vendorId, vendorName, isOpen, onClose, on
               name="event_date"
               value={formData.event_date}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D72626] focus:border-[#D72626]"
               required
             />
           </div>
@@ -301,7 +301,7 @@ export default function BookingModal({ vendorId, vendorName, isOpen, onClose, on
               name="event_location"
               value={formData.event_location}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D72626] focus:border-[#D72626]"
               placeholder="Enter venue address"
               required
             />
@@ -314,7 +314,7 @@ export default function BookingModal({ vendorId, vendorName, isOpen, onClose, on
               name="guest_count"
               value={formData.guest_count}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D72626] focus:border-[#D72626]"
               placeholder="Approximate guest count"
               min="1"
             />
@@ -329,7 +329,7 @@ export default function BookingModal({ vendorId, vendorName, isOpen, onClose, on
               name="total_amount"
               value={formData.total_amount}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D72626] focus:border-[#D72626]"
               placeholder="Amount will be set based on selected package"
               min="0.01"
               step="0.01"
@@ -348,7 +348,7 @@ export default function BookingModal({ vendorId, vendorName, isOpen, onClose, on
               value={formData.special_requirements}
               onChange={handleChange}
               rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D72626] focus:border-[#D72626]"
               placeholder="Any special requests or requirements..."
             />
           </div>
@@ -357,7 +357,7 @@ export default function BookingModal({ vendorId, vendorName, isOpen, onClose, on
             <button
               type="submit"
               disabled={loading}
-              className={`flex-1 bg-pink-600 hover:bg-pink-700 text-white py-3 rounded-lg font-semibold transition-colors ${
+              className={`flex-1 bg-gradient-to-r from-[#D72626] via-[#F26D46] to-[#F7A76C] hover:from-red-700 hover:via-orange-700 hover:to-orange-800 text-white py-3 rounded-lg font-semibold transition-all shadow-lg ${
                 loading ? 'opacity-50 cursor-not-allowed' : ''
               }`}
             >

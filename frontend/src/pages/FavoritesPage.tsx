@@ -61,7 +61,16 @@ export default function FavoritesPage() {
   const loadFavorites = async () => {
     try {
       setLoading(true)
-      const response = await api.get('/favorites')
+      
+      // Double-check token is available right before API call
+      const currentToken = useAuthStore.getState().token
+      if (!currentToken) {
+        console.warn('No token available for favorites request')
+        setLoading(false)
+        return
+      }
+      
+      const response = await api.get('/favorites/')
       const favoritesData = response.data || []
       setFavorites(favoritesData)
 
@@ -77,18 +86,38 @@ export default function FavoritesPage() {
       setVendors(vendorMap)
     } catch (err: any) {
       if (err.response?.status === 401) {
-        // Only redirect if it's actually a credentials error, not a hydration issue
         const errorDetail = err.response?.data?.detail || 'Unknown error'
-        if (errorDetail.includes('credentials') || errorDetail.includes('expired') || errorDetail.includes('invalid')) {
+        console.error('401 error loading favorites:', errorDetail)
+        
+        // Check if token exists - if not, it's a hydration issue
+        const currentToken = useAuthStore.getState().token
+        if (!currentToken) {
+          console.warn('Token not available - may be hydration issue')
+          // Try reloading after a short delay
+          setTimeout(() => {
+            const retryToken = useAuthStore.getState().token
+            if (retryToken) {
+              loadFavorites()
+            } else {
+              setLoading(false)
+            }
+          }, 500)
+          return
+        }
+        
+        // Token exists but request failed - likely expired or invalid
+        if (errorDetail.includes('credentials') || errorDetail.includes('expired') || errorDetail.includes('invalid') || errorDetail.includes('Not authenticated')) {
           useAuthStore.getState().logout()
           if (!window.location.href.includes('/login')) {
             window.location.href = '/login'
           }
         } else {
           console.warn('401 error but not a credentials issue:', errorDetail)
+          setLoading(false)
         }
       } else {
         console.error('Error loading favorites:', err)
+        setLoading(false)
       }
     } finally {
       setLoading(false)

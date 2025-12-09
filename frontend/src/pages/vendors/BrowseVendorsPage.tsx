@@ -250,6 +250,23 @@ export default function BrowseVendorsPage() {
       return
     }
 
+    // Check for token and wait for hydration if needed
+    let token = useAuthStore.getState().token
+    if (!token) {
+      // Wait for token hydration (up to 1 second)
+      for (let i = 0; i < 10; i++) {
+        await new Promise(resolve => setTimeout(resolve, 100))
+        token = useAuthStore.getState().token
+        if (token) break
+      }
+    }
+
+    if (!token) {
+      alert('Please log in to add favorites')
+      window.location.href = '/login'
+      return
+    }
+
     try {
       const isFavorite = favoriteVendorIds.has(vendorId)
       if (isFavorite) {
@@ -260,12 +277,18 @@ export default function BrowseVendorsPage() {
           return newSet
         })
       } else {
-        await api.post('/favorites', { vendor_id: vendorId })
+        await api.post('/favorites/', { vendor_id: vendorId })
         setFavoriteVendorIds(prev => new Set(prev).add(vendorId))
       }
     } catch (err: any) {
       console.error('Error toggling favorite:', err)
-      alert(err.response?.data?.detail || 'Failed to update favorite')
+      if (err.response?.status === 401) {
+        alert('Your session has expired. Please log in again.')
+        useAuthStore.getState().logout()
+        window.location.href = '/login'
+      } else {
+        alert(err.response?.data?.detail || 'Failed to update favorite')
+      }
     }
   }
 

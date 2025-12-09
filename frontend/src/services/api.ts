@@ -87,6 +87,20 @@ api.interceptors.request.use((config) => {
     config.url = config.url + '/'
   }
   
+  // Ensure trailing slash for POST requests to favorites endpoint (FastAPI may redirect)
+  if (config.method === 'post' && config.url && 
+      config.url.endsWith('/favorites') && 
+      !config.url.endsWith('/')) {
+    config.url = config.url + '/'
+  }
+  
+  // Ensure trailing slash for GET requests to favorites endpoint (FastAPI may redirect)
+  if (config.method === 'get' && config.url && 
+      config.url === '/favorites' && 
+      !config.url.endsWith('/')) {
+    config.url = config.url + '/'
+  }
+  
   return config
 })
 

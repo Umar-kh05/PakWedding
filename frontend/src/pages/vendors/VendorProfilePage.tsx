@@ -124,6 +124,19 @@ export default function VendorProfilePage() {
 
       {/* Main Content */}
       <div className="container mx-auto px-6 py-8">
+        {/* Back to Vendors Button */}
+        <div className="mb-6">
+          <Link
+            to="/vendors"
+            className="inline-flex items-center gap-2 text-[#D72626] hover:text-[#F26D46] font-semibold transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to Vendors
+          </Link>
+        </div>
+
         {/* Vendor Image Section */}
         {vendor.image_url && (
           <div className="mb-6 relative group">
@@ -232,7 +245,7 @@ export default function VendorProfilePage() {
               <div className="flex flex-col items-start md:items-end gap-3">
                 <button
                   onClick={handleBookNowClick}
-                  className="bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 hover:from-primary-700 hover:via-accent-700 hover:to-primary-700 text-white px-6 py-2.5 rounded-lg text-base font-bold whitespace-nowrap transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-primary-600/50 transform hover:scale-105 w-full md:w-auto"
+                  className="bg-gradient-to-r from-[#D72626] via-[#F26D46] to-[#F7A76C] hover:from-red-700 hover:via-orange-700 hover:to-orange-800 text-white px-6 py-2.5 rounded-lg text-base font-bold whitespace-nowrap transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 w-full md:w-auto"
                 >
                   {user ? '📅 Book Now' : '🔐 Login to Book'}
                 </button>

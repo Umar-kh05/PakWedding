@@ -98,79 +98,60 @@ export default function UserDashboard() {
 
         {/* Summary Cards */}
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="bg-white rounded-xl shadow-lg p-6 animate-pulse">
-                <div className="h-16 bg-gray-200 rounded-lg mb-4"></div>
-                <div className="h-8 bg-gray-200 rounded mb-2"></div>
-                <div className="h-12 bg-gray-200 rounded mb-1"></div>
-                <div className="h-4 bg-gray-200 rounded"></div>
+              <div key={i} className="bg-white rounded-2xl shadow-xl p-8 animate-pulse border-2 border-gray-200">
+                <div className="h-16 bg-gray-200 rounded-xl mb-6"></div>
+                <div className="h-6 bg-gray-200 rounded mb-3"></div>
+                <div className="h-12 bg-gray-200 rounded"></div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             {/* My Bookings Card */}
-            <div className="group bg-white rounded-2xl shadow-lg p-6 border-l-4 border-[#D72626] hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center justify-center w-14 h-14 bg-gradient-to-br from-[#D72626] to-[#F26D46] rounded-xl group-hover:scale-110 transition-transform">
-                  <span className="text-3xl">📅</span>
-                </div>
-                <div className="text-right">
-                  <div className="text-4xl font-extrabold text-[#D72626]">{stats.bookings}</div>
+            <div className="group bg-gradient-to-br from-white to-rose-50/50 rounded-2xl shadow-xl p-8 border-2 border-rose-200 hover:border-[#D72626] transition-all hover:shadow-2xl">
+              <div className="flex items-center justify-between mb-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-[#D72626] to-rose-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <span className="text-4xl">📅</span>
                 </div>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-1">My Bookings</h3>
-              <p className="text-gray-600 text-sm">Active bookings</p>
+              <p className="text-gray-600 text-base font-semibold mb-3">My Bookings</p>
+              <p className="text-5xl font-extrabold bg-gradient-to-r from-[#D72626] to-rose-600 bg-clip-text text-transparent">{stats.bookings}</p>
             </div>
 
             {/* Favorites Card */}
-            <Link
-              to="/favorites"
-              className="group bg-white rounded-2xl shadow-lg p-6 border-l-4 border-accent-500 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center justify-center w-14 h-14 bg-gradient-to-br from-accent-600 to-accent-500 rounded-xl group-hover:scale-110 transition-transform">
-                  <span className="text-3xl">❤️</span>
-                </div>
-                <div className="text-right">
-                  <div className="text-4xl font-extrabold text-accent-600">{stats.favorites}</div>
+            <div className="group bg-gradient-to-br from-white to-orange-50/50 rounded-2xl shadow-xl p-8 border-2 border-orange-200 hover:border-orange-400 transition-all hover:shadow-2xl">
+              <div className="flex items-center justify-between mb-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <span className="text-4xl">❤️</span>
                 </div>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-1">Favorites</h3>
-              <p className="text-gray-600 text-sm">Saved vendors</p>
-            </Link>
+              <p className="text-gray-600 text-base font-semibold mb-3">Favorites</p>
+              <p className="text-5xl font-extrabold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">{stats.favorites}</p>
+            </div>
 
             {/* Budget Card */}
-            <div className="group bg-white rounded-2xl shadow-lg p-6 border-l-4 border-accent-500 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center justify-center w-14 h-14 bg-gradient-to-br from-accent-600 to-primary-600 rounded-xl group-hover:scale-110 transition-transform">
-                  <span className="text-3xl">💰</span>
-                </div>
-                <div className="text-right">
-                  <div className="text-2xl font-extrabold text-accent-600">{stats.budget}</div>
+            <div className="group bg-gradient-to-br from-white to-rose-50/50 rounded-2xl shadow-xl p-8 border-2 border-rose-200 hover:border-[#D72626] transition-all hover:shadow-2xl">
+              <div className="flex items-center justify-between mb-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-[#D72626] to-rose-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <span className="text-4xl">💰</span>
                 </div>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-1">Budget</h3>
-              <p className="text-gray-600 text-sm">Total budget</p>
+              <p className="text-gray-600 text-base font-semibold mb-3">Budget</p>
+              <p className="text-3xl font-extrabold bg-gradient-to-r from-[#D72626] to-rose-600 bg-clip-text text-transparent">{stats.budget}</p>
             </div>
 
             {/* Reviews Card */}
-            <Link
-              to="/reviews"
-              className="group bg-white rounded-2xl shadow-lg p-6 border-l-4 border-[#D72626] hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center justify-center w-14 h-14 bg-gradient-to-br from-[#D72626] to-[#F26D46] rounded-xl group-hover:scale-110 transition-transform">
-                  <span className="text-3xl">⭐</span>
-                </div>
-                <div className="text-right">
-                  <div className="text-4xl font-extrabold text-[#D72626]">{stats.reviews}</div>
+            <div className="group bg-gradient-to-br from-white to-red-50/50 rounded-2xl shadow-xl p-8 border-2 border-red-200 hover:border-[#D72626] transition-all hover:shadow-2xl">
+              <div className="flex items-center justify-between mb-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-[#D72626] to-red-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <span className="text-4xl">⭐</span>
                 </div>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-1">Reviews</h3>
-              <p className="text-gray-600 text-sm">Your reviews</p>
-            </Link>
+              <p className="text-gray-600 text-base font-semibold mb-3">Reviews</p>
+              <p className="text-5xl font-extrabold bg-gradient-to-r from-[#D72626] to-red-600 bg-clip-text text-transparent">{stats.reviews}</p>
+            </div>
           </div>
         )}
 
