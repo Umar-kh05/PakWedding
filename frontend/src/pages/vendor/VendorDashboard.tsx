@@ -52,10 +52,10 @@ export default function VendorDashboard() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
+    <div className="flex min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
       <Sidebar items={sidebarItems} title="Vendor Dashboard" />
       
-      <div className="flex-1 flex flex-col ml-64">
+      <div className="flex-1 flex flex-col">
         {/* Header */}
         <div className="bg-[#F4E9DB] shadow-lg border-b-2 border-[#D72626]/20">
           <div className="container mx-auto px-6 py-6">

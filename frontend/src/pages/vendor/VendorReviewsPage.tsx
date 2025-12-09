@@ -17,7 +17,6 @@ type Review = {
 export default function VendorReviewsPage() {
   const navigate = useNavigate()
   const [reviews, setReviews] = useState<Review[]>([])
-  const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [stats, setStats] = useState({
     averageRating: 0,
@@ -39,7 +38,6 @@ export default function VendorReviewsPage() {
 
   const loadReviews = async () => {
     try {
-      setLoading(true)
       setError(null)
       console.log('Loading vendor reviews...')
       const { data } = await api.get<Review[]>('/reviews/vendor/me')
@@ -76,7 +74,7 @@ export default function VendorReviewsPage() {
       setError(errorMessage)
       setReviews([])
     } finally {
-      setLoading(false)
+      // no loading UI
     }
   }
 
@@ -93,37 +91,26 @@ export default function VendorReviewsPage() {
     ))
   }
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 flex items-center justify-center">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-rose-200 border-t-[#D72626] mb-4"></div>
-          <p className="text-gray-600 font-medium text-lg">Loading reviews...</p>
-        </div>
-      </div>
-    )
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
+    <div className="flex min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
       <Sidebar items={sidebarItems} title="Vendor Dashboard" />
-      <div className="ml-64 flex flex-col overflow-y-auto">
+      <div className="flex-1 flex flex-col overflow-y-auto">
         <div className="container mx-auto px-6 py-8">
         {/* Header */}
         <div className="mb-8">
           <button
             onClick={() => navigate('/vendor/dashboard')}
-            className="text-[#D72626] hover:text-red-700 font-semibold mb-4 flex items-center gap-2 transition-colors"
+            className="text-[#D72626] hover:text-[#F26D46] font-semibold mb-4 flex items-center gap-2 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
             Back to Dashboard
           </button>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-[#D72626] to-orange-600 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold leading-tight bg-gradient-to-r from-[#D72626] to-orange-600 bg-clip-text text-transparent">
             Customer Reviews
           </h1>
-          <p className="text-gray-600 mt-2">See what your customers are saying</p>
+          <p className="text-gray-600 mt-2 leading-relaxed">See what your customers are saying</p>
         </div>
 
         {error && (

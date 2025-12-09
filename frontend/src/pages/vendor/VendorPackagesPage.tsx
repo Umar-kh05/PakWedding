@@ -6,7 +6,6 @@ import Sidebar from '../../components/Sidebar'
 export default function VendorPackagesPage() {
   const navigate = useNavigate()
   const [packages, setPackages] = useState<Package[]>([])
-  const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
@@ -25,7 +24,6 @@ export default function VendorPackagesPage() {
 
   const loadPackages = async () => {
     try {
-      setLoading(true)
       const vendor = await getVendorProfile()
       if (vendor.packages && vendor.packages.length > 0) {
         setPackages([...vendor.packages])
@@ -55,8 +53,6 @@ export default function VendorPackagesPage() {
     } catch (err: any) {
       console.error('Error loading packages:', err)
       setError(err.response?.data?.detail || 'Failed to load packages')
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -142,37 +138,26 @@ export default function VendorPackagesPage() {
     }
   }
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 flex items-center justify-center">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-pink-200 border-t-pink-600 mb-4"></div>
-          <p className="text-gray-600 font-medium text-lg">Loading packages...</p>
-        </div>
-      </div>
-    )
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
+    <div className="flex min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
       <Sidebar items={sidebarItems} title="Vendor Dashboard" />
-      <div className="ml-64 flex flex-col overflow-y-auto">
+      <div className="flex-1 flex flex-col overflow-y-auto">
         <div className="container mx-auto px-6 py-8">
         {/* Header */}
         <div className="mb-8">
           <button
             onClick={() => navigate('/vendor/dashboard')}
-            className="text-pink-600 hover:text-pink-700 font-semibold mb-4 flex items-center gap-2"
+            className="text-[#D72626] hover:text-[#F26D46] font-semibold mb-4 flex items-center gap-2 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
             Back to Dashboard
           </button>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold leading-tight bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
             Manage Packages
           </h1>
-          <p className="text-gray-600 mt-2">Update your service packages and pricing</p>
+          <p className="text-gray-600 mt-2 leading-relaxed">Update your service packages and pricing</p>
         </div>
 
         {/* Messages */}

@@ -6,7 +6,6 @@ import Sidebar from '../../components/Sidebar'
 export default function VendorBookingsPage() {
   const { user } = useAuthStore()
   const [bookings, setBookings] = useState<Booking[]>([])
-  const [loading, setLoading] = useState(false)
   const [statusFilter, setStatusFilter] = useState<string>('')
   const [error, setError] = useState('')
 
@@ -30,7 +29,6 @@ export default function VendorBookingsPage() {
       return
     }
     
-    setLoading(true)
     setError('')
     try {
       console.log('Loading vendor bookings with filter:', statusFilter || 'none')
@@ -47,7 +45,7 @@ export default function VendorBookingsPage() {
         setError('Cannot connect to server. Please make sure the backend server is running on http://localhost:8000')
       }
     } finally {
-      setLoading(false)
+      // no loading UI; keep quick updates silent
     }
   }
 
@@ -101,13 +99,25 @@ export default function VendorBookingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
+    <div className="flex min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
       <Sidebar items={sidebarItems} title="Vendor Dashboard" />
-      <div className="ml-64 flex flex-col overflow-y-auto">
+      <div className="flex-1 flex flex-col overflow-y-auto">
         {/* Header */}
-        <div className="bg-white shadow-sm border-b">
-          <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-gray-900">Manage Bookings</h1>
+        <div className="bg-gradient-to-r from-amber-50 via-orange-50/30 to-red-50/20">
+          <div className="container mx-auto px-6 py-6 flex flex-col gap-2">
+            <button
+              onClick={() => (window.location.href = '/vendor/dashboard')}
+              className="inline-flex items-center gap-2 text-[#D72626] hover:text-[#F26D46] font-semibold transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Back to Dashboard
+            </button>
+            <h1 className="text-4xl font-bold leading-tight bg-gradient-to-r from-[#D72626] to-orange-600 bg-clip-text text-transparent">
+              Manage Bookings
+            </h1>
+            <p className="text-gray-600 text-lg leading-relaxed">Review, filter, and act on your bookings</p>
           </div>
         </div>
 
@@ -137,11 +147,7 @@ export default function VendorBookingsPage() {
           </div>
         )}
 
-        {loading ? (
-          <div className="text-center py-12">
-            <p className="text-gray-600">Loading bookings...</p>
-          </div>
-        ) : bookings.length === 0 ? (
+        {bookings.length === 0 ? (
           <div className="bg-white rounded-lg shadow-md p-12 text-center">
             <p className="text-gray-600 text-lg">No bookings found</p>
           </div>

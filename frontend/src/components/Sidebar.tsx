@@ -24,12 +24,17 @@ export default function Sidebar({ items, title, userRole }: SidebarProps) {
   }
 
   return (
-    <div className="w-64 bg-gradient-to-b from-white via-rose-50/30 to-amber-50/30 border-r-2 border-rose-200 h-screen flex flex-col shadow-lg fixed left-0 top-0">
+    <div className="w-64 bg-gradient-to-b from-white via-rose-50/30 to-amber-50/30 border-r-2 border-rose-200 h-screen flex flex-col shadow-lg sticky top-0 flex-shrink-0">
       {/* Navigation Items */}
       <nav className="flex-1 p-4 pt-6 space-y-2">
         {items.map((item) => {
-          const isActive = location.pathname === item.path || 
-            (item.path !== '/dashboard' && item.path !== '/vendor/dashboard' && item.path !== '/admin/dashboard' && location.pathname.startsWith(item.path))
+          const isDashboardPath = ['/dashboard', '/vendor/dashboard', '/admin/dashboard']
+          const isExactOnlyPath = ['/admin/vendors']
+          const isActive =
+            location.pathname === item.path ||
+            (!isDashboardPath.includes(item.path) &&
+              !isExactOnlyPath.includes(item.path) &&
+              location.pathname.startsWith(item.path))
           
           return (
             <Link
@@ -41,7 +46,15 @@ export default function Sidebar({ items, title, userRole }: SidebarProps) {
                   : 'text-gray-700 hover:bg-rose-100 hover:text-[#D72626]'
               }`}
             >
-              <span className="text-xl">{item.icon}</span>
+              <span
+                className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg font-semibold shadow-sm ${
+                  isActive
+                    ? 'bg-gradient-to-br from-[#F26D46] via-[#D72626] to-[#F7A76C] text-white'
+                    : 'bg-gradient-to-br from-white to-rose-50 text-[#D72626] border border-rose-100'
+                }`}
+              >
+                {item.icon}
+              </span>
               <span className="font-medium">{item.label}</span>
             </Link>
           )
