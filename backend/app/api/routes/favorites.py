@@ -1,6 +1,3 @@
-"""
-Favorite routes
-"""
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from typing import List
 from pydantic import BaseModel
@@ -21,7 +18,6 @@ async def create_favorite(
     current_user: dict = Depends(get_current_user),
     favorite_service: FavoriteService = Depends(get_favorite_service)
 ):
-    """Add a vendor to favorites"""
     user_id = str(current_user["_id"])
     vendor_id = favorite_data.vendor_id
     favorite = await favorite_service.create_favorite(user_id, vendor_id)
@@ -35,7 +31,6 @@ async def get_user_favorites(
     current_user: dict = Depends(get_current_user),
     favorite_service: FavoriteService = Depends(get_favorite_service)
 ):
-    """Get all favorites for current user"""
     user_id = str(current_user["_id"])
     favorites = await favorite_service.get_user_favorites(user_id, skip, limit)
     return favorites
@@ -47,7 +42,6 @@ async def check_favorite(
     current_user: dict = Depends(get_current_user),
     favorite_service: FavoriteService = Depends(get_favorite_service)
 ):
-    """Check if a vendor is favorited by current user"""
     user_id = str(current_user["_id"])
     is_favorite = await favorite_service.is_favorite(user_id, vendor_id)
     return {"is_favorite": is_favorite}
@@ -59,7 +53,6 @@ async def delete_favorite(
     current_user: dict = Depends(get_current_user),
     favorite_service: FavoriteService = Depends(get_favorite_service)
 ):
-    """Remove a vendor from favorites"""
     user_id = str(current_user["_id"])
     deleted = await favorite_service.delete_favorite(user_id, vendor_id)
     if not deleted:

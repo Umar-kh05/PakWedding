@@ -1,6 +1,3 @@
-"""
-Favorite domain model
-"""
 from typing import Optional
 from datetime import datetime
 from pydantic import BaseModel, Field
@@ -8,18 +5,15 @@ from bson import ObjectId
 
 
 class FavoriteBase(BaseModel):
-    """Base favorite schema"""
     user_id: str
     vendor_id: str
 
 
 class FavoriteCreate(FavoriteBase):
-    """Schema for creating a favorite"""
     pass
 
 
 class FavoriteInDB(FavoriteBase):
-    """Favorite model as stored in database"""
     id: str = Field(alias="_id")
     created_at: datetime = Field(default_factory=datetime.utcnow)
     
@@ -36,7 +30,6 @@ class FavoriteInDB(FavoriteBase):
 
 
 class FavoriteResponse(FavoriteInDB):
-    """Favorite response schema"""
     class Config:
         from_attributes = True
 

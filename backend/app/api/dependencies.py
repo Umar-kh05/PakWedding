@@ -1,7 +1,3 @@
-"""
-API dependencies - dependency injection
-Following Dependency Inversion Principle
-"""
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from app.core.database import get_db
@@ -24,7 +20,6 @@ from app.services.favorite_service import FavoriteService
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
 
 
-# Repository dependencies
 async def get_user_repository(db = Depends(get_db)):
     return UserRepository(db)
 
@@ -53,7 +48,6 @@ async def get_favorite_repository(db = Depends(get_db)):
     return FavoriteRepository(db)
 
 
-# Service dependencies
 async def get_user_service(user_repo: UserRepository = Depends(get_user_repository)):
     return UserService(user_repo)
 
@@ -97,12 +91,10 @@ async def get_favorite_service(
     return FavoriteService(favorite_repo)
 
 
-# Authentication dependency
 async def get_current_user(
     token: str = Depends(oauth2_scheme),
     user_service: UserService = Depends(get_user_service)
 ):
-    """Get current authenticated user"""
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -122,7 +114,6 @@ async def get_current_user(
     if user is None:
         raise credentials_exception
     
-    # Check if user is active
     if not user.get("is_active", True):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -134,7 +125,6 @@ async def get_current_user(
 
 
 async def get_current_admin(current_user: dict = Depends(get_current_user)):
-    """Verify current user is admin"""
     if current_user.get("role") != "admin":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -144,7 +134,6 @@ async def get_current_admin(current_user: dict = Depends(get_current_user)):
 
 
 async def get_current_vendor(current_user: dict = Depends(get_current_user)):
-    """Verify current user is vendor"""
     if current_user.get("role") != "vendor":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,

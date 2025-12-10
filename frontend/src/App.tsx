@@ -39,6 +39,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Toaster
         position="top-right"
+        containerStyle={{
+          zIndex: 9999,
+        }}
         toastOptions={{
           duration: 4000,
           style: {
@@ -47,18 +50,21 @@ function App() {
             padding: '16px',
             borderRadius: '8px',
             boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+            zIndex: 9999,
           },
           success: {
             iconTheme: {
               primary: '#10B981',
               secondary: '#fff',
             },
+            duration: 4000,
           },
           error: {
             iconTheme: {
               primary: '#EF4444',
               secondary: '#fff',
             },
+            duration: 5000,
           },
         }}
       />

@@ -1,6 +1,3 @@
-"""
-Vendor routes
-"""
 from fastapi import APIRouter, Depends, HTTPException, status, Query, Body
 from typing import List
 from app.services.vendor_service import VendorService
@@ -15,10 +12,8 @@ async def register_vendor(
     vendor_data: VendorCreate,
     vendor_service: VendorService = Depends(get_vendor_service)
 ):
-    """Register as a vendor (pending admin approval)"""
     try:
         vendor = await vendor_service.register_vendor(vendor_data)
-        # Response is already formatted by service
         return vendor
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
@@ -36,53 +31,44 @@ async def register_vendor(
 async def get_vendors(
     category: str = Query(None),
     skip: int = 0,
-    limit: int = Query(200, ge=1, le=1000),  # Increase default limit to 200, max 1000
+    limit: int = Query(200, ge=1, le=1000),
     vendor_service: VendorService = Depends(get_vendor_service)
 ):
-    """Get all approved vendors, optionally filtered by category"""
     try:
         if category:
             vendors = await vendor_service.get_vendors_by_category(category, skip, limit)
         else:
-            # Only return approved and active vendors
             query = {"is_approved": True, "is_active": True}
             print(f"[DEBUG] Fetching vendors with query: {query}")
             vendors = await vendor_service.vendor_repo.find_many(query, skip, limit)
             print(f"[DEBUG] Found {len(vendors)} approved vendors")
             
-            # Debug: Check first vendor if exists
             if vendors and len(vendors) > 0:
                 first_vendor = vendors[0]
                 print(f"[DEBUG] First vendor: {first_vendor.get('business_name')}, is_approved: {first_vendor.get('is_approved')}, is_active: {first_vendor.get('is_active')}")
         
-        # Convert _id to id for all vendors
         formatted_vendors = []
         for vendor in vendors:
-            # Create a copy to avoid modifying the original
             formatted_vendor = vendor.copy()
             
             if "_id" in formatted_vendor:
                 formatted_vendor["id"] = str(formatted_vendor["_id"])
                 del formatted_vendor["_id"]
             
-            # Remove fields not in VendorResponse
             formatted_vendor.pop("user_id", None)
             formatted_vendor.pop("hashed_password", None)
             formatted_vendor.pop("updated_at", None)
             
-            # Ensure required fields exist
             if "is_approved" not in formatted_vendor:
-                formatted_vendor["is_approved"] = True  # Default to True for approved vendors
+                formatted_vendor["is_approved"] = True
             if "is_active" not in formatted_vendor:
-                formatted_vendor["is_active"] = True  # Default to True for active vendors
+                formatted_vendor["is_active"] = True
             
-            # Ensure packages is a list (not None)
             if "packages" not in formatted_vendor or formatted_vendor["packages"] is None:
                 formatted_vendor["packages"] = []
             elif not isinstance(formatted_vendor["packages"], list):
                 formatted_vendor["packages"] = []
             
-            # Ensure gallery_images is a list
             if "gallery_images" not in formatted_vendor or formatted_vendor["gallery_images"] is None:
                 formatted_vendor["gallery_images"] = []
             elif not isinstance(formatted_vendor["gallery_images"], list):
@@ -104,26 +90,21 @@ async def get_vendor_profile(
     current_user: dict = Depends(get_current_vendor),
     vendor_service: VendorService = Depends(get_vendor_service)
 ):
-    """Get current vendor's own profile"""
     vendor = await vendor_service.vendor_repo.get_by_user_id(current_user["_id"])
     if not vendor:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Vendor profile not found")
     
-    # Format vendor response
     if "_id" in vendor:
         vendor["id"] = str(vendor["_id"])
         del vendor["_id"]
     
-    # Remove sensitive fields
     vendor.pop("user_id", None)
     vendor.pop("hashed_password", None)
     vendor.pop("updated_at", None)
     
-    # Ensure packages is a list
     if "packages" not in vendor or vendor["packages"] is None:
         vendor["packages"] = []
     
-    # Ensure gallery_images is a list
     if "gallery_images" not in vendor or vendor["gallery_images"] is None:
         vendor["gallery_images"] = []
     
@@ -136,14 +117,12 @@ async def update_vendor_profile(
     current_user: dict = Depends(get_current_vendor),
     vendor_service: VendorService = Depends(get_vendor_service)
 ):
-    """Update vendor profile"""
     vendor = await vendor_service.vendor_repo.get_by_user_id(current_user["_id"])
     if not vendor:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Vendor profile not found")
     
     updated_vendor = await vendor_service.update_vendor(vendor["_id"], vendor_data)
     
-    # Format response
     if "_id" in updated_vendor:
         updated_vendor["id"] = str(updated_vendor["_id"])
         del updated_vendor["_id"]
@@ -166,13 +145,10 @@ async def get_vendor(
     vendor_id: str,
     vendor_service: VendorService = Depends(get_vendor_service)
 ):
-    """Get vendor by ID"""
-    # Validate vendor_id format (should be a valid ObjectId)
     from bson import ObjectId
     from bson.errors import InvalidId
     
     try:
-        # Try to validate ObjectId format
         ObjectId(vendor_id)
     except InvalidId:
         raise HTTPException(
@@ -184,21 +160,17 @@ async def get_vendor(
     if not vendor:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Vendor not found")
     
-    # Format vendor response (convert _id to id, remove sensitive fields)
     if "_id" in vendor:
         vendor["id"] = str(vendor["_id"])
         del vendor["_id"]
     
-    # Remove fields not in VendorResponse
     vendor.pop("user_id", None)
     vendor.pop("hashed_password", None)
     vendor.pop("updated_at", None)
     
-    # Ensure gallery_images is a list (not None)
     if "gallery_images" not in vendor or vendor["gallery_images"] is None:
         vendor["gallery_images"] = []
     
-    # Ensure packages is a list (not None)
     if "packages" not in vendor or vendor["packages"] is None:
         vendor["packages"] = []
     
@@ -211,7 +183,6 @@ async def update_vendor_image(
     current_user: dict = Depends(get_current_vendor),
     vendor_service: VendorService = Depends(get_vendor_service)
 ):
-    """Update vendor main image URL after Cloudinary upload"""
     vendor = await vendor_service.vendor_repo.get_by_user_id(current_user["_id"])
     if not vendor:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Vendor profile not found")
@@ -229,12 +200,10 @@ async def add_to_vendor_gallery(
     current_user: dict = Depends(get_current_vendor),
     vendor_service: VendorService = Depends(get_vendor_service)
 ):
-    """Add image URL to vendor gallery after Cloudinary upload"""
     vendor = await vendor_service.vendor_repo.get_by_user_id(current_user["_id"])
     if not vendor:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Vendor profile not found")
     
-    # Get current gallery images
     current_gallery = vendor.get("gallery_images", []) or []
     if image_url not in current_gallery:
         current_gallery.append(image_url)

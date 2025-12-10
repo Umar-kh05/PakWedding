@@ -1,4 +1,0 @@
-"""
-PakWedding Portal Backend Application
-"""
-

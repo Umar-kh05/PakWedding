@@ -1,7 +1,3 @@
-"""
-Vendor domain model
-Following Single Responsibility Principle
-"""
 from typing import Optional, List, Dict
 from datetime import datetime
 from pydantic import BaseModel, Field
@@ -9,38 +5,34 @@ from bson import ObjectId
 
 
 class PackageInfo(BaseModel):
-    """Package information schema"""
-    name: str  # Basic, Standard, Premium
+    name: str
     price: float
     description: Optional[str] = None
     features: Optional[List[str]] = []
 
 
 class VendorBase(BaseModel):
-    """Base vendor schema"""
     business_name: str
     contact_person: str
     email: str
     phone_number: str
     business_address: str
-    service_category: str  # photographer, caterer, venue, decorator, etc.
+    service_category: str
     description: Optional[str] = None
     rating: float = 0.0
     total_bookings: int = 0
     pending_requests: int = 0
     total_revenue: float = 0.0
-    image_url: Optional[str] = None  # Main vendor image
-    gallery_images: Optional[List[str]] = []  # Gallery images
-    packages: Optional[List[Dict]] = []  # List of packages: Basic, Standard, Premium
+    image_url: Optional[str] = None
+    gallery_images: Optional[List[str]] = []
+    packages: Optional[List[Dict]] = []
 
 
 class VendorCreate(VendorBase):
-    """Schema for vendor registration"""
     password: str
 
 
 class VendorUpdate(BaseModel):
-    """Schema for updating vendor"""
     business_name: Optional[str] = None
     contact_person: Optional[str] = None
     phone_number: Optional[str] = None
@@ -52,9 +44,8 @@ class VendorUpdate(BaseModel):
 
 
 class VendorInDB(VendorBase):
-    """Vendor model as stored in database"""
     id: str = Field(alias="_id")
-    user_id: str  # Reference to User collection
+    user_id: str
     is_approved: bool = False
     is_active: bool = True
     created_at: datetime = Field(default_factory=datetime.utcnow)
@@ -65,7 +56,6 @@ class VendorInDB(VendorBase):
 
 
 class VendorResponse(VendorBase):
-    """Vendor response schema"""
     id: str
     is_approved: bool
     is_active: bool

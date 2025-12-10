@@ -81,7 +81,7 @@ export default function HomePage() {
                 <span>Pakistan's #1 Wedding Platform</span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight">
+              <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight">
                 Your Dream
                 <br />
                 <span className="bg-gradient-to-r from-red-700 via-red-600 to-amber-600 bg-clip-text text-transparent">
@@ -91,7 +91,7 @@ export default function HomePage() {
                 Starts Here
               </h1>
 
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed max-w-xl">
+              <p className="text-sm xs:text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed max-w-xl">
                 Connect with <strong className="text-red-700">1000+ vendors</strong>, plan your budget, and create unforgettable memories for your special day.
               </p>
 
@@ -112,24 +112,24 @@ export default function HomePage() {
               </div>
 
               {/* Stats */}
-              <div className="grid grid-cols-3 gap-8 pt-6">
-                <div className="text-center p-4 rounded-xl bg-white backdrop-blur-sm border-2 border-[#F7A76C]/30 hover:border-[#F7A76C] hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                  <div className="text-4xl font-bold bg-gradient-to-r from-[#D72626] to-[#F26D46] bg-clip-text text-transparent">1000+</div>
-                  <div className="text-sm text-gray-700 font-semibold mt-1">Vendors</div>
+              <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6 lg:gap-8 pt-4 sm:pt-6">
+                <div className="text-center p-2 sm:p-3 md:p-4 rounded-xl bg-white backdrop-blur-sm border-2 border-[#F7A76C]/30 hover:border-[#F7A76C] hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#D72626] to-[#F26D46] bg-clip-text text-transparent">1000+</div>
+                  <div className="text-xs sm:text-sm text-gray-700 font-semibold mt-1">Vendors</div>
                 </div>
-                <div className="text-center p-4 rounded-xl bg-white backdrop-blur-sm border-2 border-[#F7A76C]/30 hover:border-[#F7A76C] hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                  <div className="text-4xl font-bold bg-gradient-to-r from-[#D72626] to-[#F26D46] bg-clip-text text-transparent">5000+</div>
-                  <div className="text-sm text-gray-700 font-semibold mt-1">Happy Couples</div>
+                <div className="text-center p-2 sm:p-3 md:p-4 rounded-xl bg-white backdrop-blur-sm border-2 border-[#F7A76C]/30 hover:border-[#F7A76C] hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#D72626] to-[#F26D46] bg-clip-text text-transparent">5000+</div>
+                  <div className="text-xs sm:text-sm text-gray-700 font-semibold mt-1">Happy Couples</div>
                 </div>
-                <div className="text-center p-4 rounded-xl bg-white backdrop-blur-sm border-2 border-[#F7A76C]/30 hover:border-[#F7A76C] hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                  <div className="text-4xl font-bold bg-gradient-to-r from-[#D72626] to-[#F26D46] bg-clip-text text-transparent">50+</div>
-                  <div className="text-sm text-gray-700 font-semibold mt-1">Cities</div>
+                <div className="text-center p-2 sm:p-3 md:p-4 rounded-xl bg-white backdrop-blur-sm border-2 border-[#F7A76C]/30 hover:border-[#F7A76C] hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#D72626] to-[#F26D46] bg-clip-text text-transparent">50+</div>
+                  <div className="text-xs sm:text-sm text-gray-700 font-semibold mt-1">Cities</div>
                 </div>
               </div>
             </div>
 
             {/* Right Content - Wedding Planner Preview */}
-            <div className="relative h-full min-h-[600px] flex items-center justify-center lg:justify-end">
+            <div className="relative h-full min-h-[400px] sm:min-h-[500px] md:min-h-[600px] flex items-center justify-center lg:justify-end mt-8 lg:mt-0">
               {/* Soft Background Glows */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] bg-gradient-to-tr from-primary-200/20 via-accent-200/15 to-amber-200/20 rounded-full blur-[100px] -z-10 animate-pulse"></div>
               
@@ -276,11 +276,11 @@ export default function HomePage() {
         {/* Subtle pattern overlay */}
         <div className="absolute inset-0 opacity-[0.02] bg-[radial-gradient(circle_at_1px_1px,_rgb(0,0,0)_1px,_transparent_0)] [background-size:40px_40px]"></div>
         <div className="container mx-auto px-6 relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-extrabold bg-gradient-to-r from-gray-900 via-primary-600 to-gray-900 bg-clip-text text-transparent mb-4">
+          <div className="text-center mb-8 sm:mb-12 md:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-gray-900 via-primary-600 to-gray-900 bg-clip-text text-transparent mb-3 sm:mb-4 px-4">
               Plan Your Perfect Wedding
             </h2>
-            <p className="text-xl text-gray-700 font-medium">
+            <p className="text-base sm:text-lg md:text-xl text-gray-700 font-medium px-4">
               Everything you need to make your special day unforgettable
             </p>
           </div>
@@ -332,11 +332,11 @@ export default function HomePage() {
         <div className="absolute top-0 left-0 w-72 h-72 bg-amber-200/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 right-0 w-72 h-72 bg-primary-200/10 rounded-full blur-3xl"></div>
         <div className="container mx-auto px-6 relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-extrabold text-gray-900 mb-4 pb-1 leading-tight">
+          <div className="text-center mb-8 sm:mb-12 md:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 mb-3 sm:mb-4 pb-1 leading-tight px-4">
               Why Choose <span className="bg-gradient-to-r from-primary-600 via-amber-600 to-primary-600 bg-clip-text text-transparent pb-1">PakWedding</span>?
             </h2>
-            <p className="text-xl text-gray-700 font-medium">
+            <p className="text-base sm:text-lg md:text-xl text-gray-700 font-medium px-4">
               Everything you need in one place
             </p>
           </div>
@@ -387,11 +387,11 @@ export default function HomePage() {
       {/* How It Works */}
       <section className="py-24 bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 relative">
         <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-extrabold bg-gradient-to-r from-gray-900 via-amber-600 to-gray-900 bg-clip-text text-transparent mb-4">
+          <div className="text-center mb-8 sm:mb-12 md:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-gray-900 via-amber-600 to-gray-900 bg-clip-text text-transparent mb-3 sm:mb-4 px-4">
               How It Works
             </h2>
-            <p className="text-xl text-gray-700 font-medium">
+            <p className="text-base sm:text-lg md:text-xl text-gray-700 font-medium px-4">
               Simple steps to your dream wedding
             </p>
           </div>
@@ -432,25 +432,25 @@ export default function HomePage() {
         <div className="absolute top-10 left-10 w-64 h-64 bg-amber-200/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 right-10 w-64 h-64 bg-primary-200/10 rounded-full blur-3xl"></div>
         <div className="container mx-auto px-6 relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-extrabold text-gray-900 mb-4">
+          <div className="text-center mb-8 sm:mb-12 md:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 mb-3 sm:mb-4 px-4">
               What Couples Say
             </h2>
-            <p className="text-xl text-gray-700 font-medium">
+            <p className="text-base sm:text-lg md:text-xl text-gray-700 font-medium px-4">
               Real stories from real couples
             </p>
           </div>
 
-          <div className="max-w-4xl mx-auto">
-            <div className="relative bg-white rounded-3xl p-12 shadow-2xl border-2 border-white hover:border-primary-300 transition-all duration-300">
+          <div className="max-w-4xl mx-auto px-4">
+            <div className="relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 shadow-2xl border-2 border-white hover:border-primary-300 transition-all duration-300">
               {/* Testimonial Content */}
               <div className="text-center">
-                <div className="flex justify-center gap-1 mb-6">
+                <div className="flex justify-center gap-1 mb-4 sm:mb-6">
                   {[...Array(5)].map((_, i) => (
-                    <span key={i} className="text-yellow-400 text-3xl hover:text-yellow-500 transition-colors duration-300">⭐</span>
+                    <span key={i} className="text-yellow-400 text-xl sm:text-2xl md:text-3xl hover:text-yellow-500 transition-colors duration-300">⭐</span>
                   ))}
                 </div>
-                <p className="text-2xl text-gray-800 mb-8 italic leading-relaxed font-medium">
+                <p className="text-lg sm:text-xl md:text-2xl text-gray-800 mb-6 sm:mb-8 italic leading-relaxed font-medium px-2">
                   "{testimonials[currentTestimonial].text}"
                 </p>
                 <div className="space-y-2">
@@ -492,11 +492,11 @@ export default function HomePage() {
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             {/* Elegant heading */}
-            <div className="mb-8">
-              <h2 className="text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+            <div className="mb-6 sm:mb-8 px-4">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6">
                 Begin Your Wedding Journey
               </h2>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
                 Join thousands of couples who found their perfect wedding vendors on <span className="font-semibold text-red-700">PakWedding</span>
               </p>
             </div>
@@ -519,18 +519,18 @@ export default function HomePage() {
             </div>
 
             {/* Trust indicators */}
-            <div className="grid grid-cols-3 gap-8 max-w-3xl mx-auto pt-8 border-t border-gray-200">
+            <div className="grid grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-3xl mx-auto pt-6 sm:pt-8 border-t border-gray-200 px-4">
               <div className="text-center">
-                <div className="text-3xl font-bold text-red-700 mb-2">1000+</div>
-                <div className="text-sm text-gray-600 font-medium">Verified Vendors</div>
+                <div className="text-2xl sm:text-3xl font-bold text-red-700 mb-1 sm:mb-2">1000+</div>
+                <div className="text-xs sm:text-sm text-gray-600 font-medium">Verified Vendors</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-red-700 mb-2">5000+</div>
-                <div className="text-sm text-gray-600 font-medium">Happy Couples</div>
+                <div className="text-2xl sm:text-3xl font-bold text-red-700 mb-1 sm:mb-2">5000+</div>
+                <div className="text-xs sm:text-sm text-gray-600 font-medium">Happy Couples</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-red-700 mb-2">50+</div>
-                <div className="text-sm text-gray-600 font-medium">Cities Covered</div>
+                <div className="text-2xl sm:text-3xl font-bold text-red-700 mb-1 sm:mb-2">50+</div>
+                <div className="text-xs sm:text-sm text-gray-600 font-medium">Cities Covered</div>
               </div>
             </div>
           </div>

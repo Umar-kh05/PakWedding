@@ -1,6 +1,3 @@
-"""
-Checklist routes
-"""
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from typing import List, Optional
 from app.services.checklist_service import ChecklistService
@@ -16,7 +13,6 @@ async def create_checklist_item(
     current_user: dict = Depends(get_current_user),
     checklist_service: ChecklistService = Depends(get_checklist_service)
 ):
-    """Create a new checklist item"""
     user_id = str(current_user["_id"])
     item = await checklist_service.create_checklist_item(user_id, item_data)
     return item
@@ -30,7 +26,6 @@ async def get_checklist_items(
     current_user: dict = Depends(get_current_user),
     checklist_service: ChecklistService = Depends(get_checklist_service)
 ):
-    """Get all checklist items for current user"""
     user_id = str(current_user["_id"])
     items = await checklist_service.get_user_checklist_items(user_id, category, skip, limit)
     return items
@@ -41,7 +36,6 @@ async def get_checklist_stats(
     current_user: dict = Depends(get_current_user),
     checklist_service: ChecklistService = Depends(get_checklist_service)
 ):
-    """Get checklist statistics for current user"""
     user_id = str(current_user["_id"])
     stats = await checklist_service.get_checklist_stats(user_id)
     return stats
@@ -53,7 +47,6 @@ async def get_checklist_item(
     current_user: dict = Depends(get_current_user),
     checklist_service: ChecklistService = Depends(get_checklist_service)
 ):
-    """Get a specific checklist item"""
     user_id = str(current_user["_id"])
     item = await checklist_service.get_checklist_item_by_id(item_id, user_id)
     if not item:
@@ -68,7 +61,6 @@ async def update_checklist_item(
     current_user: dict = Depends(get_current_user),
     checklist_service: ChecklistService = Depends(get_checklist_service)
 ):
-    """Update a checklist item"""
     user_id = str(current_user["_id"])
     item = await checklist_service.update_checklist_item(item_id, user_id, item_data)
     if not item:
@@ -82,7 +74,6 @@ async def delete_checklist_item(
     current_user: dict = Depends(get_current_user),
     checklist_service: ChecklistService = Depends(get_checklist_service)
 ):
-    """Delete a checklist item"""
     user_id = str(current_user["_id"])
     success = await checklist_service.delete_checklist_item(item_id, user_id)
     if not success:

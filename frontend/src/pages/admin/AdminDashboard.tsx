@@ -74,17 +74,17 @@ export default function AdminDashboard() {
         <div className="bg-gradient-to-r from-white via-amber-50/60 to-white shadow-lg border-b-2 border-primary-100">
           <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-6 text-left">
             <div>
-              <h1 className="text-4xl font-extrabold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 bg-clip-text text-transparent">
                 Admin Dashboard
               </h1>
-              <p className="text-gray-700 mt-1 text-base font-medium">Manage your platform</p>
+              <p className="text-gray-700 mt-1 text-sm sm:text-base font-medium">Manage your platform</p>
             </div>
           </div>
         </div>
 
         <div className="flex-1 w-full px-4 sm:px-6 py-6 sm:py-8 overflow-y-auto">
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
             <div className="bg-gradient-to-br from-white to-rose-50/50 rounded-2xl shadow-xl p-8 border-2 border-rose-200 hover:border-[#D72626] transition-all hover:shadow-2xl">
               <div className="flex items-center justify-between mb-6">
                 <div className="w-16 h-16 bg-gradient-to-br from-[#D72626] to-rose-600 rounded-xl flex items-center justify-center shadow-lg">

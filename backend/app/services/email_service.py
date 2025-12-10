@@ -66,62 +66,7 @@ class EmailService:
         
         reset_link = f"{settings.FRONTEND_URL}/reset-password?token={reset_token}"
 
-        html_template = """
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <style>
-                body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-                .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-                .header { background-color: #D97706; color: white; padding: 20px; text-align: center; }
-                .content { background-color: #f9f9f9; padding: 30px; }
-                .button { display: inline-block; padding: 12px 30px; background-color: #D97706; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }
-                .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <div class="header">
-                    <h1>PakWedding Portal</h1>
-                </div>
-                <div class="content">
-                    <h2>Password Reset Request</h2>
-                    {% if user_name %}
-                    <p>Hello {{ user_name }},</p>
-                    {% else %}
-                    <p>Hello,</p>
-                    {% endif %}
-                    <p>We received a request to reset your password. Click the button below to reset it:</p>
-                    <a href="{{ reset_link }}" class="button">Reset Password</a>
-                    <p>Or copy and paste this link into your browser:</p>
-                    <p style="word-break: break-all; color: #D97706;">{{ reset_link }}</p>
-                    <p><strong>This link will expire in 30 minutes.</strong></p>
-                    <p>If you didn't request a password reset, please ignore this email or contact support if you have concerns.</p>
-                </div>
-                <div class="footer">
-                    <p>&copy; 2024 PakWedding Portal. All rights reserved.</p>
-                </div>
-            </div>
-        </body>
-        </html>
-        """
 
-        text_content = f"""
-        PakWedding Portal - Password Reset Request
-        
-        Hello{' ' + user_name if user_name else ''},
-        
-        We received a request to reset your password. Click the link below to reset it:
-        
-        {reset_link}
-        
-        This link will expire in 30 minutes.
-        
-        If you didn't request a password reset, please ignore this email.
-        
-        Best regards,
-        PakWedding Portal Team
-        """
 
         template = Template(html_template)
         html_content = template.render(
@@ -144,42 +89,6 @@ class EmailService:
     ) -> bool:
         
 
-        html_template = """
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <style>
-                body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-                .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-                .header { background-color: #D97706; color: white; padding: 20px; text-align: center; }
-                .content { background-color: #f9f9f9; padding: 30px; }
-                .button { display: inline-block; padding: 12px 30px; background-color: #D97706; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }
-                .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <div class="header">
-                    <h1>Welcome to PakWedding Portal! 🎉</h1>
-                </div>
-                <div class="content">
-                    <h2>Hello {{ user_name }}!</h2>
-                    <p>Thank you for registering with PakWedding Portal.</p>
-                    {% if user_role == 'vendor' %}
-                    <p>Your vendor account has been created successfully. Once approved by our admin team, you'll be able to showcase your services to couples planning their perfect wedding.</p>
-                    {% else %}
-                    <p>Your account has been created successfully. Start exploring amazing wedding vendors and plan your dream wedding!</p>
-                    {% endif %}
-                    <a href="{{ frontend_url }}" class="button">Visit PakWedding Portal</a>
-                    <p>If you have any questions, feel free to contact our support team.</p>
-                </div>
-                <div class="footer">
-                    <p>&copy; 2024 PakWedding Portal. All rights reserved.</p>
-                </div>
-            </div>
-        </body>
-        </html>
-        """
 
         template = Template(html_template)
         html_content = template.render(

@@ -1,6 +1,3 @@
-"""
-Admin routes
-"""
 from fastapi import APIRouter, Depends, HTTPException, status, Request
 from fastapi.exceptions import RequestValidationError
 from typing import List
@@ -23,11 +20,9 @@ async def get_all_vendors(
     current_admin: dict = Depends(get_current_admin),
     vendor_service: VendorService = Depends(get_vendor_service)
 ):
-    """Get all vendors with optional status filter (admin only)"""
-    # Map frontend filter to backend status
     status_filter = None
     if status:
-        status_filter = status  # pending, approved, rejected, all
+        status_filter = status
     
     vendors = await vendor_service.get_all_vendors_with_status(status_filter, skip, limit)
     return vendors
@@ -40,7 +35,6 @@ async def get_pending_vendors(
     current_admin: dict = Depends(get_current_admin),
     vendor_service: VendorService = Depends(get_vendor_service)
 ):
-    """Get vendors pending approval (admin only)"""
     vendors = await vendor_service.get_pending_approvals(skip, limit)
     return vendors
 
@@ -51,7 +45,6 @@ async def approve_vendor(
     current_admin: dict = Depends(get_current_admin),
     vendor_service: VendorService = Depends(get_vendor_service)
 ):
-    """Approve a vendor (admin only)"""
     try:
         vendor = await vendor_service.approve_vendor(vendor_id)
         if not vendor:
@@ -72,7 +65,6 @@ async def reject_vendor(
     current_admin: dict = Depends(get_current_admin),
     vendor_service: VendorService = Depends(get_vendor_service)
 ):
-    """Reject a vendor (admin only)"""
     try:
         vendor = await vendor_service.reject_vendor(vendor_id)
         if not vendor:
@@ -93,25 +85,20 @@ async def create_vendor(
     current_admin: dict = Depends(get_current_admin),
     vendor_service: VendorService = Depends(get_vendor_service)
 ):
-    """Create a new vendor (admin only, auto-approved)"""
     try:
-        # Log the incoming data for debugging
         print(f"[DEBUG] Creating vendor with data: {vendor_data.model_dump()}")
         vendor = await vendor_service.create_vendor_as_admin(vendor_data)
         print(f"[DEBUG] Vendor created, preparing response...")
         
-        # Convert _id to id for response model
         vendor_id = vendor.get("_id") or vendor.get("id")
         if vendor_id:
             vendor["id"] = str(vendor_id)
             if "_id" in vendor:
                 del vendor["_id"]
         
-        # Convert user_id to string if it exists
         if "user_id" in vendor:
             vendor["user_id"] = str(vendor["user_id"])
         
-        # Remove fields not in VendorResponse
         vendor.pop("hashed_password", None)
         vendor.pop("updated_at", None)
         
@@ -126,7 +113,6 @@ async def create_vendor(
         traceback_str = traceback.format_exc()
         print(f"[ERROR] Error creating vendor: {error_msg}")
         print(traceback_str)
-        # If it's a validation error, return 400 instead of 500
         if "validation" in error_msg.lower() or "pydantic" in error_msg.lower():
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -145,11 +131,9 @@ async def get_all_users(
     current_admin: dict = Depends(get_current_admin),
     user_service: UserService = Depends(get_user_service)
 ):
-    """Get all users (admin only)"""
     try:
         users = await user_service.user_repo.find_many({}, skip, limit)
         
-        # Format users for response
         formatted_users = []
         for user in users:
             formatted_user = user.copy()
@@ -157,7 +141,6 @@ async def get_all_users(
                 formatted_user["id"] = str(formatted_user["_id"])
                 del formatted_user["_id"]
             
-            # Remove sensitive fields
             formatted_user.pop("hashed_password", None)
             formatted_user.pop("updated_at", None)
             
@@ -180,16 +163,13 @@ async def get_pending_admin_approvals(
     current_admin: dict = Depends(get_current_admin),
     user_service: UserService = Depends(get_user_service)
 ):
-    """Get pending admin approval requests (admin only)"""
     try:
-        # Get users with role=admin and is_admin_approved=False
         pending_admins = await user_service.user_repo.find_many(
             {"role": "admin", "is_admin_approved": False},
             skip,
             limit
         )
         
-        # Format users for response
         formatted_users = []
         for user in pending_admins:
             formatted_user = user.copy()
@@ -197,7 +177,6 @@ async def get_pending_admin_approvals(
                 formatted_user["id"] = str(formatted_user["_id"])
                 del formatted_user["_id"]
             
-            # Remove sensitive fields
             formatted_user.pop("hashed_password", None)
             formatted_user.pop("updated_at", None)
             
@@ -219,7 +198,6 @@ async def approve_admin(
     current_admin: dict = Depends(get_current_admin),
     user_service: UserService = Depends(get_user_service)
 ):
-    """Approve an admin registration (admin only)"""
     try:
         user = await user_service.get_user_by_id(user_id)
         if not user:
@@ -228,7 +206,6 @@ async def approve_admin(
         if user.get("role") != "admin":
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User is not an admin")
         
-        # Approve admin: set is_admin_approved to True and is_active to True
         updated_user = await user_service.user_repo.update(
             user_id,
             {"is_admin_approved": True, "is_active": True}
@@ -237,7 +214,6 @@ async def approve_admin(
         if not updated_user:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
         
-        # Format response
         if "_id" in updated_user:
             updated_user["id"] = str(updated_user["_id"])
             del updated_user["_id"]
@@ -266,7 +242,6 @@ async def reject_admin(
     current_admin: dict = Depends(get_current_admin),
     user_service: UserService = Depends(get_user_service)
 ):
-    """Reject an admin registration (admin only) by removing the pending admin user."""
     try:
         print(f"[DEBUG] Reject admin called with user_id: {user_id}")
         user = await user_service.get_user_by_id(user_id)
@@ -299,20 +274,17 @@ async def toggle_user_active(
     current_admin: dict = Depends(get_current_admin),
     user_service: UserService = Depends(get_user_service)
 ):
-    """Toggle user active status (admin only)"""
     try:
         user = await user_service.get_user_by_id(user_id)
         if not user:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
         
-        # Toggle is_active status
         new_status = not user.get("is_active", True)
         updated_user = await user_service.user_repo.update(user_id, {"is_active": new_status})
         
         if not updated_user:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
         
-        # Format response
         if "_id" in updated_user:
             updated_user["id"] = str(updated_user["_id"])
             del updated_user["_id"]
@@ -342,13 +314,10 @@ async def get_admin_stats(
     user_service: UserService = Depends(get_user_service),
     review_service: ReviewService = Depends(get_review_service)
 ):
-    """Get dashboard statistics (admin only)"""
     try:
-        # Get pending vendors count
         pending_vendors = await vendor_service.get_pending_approvals(0, 1000)
         pending_count = len(pending_vendors)
         
-        # Get pending admin approvals count
         pending_admins = await user_service.user_repo.find_many(
             {"role": "admin", "is_admin_approved": False},
             0,
@@ -356,12 +325,9 @@ async def get_admin_stats(
         )
         pending_admin_count = len(pending_admins)
         
-        # Get active users count
         all_users = await user_service.user_repo.find_many({"is_active": True}, 0, 10000)
         active_users_count = len(all_users)
         
-        # Get all reviews (we'll count them as flagged reviews for now)
-        # In a real app, you'd have a flagged field
         all_reviews = await review_service.review_repo.find_many({}, 0, 10000)
         flagged_reviews_count = len([r for r in all_reviews if r.get("rating", 5) < 3])
         
@@ -388,11 +354,9 @@ async def get_all_reviews(
     review_service: ReviewService = Depends(get_review_service),
     user_service: UserService = Depends(get_user_service)
 ):
-    """Get all reviews (admin only)"""
     try:
         reviews = await review_service.get_all_reviews(skip, limit)
         
-        # Format reviews for response and add user names
         formatted_reviews = []
         for review in reviews:
             formatted_review = review.copy()
@@ -400,7 +364,6 @@ async def get_all_reviews(
                 formatted_review["id"] = str(formatted_review["_id"])
                 del formatted_review["_id"]
             
-            # Ensure all IDs are strings
             if "user_id" in formatted_review:
                 formatted_review["user_id"] = str(formatted_review["user_id"])
             if "vendor_id" in formatted_review:
@@ -408,7 +371,6 @@ async def get_all_reviews(
             if "booking_id" in formatted_review and formatted_review["booking_id"]:
                 formatted_review["booking_id"] = str(formatted_review["booking_id"])
             
-            # Add user name
             user_id = formatted_review.get("user_id")
             if user_id:
                 user = await user_service.get_user_by_id(user_id)
@@ -434,7 +396,6 @@ async def delete_review(
     review_service: ReviewService = Depends(get_review_service),
     stats_service = Depends(get_vendor_stats_service)
 ):
-    """Delete a review (admin only)"""
     try:
         deleted = await review_service.delete_review(review_id, stats_service)
         if not deleted:

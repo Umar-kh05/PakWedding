@@ -23,17 +23,14 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
-    """Create a JWT access token"""
     to_encode = data.copy()
     
-    # Use timezone-aware UTC datetime
     now = datetime.now(timezone.utc)
     if expires_delta:
         expire = now + expires_delta
     else:
         expire = now + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     
-    # Convert datetime to Unix timestamp (seconds since epoch)
     expire_timestamp = int(expire.timestamp())
     to_encode.update({"exp": expire_timestamp})
     
@@ -43,18 +40,13 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
 
 
 def decode_token(token: str) -> Optional[dict]:
-    """Decode and validate a JWT token"""
     try:
-        # Add 60 seconds leeway for clock skew
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM], options={"leeway": 60})
         return payload
     except JWTError as e:
-        # Log the specific error for debugging
         print(f"[AUTH ERROR] Token validation failed: {type(e).__name__}: {str(e)}")
-        # Log token expiration details if it's an expiration error
         if "expired" in str(e).lower() or "ExpiredSignature" in str(type(e).__name__):
             try:
-                # Decode without verification to see the expiration
                 unverified = jwt.decode(token, options={"verify_signature": False})
                 exp_timestamp = unverified.get("exp")
                 if exp_timestamp:

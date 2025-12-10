@@ -1,6 +1,3 @@
-"""
-FastAPI main application entry point
-"""
 from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -16,10 +13,10 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Add validation error handler for better error messages
+
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
-    """Handle Pydantic validation errors with detailed messages"""
+    
     errors = exc.errors()
     error_details = []
     for error in errors:
@@ -36,27 +33,23 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
         content={"detail": error_message, "errors": errors}
     )
 
-# CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:5173"],  # React dev server (Vite default: 5173)
-    allow_credentials=True,
+    allow_origins=["http://localhost:3000", "http://localhost:5173"],  
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Database connection events
+
 @app.on_event("startup")
 async def startup_event():
-    """Initialize database connection on startup"""
     await Database.connect_db()
 
 @app.on_event("shutdown")
 async def shutdown_event():
-    """Close database connection on shutdown"""
     await Database.close_db()
 
-# Include routers
+
 app.include_router(auth.router, prefix="/api/auth", tags=["Authentication"])
 app.include_router(users.router, prefix="/api/users", tags=["Users"])
 app.include_router(vendors.router, prefix="/api/vendors", tags=["Vendors"])

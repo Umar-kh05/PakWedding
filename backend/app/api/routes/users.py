@@ -1,6 +1,3 @@
-"""
-User routes
-"""
 from fastapi import APIRouter, Depends, HTTPException, status
 from app.services.user_service import UserService
 from app.api.dependencies import get_user_service, get_current_user
@@ -12,7 +9,6 @@ router = APIRouter()
 
 @router.get("/me", response_model=UserResponse)
 async def get_current_user_profile(current_user: dict = Depends(get_current_user)):
-    """Get current user profile"""
     return current_user
 
 
@@ -22,7 +18,6 @@ async def update_current_user(
     current_user: dict = Depends(get_current_user),
     user_service: UserService = Depends(get_user_service)
 ):
-    """Update current user profile"""
     updated_user = await user_service.update_user(current_user["_id"], user_data)
     if not updated_user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_USER_NOT_FOUND)
@@ -35,7 +30,6 @@ async def update_password(
     current_user: dict = Depends(get_current_user),
     user_service: UserService = Depends(get_user_service)
 ):
-    """Update user password"""
     old_password = password_data.get("old_password")
     new_password = password_data.get("new_password")
     
@@ -51,7 +45,6 @@ async def update_password(
             detail=f"New password must be at least {MIN_PASSWORD_LENGTH} characters long"
         )
     
-    # Use service method instead of accessing repository directly
     try:
         updated_user = await user_service.update_password(
             current_user["_id"],
@@ -67,7 +60,6 @@ async def update_password(
     if not updated_user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_USER_NOT_FOUND)
     
-    # Format response
     if "_id" in updated_user:
         updated_user["id"] = str(updated_user["_id"])
         del updated_user["_id"]

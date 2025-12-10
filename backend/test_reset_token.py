@@ -1,16 +1,11 @@
-"""
-Quick script to check reset tokens in the database
-"""
 import asyncio
 from motor.motor_asyncio import AsyncIOMotorClient
 from datetime import datetime
 
 async def check_reset_tokens():
-    # Connect to MongoDB
     client = AsyncIOMotorClient("mongodb://localhost:27017")
     db = client["pakwedding_db"]
     
-    # Find all users with reset tokens
     users = await db["users"].find(
         {"reset_token": {"$exists": True}},
         {"email": 1, "reset_token": 1, "reset_token_expiry": 1}

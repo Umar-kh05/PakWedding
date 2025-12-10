@@ -1,6 +1,3 @@
-"""
-Review routes
-"""
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from typing import List
 from app.services.review_service import ReviewService
@@ -17,11 +14,9 @@ async def get_user_reviews(
     current_user: dict = Depends(get_current_user),
     review_service: ReviewService = Depends(get_review_service)
 ):
-    """Get all reviews made by current user"""
     user_id = str(current_user["_id"])
     reviews = await review_service.get_reviews_by_user(user_id, skip, limit)
     
-    # Format reviews
     formatted_reviews = []
     for review in reviews:
         if "_id" in review:
@@ -47,9 +42,7 @@ async def get_my_vendor_reviews(
     review_service: ReviewService = Depends(get_review_service),
     vendor_service = Depends(get_vendor_service)
 ):
-    """Get reviews for current vendor's business"""
     try:
-        # Get vendor by user_id
         user_id = str(current_user.get("_id") or current_user.get("id"))
         vendor = await vendor_service.vendor_repo.get_by_user_id(user_id)
         if not vendor:
@@ -61,10 +54,9 @@ async def get_my_vendor_reviews(
         
         print(f"[DEBUG GET REVIEWS] Vendor found - _id: {vendor.get('_id')}, id: {vendor.get('id')}, vendor_id: {vendor_id}")
         
-        # Debug: Check all reviews in database using the review service's repository
         all_reviews_debug = await review_service.review_repo.find_many({}, 0, 1000)
         print(f"[DEBUG GET REVIEWS] Total reviews in database: {len(all_reviews_debug)}")
-        for r in all_reviews_debug[:10]:  # Print first 10 reviews
+        for r in all_reviews_debug[:10]:
             vendor_id_in_review = r.get('vendor_id')
             vendor_id_str = str(vendor_id_in_review) if vendor_id_in_review else None
             print(f"[DEBUG GET REVIEWS] Review ID: {r.get('_id')}, vendor_id: {vendor_id_in_review} (type: {type(vendor_id_in_review)}, as string: {vendor_id_str})")
@@ -74,13 +66,11 @@ async def get_my_vendor_reviews(
         reviews = await review_service.get_reviews_by_vendor(vendor_id, skip, limit)
         print(f"[DEBUG GET REVIEWS] Found {len(reviews)} reviews for vendor_id {vendor_id}")
         
-        # If no reviews found, try a direct query with ObjectId
         if len(reviews) == 0:
             from bson import ObjectId
             try:
                 vendor_obj_id = ObjectId(vendor_id)
                 print(f"[DEBUG GET REVIEWS] Trying direct query with ObjectId: {vendor_obj_id}")
-                # Use the repository's collection directly
                 cursor = review_service.review_repo.collection.find({"vendor_id": vendor_obj_id})
                 direct_reviews = await cursor.to_list(length=100)
                 print(f"[DEBUG GET REVIEWS] Direct query found {len(direct_reviews)} reviews")
@@ -92,10 +82,9 @@ async def get_my_vendor_reviews(
             except Exception as e:
                 print(f"[DEBUG GET REVIEWS] Direct ObjectId query failed: {e}")
         
-        # Format reviews - preserve all fields including user_name and created_at
         formatted_reviews = []
         for review in reviews:
-            formatted_review = review.copy()  # Preserve all fields including user_name
+            formatted_review = review.copy()
             
             if "_id" in formatted_review:
                 formatted_review["id"] = str(formatted_review["_id"])
@@ -107,7 +96,6 @@ async def get_my_vendor_reviews(
             if "booking_id" in formatted_review and formatted_review["booking_id"]:
                 formatted_review["booking_id"] = str(formatted_review["booking_id"])
             
-            # Ensure created_at is a string if it's a datetime object
             if "created_at" in formatted_review:
                 if hasattr(formatted_review["created_at"], "isoformat"):
                     formatted_review["created_at"] = formatted_review["created_at"].isoformat()
@@ -135,10 +123,8 @@ async def get_vendor_reviews(
     limit: int = 100,
     review_service: ReviewService = Depends(get_review_service)
 ):
-    """Get all reviews for a vendor"""
     reviews = await review_service.get_reviews_by_vendor(vendor_id, skip, limit)
     
-    # Format reviews
     formatted_reviews = []
     for review in reviews:
         if "_id" in review:
@@ -163,37 +149,30 @@ async def create_review(
     review_service: ReviewService = Depends(get_review_service),
     stats_service = Depends(get_vendor_stats_service)
 ):
-    """Create a new review"""
     try:
-        # Set user_id from current user
         review_dict = review_data.model_dump()
         review_dict["user_id"] = str(current_user["_id"])
         
-        # Ensure vendor_id is a string
         original_vendor_id = review_dict.get("vendor_id")
         if "vendor_id" in review_dict:
             review_dict["vendor_id"] = str(review_dict["vendor_id"])
         
         print(f"[DEBUG CREATE REVIEW] Original vendor_id: {original_vendor_id}, Converted: {review_dict['vendor_id']}")
         
-        # Ensure booking_id is a string if provided
         if "booking_id" in review_dict and review_dict["booking_id"]:
             review_dict["booking_id"] = str(review_dict["booking_id"])
             print(f"[DEBUG CREATE REVIEW] Booking ID: {review_dict['booking_id']}")
         
-        # Create review using ReviewBase (which includes user_id)
         from app.models.review import ReviewBase
         review_create = ReviewBase(**review_dict)
         review = await review_service.create_review(review_create, stats_service)
         
         print(f"[DEBUG CREATE REVIEW] Review created with vendor_id: {review.get('vendor_id')} (type: {type(review.get('vendor_id'))})")
         
-        # Format response
         if "_id" in review:
             review["id"] = str(review["_id"])
             del review["_id"]
         
-        # Ensure all IDs are strings
         if "user_id" in review:
             review["user_id"] = str(review["user_id"])
         if "vendor_id" in review:

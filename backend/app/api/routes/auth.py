@@ -1,6 +1,3 @@
-"""
-Authentication routes
-"""
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from datetime import timedelta, datetime
@@ -24,7 +21,6 @@ async def register(
     user_data: UserCreate,
     user_service: UserService = Depends(get_user_service)
 ):
-    """Register a new user"""
     try:
         user = await user_service.create_user(user_data)
         return user
@@ -37,13 +33,9 @@ async def login(
     form_data: OAuth2PasswordRequestForm = Depends(),
     user_service: UserService = Depends(get_user_service)
 ):
-    """Login and get access token"""
-    # OAuth2PasswordRequestForm uses 'username' field, but we use email
-    # Check if user exists first to provide better error message for unapproved admins
     user_check = await user_service.user_repo.get_by_email(form_data.username)
     if user_check:
         from app.core.security import verify_password
-        # If password is correct but admin is not approved, show specific message
         if (user_check.get("role") == "admin" and 
             user_check.get("is_admin_approved") is False and
             verify_password(form_data.password, user_check["hashed_password"])):
@@ -53,7 +45,6 @@ async def login(
                 headers={"WWW-Authenticate": "Bearer"},
             )
     
-    # authenticate_user checks password, is_active status, and admin approval
     user = await user_service.authenticate_user(form_data.username, form_data.password)
     if not user:
         raise HTTPException(
@@ -85,21 +76,17 @@ async def check_email(
     email_data: dict,
     user_service: UserService = Depends(get_user_service)
 ):
-    """Check if email already exists"""
     email = email_data.get("email")
     if not email:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email is required")
     
-    # Normalize email to lowercase for case-insensitive comparison
     email = email.lower().strip()
     
     logger.info(f"[CHECK EMAIL] Checking email: {email}")
     
-    # Use direct database query to avoid any caching or service layer issues
     from app.core.database import Database
     db = Database.get_database()
     
-    # Check in users collection
     user = await db["users"].find_one({"email": email})
     exists = user is not None
     
@@ -110,7 +97,6 @@ async def check_email(
 
 @router.post("/check-password-strength")
 async def check_password_strength(password_data: dict):
-    """Check password strength"""
     password = password_data.get("password", "")
     
     if not password:
@@ -145,21 +131,17 @@ async def forgot_password(
     request: ForgotPasswordRequest,
     user_service: UserService = Depends(get_user_service)
 ):
-    """Send password reset email"""
     try:
         logger.info(f"[FORGOT PASSWORD] Request received for email: {request.email}")
         user = await user_service.get_user_by_email(request.email)
         
         if user:
             logger.info(f"[FORGOT PASSWORD] User found: {user.get('email')}")
-            # Generate reset token
             reset_token = secrets.token_urlsafe(32)
             logger.info(f"[FORGOT PASSWORD] Generated token: {reset_token[:20]}...")
             
-            # Store token with expiry (30 minutes from now)
             reset_expiry = datetime.utcnow() + timedelta(minutes=30)
             
-            # Update user with reset token - use email instead of _id for reliability
             result = await user_service.user_repo.collection.update_one(
                 {"email": user["email"]},
                 {
@@ -171,7 +153,6 @@ async def forgot_password(
             )
             logger.info(f"[FORGOT PASSWORD] Update result - matched: {result.matched_count}, modified: {result.modified_count}")
             
-            # Send email
             logger.info(f"[FORGOT PASSWORD] Attempting to send email to: {request.email}")
             email_sent = await email_service.send_password_reset_email(
                 to_email=request.email,
@@ -182,7 +163,6 @@ async def forgot_password(
         else:
             logger.info(f"[FORGOT PASSWORD] No user found with email: {request.email}")
         
-        # Always return success to prevent email enumeration
         return {"message": "If an account exists with this email, a password reset link has been sent"}
     
     except Exception as e:
@@ -200,13 +180,11 @@ async def verify_reset_token(
     request: dict,
     user_service: UserService = Depends(get_user_service)
 ):
-    """Verify if a reset token is valid (for debugging)"""
     try:
         token = request.get("token")
         if not token:
             return {"valid": False, "reason": "No token provided"}
         
-        # Find user with this reset token
         user = await user_service.user_repo.collection.find_one({
             "reset_token": token
         })
@@ -214,7 +192,6 @@ async def verify_reset_token(
         if not user:
             return {"valid": False, "reason": "Token not found in database"}
         
-        # Check if token is expired
         if user.get("reset_token_expiry"):
             if datetime.utcnow() > user["reset_token_expiry"]:
                 return {
@@ -241,11 +218,9 @@ async def reset_password(
     request: ResetPasswordRequest,
     user_service: UserService = Depends(get_user_service)
 ):
-    """Reset password using token"""
     try:
         logger.info(f"[RESET PASSWORD] Received token: {request.token[:20]}...")
         
-        # Find user with this reset token
         user = await user_service.user_repo.collection.find_one({
             "reset_token": request.token
         })
@@ -253,7 +228,6 @@ async def reset_password(
         logger.info(f"[RESET PASSWORD] User found: {user is not None}")
         
         if not user:
-            # Log all users with reset tokens for debugging
             all_users_with_tokens = await user_service.user_repo.collection.find(
                 {"reset_token": {"$exists": True}},
                 {"email": 1, "reset_token": 1, "reset_token_expiry": 1}
@@ -267,7 +241,6 @@ async def reset_password(
                 detail="Invalid or expired reset token"
             )
         
-        # Check if token is expired
         if user.get("reset_token_expiry"):
             expiry_time = user["reset_token_expiry"]
             current_time = datetime.utcnow()
@@ -286,7 +259,6 @@ async def reset_password(
                 detail="Invalid reset token"
             )
         
-        # Validate password strength
         from app.core.password_validator import validate_password_strength
         strength, issues, is_valid = validate_password_strength(request.new_password)
         if not is_valid:
@@ -295,7 +267,6 @@ async def reset_password(
                 detail=f"Password is too weak: {', '.join(issues)}"
             )
         
-        # Check if new password is same as old password
         from app.core.security import hash_password, verify_password
         old_hashed_password = user.get("hashed_password")
         if old_hashed_password and verify_password(request.new_password, old_hashed_password):
@@ -304,10 +275,8 @@ async def reset_password(
                 detail="New password cannot be the same as your previous password"
             )
         
-        # Hash new password
         hashed_password = hash_password(request.new_password)
         
-        # Update password and clear reset token
         logger.info(f"[RESET PASSWORD] Resetting password for user: {user.get('email')}")
         result = await user_service.user_repo.collection.update_one(
             {"_id": user["_id"]},

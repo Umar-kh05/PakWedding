@@ -1,6 +1,3 @@
-"""
-Review service - business logic for review operations
-"""
 from typing import Optional, List
 from datetime import datetime
 from app.repositories.review_repository import ReviewRepository
@@ -11,7 +8,6 @@ from app.services.vendor_stats_service import VendorStatsService
 
 
 class ReviewService:
-    """Review business logic"""
     
     def __init__(
         self,
@@ -24,12 +20,10 @@ class ReviewService:
         self.booking_repo = booking_repository
     
     async def create_review(self, review_data: ReviewBase, stats_service: Optional[VendorStatsService] = None) -> dict:
-        """Create a new review - validates that user has a booking with the vendor"""
         from bson import ObjectId
         
         review_dict = review_data.model_dump()
         
-        # Validate booking exists and belongs to user
         if self.booking_repo and review_dict.get("booking_id"):
             booking_id = review_dict["booking_id"]
             booking = await self.booking_repo.get_by_id(booking_id)
@@ -37,28 +31,23 @@ class ReviewService:
             if not booking:
                 raise ValueError("Booking not found")
             
-            # Check if booking belongs to the user
             booking_user_id = str(booking.get("user_id", ""))
             review_user_id = str(review_dict.get("user_id", ""))
             
             if booking_user_id != review_user_id:
                 raise ValueError("You can only review vendors you have booked")
             
-            # Check if booking is approved or completed
             booking_status = booking.get("status", "").lower()
             if booking_status not in ["approved", "confirmed", "completed"]:
                 raise ValueError("You can only review approved or completed bookings")
             
-            # Check if review already exists for this booking
             existing_review = await self.review_repo.get_by_booking_id(booking_id)
             if existing_review:
                 raise ValueError("You have already reviewed this booking")
             
-            # Verify vendor_id matches booking and use booking's vendor_id (more reliable)
             booking_vendor_id = booking.get("vendor_id", "")
             review_vendor_id = review_dict.get("vendor_id", "")
             
-            # Convert both to strings for comparison
             booking_vendor_id_str = str(booking_vendor_id)
             review_vendor_id_str = str(review_vendor_id)
             
@@ -68,11 +57,9 @@ class ReviewService:
             if booking_vendor_id_str != review_vendor_id_str:
                 raise ValueError("Vendor ID does not match the booking")
             
-            # Use booking's vendor_id to ensure consistency
             review_dict["vendor_id"] = booking_vendor_id
             print(f"[DEBUG CREATE REVIEW] Using booking's vendor_id: {review_dict['vendor_id']} (type: {type(review_dict['vendor_id'])})")
         elif self.booking_repo:
-            # If no booking_id provided, check if user has any booking with vendor
             user_id = str(review_dict.get("user_id", ""))
             vendor_id = str(review_dict.get("vendor_id", ""))
             
@@ -89,7 +76,6 @@ class ReviewService:
         review_dict["created_at"] = datetime.utcnow()
         review_dict["updated_at"] = datetime.utcnow()
         
-        # Convert IDs to ObjectId
         if "vendor_id" in review_dict and review_dict["vendor_id"]:
             try:
                 vendor_id_before = review_dict["vendor_id"]
@@ -111,7 +97,6 @@ class ReviewService:
         
         review = await self.review_repo.create(review_dict)
         
-        # Update vendor rating
         if stats_service and review_dict.get("vendor_id"):
             vendor_id = str(review_dict["vendor_id"])
             await stats_service.update_vendor_stats(vendor_id)
@@ -119,10 +104,8 @@ class ReviewService:
         return review
     
     async def get_reviews_by_vendor(self, vendor_id: str, skip: int = 0, limit: int = 100) -> List[dict]:
-        """Get all reviews for a vendor"""
         reviews = await self.review_repo.get_by_vendor_id(vendor_id, skip, limit)
         
-        # Add user names to reviews
         for review in reviews:
             user_id = review.get("user_id")
             if user_id:
@@ -133,22 +116,18 @@ class ReviewService:
         return reviews
     
     async def get_reviews_by_user(self, user_id: str, skip: int = 0, limit: int = 100) -> List[dict]:
-        """Get all reviews made by a user"""
         reviews = await self.review_repo.get_by_user_id(user_id, skip, limit)
         return reviews
     
     async def get_review_by_id(self, review_id: str) -> Optional[dict]:
-        """Get review by ID"""
         return await self.review_repo.get_by_id(review_id)
     
     async def update_review(self, review_id: str, review_data: ReviewUpdate, stats_service: Optional[VendorStatsService] = None) -> Optional[dict]:
-        """Update review"""
         update_dict = review_data.model_dump(exclude_unset=True)
         update_dict["updated_at"] = datetime.utcnow()
         
         review = await self.review_repo.update(review_id, update_dict)
         
-        # Update vendor rating if rating changed
         if stats_service and review and "rating" in update_dict:
             vendor_id = str(review.get("vendor_id", ""))
             await stats_service.update_vendor_stats(vendor_id)
@@ -156,24 +135,19 @@ class ReviewService:
         return review
     
     async def delete_review(self, review_id: str, stats_service: Optional[VendorStatsService] = None) -> bool:
-        """Delete a review"""
-        # Get review before deleting to update stats
         review = await self.review_repo.get_by_id(review_id)
         if not review:
             return False
         
         vendor_id = str(review.get("vendor_id", ""))
         
-        # Delete review
         deleted = await self.review_repo.delete(review_id)
         
-        # Update vendor stats after deletion
         if deleted and stats_service and vendor_id:
             await stats_service.update_vendor_stats(vendor_id)
         
         return deleted
     
     async def get_all_reviews(self, skip: int = 0, limit: int = 100) -> List[dict]:
-        """Get all reviews (admin only)"""
         return await self.review_repo.find_many({}, skip, limit)
 

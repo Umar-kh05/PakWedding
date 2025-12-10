@@ -15,29 +15,29 @@ export default function AboutPage() {
             </svg>
             Back to Home
           </Link>
-          <h1 className="text-5xl font-extrabold bg-gradient-to-r from-[#D72626] via-[#F26D46] to-[#D72626] bg-clip-text text-transparent mb-3 pb-2 leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-[#D72626] via-[#F26D46] to-[#D72626] bg-clip-text text-transparent mb-3 pb-2 leading-tight">
             About PakWedding
           </h1>
-          <p className="text-xl text-gray-800 font-medium max-w-3xl leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-gray-800 font-medium max-w-3xl leading-relaxed">
             Pakistan's #1 wedding planning platform, connecting couples with the best vendors across the country.
           </p>
         </div>
 
         {/* Mission Section */}
-        <div className="bg-gradient-to-br from-white to-amber-50/40 rounded-2xl shadow-xl p-10 mb-8 border-2 border-primary-200 text-left">
-          <h2 className="text-3xl font-bold text-[#D72626] mb-6">Our Mission</h2>
-          <p className="text-gray-800 leading-relaxed text-lg mb-4">
+        <div className="bg-gradient-to-br from-white to-amber-50/40 rounded-2xl shadow-xl p-6 sm:p-8 md:p-10 mb-8 border-2 border-primary-200 text-left">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#D72626] mb-4 sm:mb-6">Our Mission</h2>
+          <p className="text-gray-800 leading-relaxed text-base sm:text-lg mb-4">
             At PakWedding, we believe that every couple deserves a perfect wedding day. Our mission is to simplify 
             the wedding planning process by providing a comprehensive platform where couples can discover, compare, and 
             book the best wedding vendors in Pakistan.
           </p>
-          <p className="text-gray-800 leading-relaxed text-lg">
+          <p className="text-gray-800 leading-relaxed text-base sm:text-lg">
             We're committed to making wedding planning stress-free, transparent, and enjoyable for everyone involved.
           </p>
         </div>
 
         {/* Features Grid */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
           {[
             {
               icon: '🔍',
@@ -72,33 +72,33 @@ export default function AboutPage() {
           ].map((feature, index) => (
             <div
               key={index}
-              className="bg-gradient-to-br from-white to-amber-50/50 rounded-2xl shadow-xl p-6 border-2 border-primary-200 hover:border-primary-400 transition-all hover:shadow-2xl text-left"
+              className="bg-gradient-to-br from-white to-amber-50/50 rounded-2xl shadow-xl p-4 sm:p-6 border-2 border-primary-200 hover:border-primary-400 transition-all hover:shadow-2xl text-left"
             >
-              <div className="text-4xl mb-4 text-[#D72626]">{feature.icon}</div>
-              <h3 className="text-xl font-bold text-[#D72626] mb-3">{feature.title}</h3>
-              <p className="text-gray-800 leading-relaxed">{feature.description}</p>
+              <div className="text-3xl sm:text-4xl mb-3 sm:mb-4 text-[#D72626]">{feature.icon}</div>
+              <h3 className="text-lg sm:text-xl font-bold text-[#D72626] mb-2 sm:mb-3">{feature.title}</h3>
+              <p className="text-sm sm:text-base text-gray-800 leading-relaxed">{feature.description}</p>
             </div>
           ))}
         </div>
 
         {/* Stats Section */}
-        <div className="bg-gradient-to-br from-white to-amber-50/50 rounded-2xl shadow-xl p-10 mb-12 border-2 border-primary-200 relative overflow-hidden text-left">
+        <div className="bg-gradient-to-br from-white to-amber-50/50 rounded-2xl shadow-xl p-6 sm:p-8 md:p-10 mb-8 sm:mb-12 border-2 border-primary-200 relative overflow-hidden text-left">
           <div className="absolute inset-0 opacity-5">
             <div className="absolute top-0 right-0 w-64 h-64 bg-[#F26D46] rounded-full blur-3xl"></div>
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#F7A76C] rounded-full blur-3xl"></div>
           </div>
           <div className="relative z-10">
-            <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-[#D72626] to-[#F26D46] bg-clip-text text-transparent pb-1 leading-normal">Our Impact</h2>
-            <div className="grid md:grid-cols-4 gap-6">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 bg-gradient-to-r from-[#D72626] to-[#F26D46] bg-clip-text text-transparent pb-1 leading-normal">Our Impact</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
               {[
                 { number: '1000+', label: 'Vendors' },
                 { number: '5000+', label: 'Happy Couples' },
                 { number: '50+', label: 'Cities' },
                 { number: '10K+', label: 'Bookings' }
               ].map((stat, index) => (
-                <div key={index} className="text-center p-4 rounded-xl bg-white/60 backdrop-blur-sm border border-[#F7A76C]/20 hover:border-[#F7A76C] hover:shadow-lg transition-all duration-300">
-                  <div className="text-5xl font-extrabold mb-2 bg-gradient-to-r from-[#D72626] to-[#F26D46] bg-clip-text text-transparent">{stat.number}</div>
-                  <div className="text-[#D72626] font-semibold">{stat.label}</div>
+                <div key={index} className="text-center p-3 sm:p-4 rounded-xl bg-white/60 backdrop-blur-sm border border-[#F7A76C]/20 hover:border-[#F7A76C] hover:shadow-lg transition-all duration-300">
+                  <div className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-1 sm:mb-2 bg-gradient-to-r from-[#D72626] to-[#F26D46] bg-clip-text text-transparent">{stat.number}</div>
+                  <div className="text-xs sm:text-sm text-[#D72626] font-semibold">{stat.label}</div>
                 </div>
               ))}
             </div>
@@ -106,8 +106,8 @@ export default function AboutPage() {
         </div>
 
         {/* Team Section */}
-        <div className="bg-white rounded-2xl shadow-xl p-10 border-2 border-primary-200 text-left">
-          <h2 className="text-3xl font-bold text-[#D72626] mb-6 pb-1 leading-normal">Why Choose PakWedding?</h2>
+        <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 md:p-10 border-2 border-primary-200 text-left">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#D72626] mb-4 sm:mb-6 pb-1 leading-normal">Why Choose PakWedding?</h2>
           <div className="space-y-4">
             <div className="flex items-start gap-4">
               <div className="w-8 h-8 bg-gradient-to-r from-[#D72626] to-[#F26D46] rounded-lg flex items-center justify-center flex-shrink-0">

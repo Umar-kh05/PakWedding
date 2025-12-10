@@ -1,6 +1,3 @@
-"""
-Checklist domain model
-"""
 from typing import Optional
 from datetime import datetime
 from pydantic import BaseModel, Field
@@ -8,7 +5,6 @@ from enum import Enum
 
 
 class ChecklistCategory(str, Enum):
-    """Checklist category enumeration"""
     VENUE = "venue"
     CATERING = "catering"
     PHOTOGRAPHY = "photography"
@@ -21,7 +17,6 @@ class ChecklistCategory(str, Enum):
 
 
 class ChecklistItemBase(BaseModel):
-    """Base checklist item schema"""
     title: str = Field(..., min_length=1, max_length=200)
     category: ChecklistCategory
     description: Optional[str] = None
@@ -31,12 +26,10 @@ class ChecklistItemBase(BaseModel):
 
 
 class ChecklistItemCreate(ChecklistItemBase):
-    """Schema for creating a checklist item"""
     pass
 
 
 class ChecklistItemUpdate(BaseModel):
-    """Schema for updating checklist item"""
     title: Optional[str] = Field(None, min_length=1, max_length=200)
     category: Optional[ChecklistCategory] = None
     description: Optional[str] = None
@@ -47,7 +40,6 @@ class ChecklistItemUpdate(BaseModel):
 
 
 class ChecklistItemInDB(ChecklistItemBase):
-    """Checklist item model as stored in database"""
     id: str = Field(alias="_id")
     user_id: str
     is_completed: bool = False
@@ -60,7 +52,6 @@ class ChecklistItemInDB(ChecklistItemBase):
 
 
 class ChecklistItemResponse(ChecklistItemBase):
-    """Checklist item response schema"""
     id: str
     user_id: str
     is_completed: bool

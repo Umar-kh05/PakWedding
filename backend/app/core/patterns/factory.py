@@ -1,27 +1,18 @@
-"""
-Factory Pattern Implementation
-Provides a way to create objects without specifying their exact classes
-Following Open/Closed Principle - open for extension, closed for modification
-"""
 from abc import ABC, abstractmethod
 from typing import Dict, Any
 from datetime import datetime
 
 
 class EntityFactory(ABC):
-    """Abstract factory for creating entities"""
     
     @abstractmethod
     def create(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        """Create an entity with default values"""
         pass
 
 
 class UserFactory(EntityFactory):
-    """Factory for creating user entities"""
     
     def create(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        """Create a user with default values"""
         return {
             **data,
             "is_active": data.get("is_active", True),
@@ -33,10 +24,8 @@ class UserFactory(EntityFactory):
 
 
 class VendorFactory(EntityFactory):
-    """Factory for creating vendor entities"""
     
     def create(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        """Create a vendor with default values"""
         return {
             **data,
             "is_active": data.get("is_active", True),
@@ -51,10 +40,8 @@ class VendorFactory(EntityFactory):
 
 
 class BookingFactory(EntityFactory):
-    """Factory for creating booking entities"""
     
     def create(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        """Create a booking with default values"""
         return {
             **data,
             "status": data.get("status", "pending"),
@@ -67,10 +54,6 @@ class BookingFactory(EntityFactory):
 
 
 class EntityFactoryProvider:
-    """
-    Factory Provider - implements Factory Method Pattern
-    Returns appropriate factory based on entity type
-    """
     
     _factories = {
         "user": UserFactory,
@@ -80,7 +63,6 @@ class EntityFactoryProvider:
     
     @classmethod
     def get_factory(cls, entity_type: str) -> EntityFactory:
-        """Get factory for specific entity type"""
         factory_class = cls._factories.get(entity_type.lower())
         if not factory_class:
             raise ValueError(f"Unknown entity type: {entity_type}")
@@ -88,6 +70,5 @@ class EntityFactoryProvider:
     
     @classmethod
     def register_factory(cls, entity_type: str, factory_class: type):
-        """Register a new factory - allows extension without modification"""
         cls._factories[entity_type.lower()] = factory_class
 

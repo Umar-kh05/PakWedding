@@ -1,6 +1,3 @@
-"""
-File upload routes for images using Cloudinary
-"""
 from fastapi import APIRouter, UploadFile, File, HTTPException, status, Depends
 from pathlib import Path
 from app.api.dependencies import get_current_user, get_current_vendor, get_current_admin
@@ -14,7 +11,6 @@ ALLOWED_MIME_TYPES = {"image/jpeg", "image/jpg", "image/png", "image/gif", "imag
 
 
 def is_allowed_file(filename: str, content_type: str = None) -> bool:
-    """Check if file extension and MIME type are allowed"""
     extension = Path(filename).suffix.lower()
     if extension not in ALLOWED_EXTENSIONS:
         return False
@@ -28,22 +24,18 @@ async def upload_vendor_image(
     file: UploadFile = File(...),
     current_user: dict = Depends(get_current_vendor)
 ):
-    """Upload vendor main image to Cloudinary"""
     if not is_allowed_file(file.filename, file.content_type):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Invalid file type. Allowed: jpg, jpeg, png, gif, webp"
         )
     
-    # Read file content
     file_content = await file.read()
     
-    # Generate unique public_id
     file_ext = Path(file.filename).suffix
     public_id = f"vendors/{current_user['_id']}/main_{uuid.uuid4()}"
     
     try:
-        # Upload to Cloudinary
         upload_result = await CloudinaryService.upload_image(
             file_content=file_content,
             folder="vendors",
@@ -67,21 +59,17 @@ async def upload_vendor_gallery_image(
     file: UploadFile = File(...),
     current_user: dict = Depends(get_current_vendor)
 ):
-    """Upload vendor gallery image to Cloudinary"""
     if not is_allowed_file(file.filename, file.content_type):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Invalid file type. Allowed: jpg, jpeg, png, gif, webp"
         )
     
-    # Read file content
     file_content = await file.read()
     
-    # Generate unique public_id
     public_id = f"vendors/{current_user['_id']}/gallery_{uuid.uuid4()}"
     
     try:
-        # Upload to Cloudinary
         upload_result = await CloudinaryService.upload_image(
             file_content=file_content,
             folder="vendors",
@@ -105,8 +93,6 @@ async def delete_vendor_image(
     public_id: str,
     current_user: dict = Depends(get_current_vendor)
 ):
-    """Delete vendor image from Cloudinary"""
-    # Verify the image belongs to the vendor
     if not public_id.startswith(f"vendors/{current_user['_id']}/"):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -128,21 +114,17 @@ async def upload_user_image(
     file: UploadFile = File(...),
     current_user: dict = Depends(get_current_user)
 ):
-    """Upload user profile image to Cloudinary"""
     if not is_allowed_file(file.filename, file.content_type):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Invalid file type. Allowed: jpg, jpeg, png, gif, webp"
         )
     
-    # Read file content
     file_content = await file.read()
     
-    # Generate unique public_id
     public_id = f"users/{current_user['_id']}/profile_{uuid.uuid4()}"
     
     try:
-        # Upload to Cloudinary
         upload_result = await CloudinaryService.upload_image(
             file_content=file_content,
             folder="users",
@@ -166,7 +148,6 @@ async def upload_vendor_image_admin(
     file: UploadFile = File(...),
     current_admin: dict = Depends(get_current_admin)
 ):
-    """Upload vendor image as admin (for creating new vendors)"""
     if not file.filename:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -180,7 +161,6 @@ async def upload_vendor_image_admin(
         )
     
     try:
-        # Read file content
         file_content = await file.read()
         
         if not file_content:
@@ -189,11 +169,9 @@ async def upload_vendor_image_admin(
                 detail="File is empty"
             )
         
-        # Generate unique public_id using admin ID
         admin_id = str(current_admin.get("_id") or current_admin.get("id", "admin"))
         public_id = f"vendors/admin/{admin_id}/main_{uuid.uuid4()}"
         
-        # Upload to Cloudinary
         upload_result = await CloudinaryService.upload_image(
             file_content=file_content,
             folder="vendors",

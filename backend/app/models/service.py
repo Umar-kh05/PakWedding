@@ -1,30 +1,23 @@
-"""
-Service domain model
-Following Single Responsibility Principle
-"""
 from typing import Optional, List
 from datetime import datetime
 from pydantic import BaseModel, Field
 
 
 class ServiceBase(BaseModel):
-    """Base service schema"""
     vendor_id: str
     name: str
     description: str
     category: str
     price: float
-    duration: Optional[str] = None  # e.g., "4 hours", "Full day"
+    duration: Optional[str] = None
     features: List[str] = []
 
 
 class ServiceCreate(ServiceBase):
-    """Schema for creating a service"""
     pass
 
 
 class ServiceUpdate(BaseModel):
-    """Schema for updating service"""
     name: Optional[str] = None
     description: Optional[str] = None
     price: Optional[float] = None
@@ -33,7 +26,6 @@ class ServiceUpdate(BaseModel):
 
 
 class ServiceInDB(ServiceBase):
-    """Service model as stored in database"""
     id: str = Field(alias="_id")
     is_active: bool = True
     created_at: datetime = Field(default_factory=datetime.utcnow)
@@ -44,7 +36,6 @@ class ServiceInDB(ServiceBase):
 
 
 class ServiceResponse(ServiceBase):
-    """Service response schema"""
     id: str
     is_active: bool
     created_at: datetime

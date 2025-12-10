@@ -1,19 +1,14 @@
-"""
-Favorite repository - handles Favorite data access
-"""
 from typing import List
 from app.repositories.base_repository import BaseRepository
 from bson import ObjectId
 
 
 class FavoriteRepository(BaseRepository):
-    """Favorite-specific repository operations"""
     
     def __init__(self, database):
         super().__init__(database, "favorites")
     
     async def get_by_user_id(self, user_id: str, skip: int = 0, limit: int = 100):
-        """Get all favorites for a user"""
         try:
             user_obj_id = ObjectId(user_id)
         except:
@@ -22,7 +17,6 @@ class FavoriteRepository(BaseRepository):
         cursor = self.collection.find({"user_id": user_obj_id}).sort("created_at", -1).skip(skip).limit(limit)
         items = await cursor.to_list(length=limit)
         
-        # Convert _id to id
         for item in items:
             if "_id" in item:
                 item["id"] = str(item["_id"])
@@ -35,7 +29,6 @@ class FavoriteRepository(BaseRepository):
         return items
     
     async def get_by_user_and_vendor(self, user_id: str, vendor_id: str):
-        """Check if a favorite exists for user and vendor"""
         try:
             user_obj_id = ObjectId(user_id)
             vendor_obj_id = ObjectId(vendor_id)
@@ -54,7 +47,6 @@ class FavoriteRepository(BaseRepository):
         return item
     
     async def delete_by_user_and_vendor(self, user_id: str, vendor_id: str) -> bool:
-        """Delete a favorite by user and vendor"""
         try:
             user_obj_id = ObjectId(user_id)
             vendor_obj_id = ObjectId(vendor_id)

@@ -67,19 +67,19 @@ export default function ContactPage() {
             </svg>
             Back to Home
           </Link>
-          <h1 className="text-5xl font-extrabold bg-gradient-to-r from-[#D72626] via-[#F26D46] to-[#D72626] bg-clip-text text-transparent mb-4 pb-2 leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-[#D72626] via-[#F26D46] to-[#D72626] bg-clip-text text-transparent mb-4 pb-2 leading-tight">
             Get In Touch
           </h1>
-          <p className="text-xl text-gray-800 font-medium max-w-2xl">
+          <p className="text-base sm:text-lg md:text-xl text-gray-800 font-medium max-w-2xl">
             Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
           {/* Contact Information */}
           <div className="space-y-6">
-            <div className="bg-white rounded-2xl shadow-xl p-8 border-2 border-primary-200 text-left">
-              <h2 className="text-2xl font-bold text-[#D72626] mb-6">Contact Information</h2>
+            <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border-2 border-primary-200 text-left">
+              <h2 className="text-xl sm:text-2xl font-bold text-[#D72626] mb-4 sm:mb-6">Contact Information</h2>
               
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
@@ -135,8 +135,8 @@ export default function ContactPage() {
           </div>
 
           {/* Contact Form */}
-          <div className="bg-white rounded-2xl shadow-xl p-8 border-2 border-primary-200 text-left">
-            <h2 className="text-2xl font-bold text-[#D72626] mb-6">Send us a Message</h2>
+          <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border-2 border-primary-200 text-left">
+            <h2 className="text-xl sm:text-2xl font-bold text-[#D72626] mb-4 sm:mb-6">Send us a Message</h2>
             
             {submitted && (
               <div className="mb-6 bg-green-50 border-2 border-green-200 text-green-800 px-4 py-3 rounded-xl">
