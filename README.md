@@ -44,6 +44,7 @@ PakWedding Portal is a full-stack web application designed to simplify wedding p
 ### For Users (Couples)
 - 👤 **User Registration & Authentication** - Secure account creation with password strength validation
 - 🔐 **Strong Password Requirements** - Real-time password strength meter with validation feedback
+- 🔑 **Password Reset** - Secure password recovery with email verification and token validation
 - 🔔 **Toast Notifications** - Beautiful real-time feedback for all actions
 - 🔍 **Advanced Vendor Search** - Filter by category, location, rating, and price
 - 📅 **Booking Management** - Request, track, and manage vendor bookings
@@ -407,6 +408,7 @@ pakwedding-portal/
 | POST | `/api/auth/login` | User login | No |
 | POST | `/api/auth/check-email` | Check if email exists | No |
 | POST | `/api/auth/forgot-password` | Request password reset | No |
+| POST | `/api/auth/verify-reset-token` | Verify password reset token | No |
 | POST | `/api/auth/reset-password` | Reset password with token | No |
 
 ### User Endpoints
