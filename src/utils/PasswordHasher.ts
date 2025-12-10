@@ -1,2 +1,0 @@
-// Password hashing utility
-

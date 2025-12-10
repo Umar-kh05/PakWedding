@@ -26,6 +26,15 @@ class Settings(BaseSettings):
     CLOUDINARY_API_KEY: str = ""
     CLOUDINARY_API_SECRET: str = ""
     
+    # Email Configuration (Gmail SMTP)
+    SMTP_HOST: str = "smtp.gmail.com"
+    SMTP_PORT: int = 587
+    SMTP_USER: str = ""  # Your Gmail address
+    SMTP_PASSWORD: str = ""  # Your Gmail App Password
+    SMTP_FROM_EMAIL: str = ""  # Sender email (same as SMTP_USER)
+    SMTP_FROM_NAME: str = "PakWedding Portal"
+    FRONTEND_URL: str = "http://localhost:3000"
+    
     class Config:
         env_file = ".env"
         case_sensitive = True

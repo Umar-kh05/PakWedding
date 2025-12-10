@@ -1,3 +1,0 @@
-// ReviewService
-// Demonstrates: SRP
-

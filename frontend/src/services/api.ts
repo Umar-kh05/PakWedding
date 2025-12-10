@@ -43,6 +43,8 @@ api.interceptors.request.use((config) => {
     '/auth/login',
     '/auth/register',
     '/auth/check-email',
+    '/auth/forgot-password',
+    '/auth/reset-password',
     '/vendors',
   ]
   

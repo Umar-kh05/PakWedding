@@ -1,3 +1,0 @@
-// FavoriteService
-// Demonstrates: SRP
-

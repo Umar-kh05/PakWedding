@@ -1,3 +1,0 @@
-// Review Model
-// Demonstrates: SRP
-

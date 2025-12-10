@@ -1,2 +1,0 @@
-// Global Error Handler Middleware
-

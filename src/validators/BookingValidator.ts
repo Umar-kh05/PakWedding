@@ -1,2 +1,0 @@
-// Booking input validation
-
