@@ -3,16 +3,45 @@ import { Link } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import api from '../../services/api'
 
+// Email validation function
+const validateEmail = (email: string): { isValid: boolean; error: string } => {
+  email = email.trim()
+  const emailRegex = /^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+  if (!emailRegex.test(email)) {
+    return { isValid: false, error: 'Please enter a valid email address' }
+  }
+  if (email.includes('..') || email.includes(' ')) {
+    return { isValid: false, error: 'Invalid email format' }
+  }
+  const [localPart, domainPart] = email.split('@')
+  if (!localPart || !domainPart || !domainPart.includes('.')) {
+    return { isValid: false, error: 'Please enter a valid email address' }
+  }
+  return { isValid: true, error: '' }
+}
+
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
+  const [emailError, setEmailError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    setEmailError('')
     setLoading(true)
+    
+    // Validate email format
+    const emailValidation = validateEmail(email)
+    if (!emailValidation.isValid) {
+      setEmailError(emailValidation.error)
+      setError(emailValidation.error)
+      toast.error(emailValidation.error)
+      setLoading(false)
+      return
+    }
 
     try {
       await api.post('/auth/forgot-password', { email })
@@ -96,12 +125,23 @@ export default function ForgotPasswordPage() {
             <input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D72626] focus:border-transparent"
+              onChange={(e) => {
+                setEmail(e.target.value)
+                setEmailError('')
+                setError('')
+              }}
+              className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 ${
+                emailError
+                  ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                  : 'border-gray-300 focus:ring-[#D72626] focus:border-transparent'
+              }`}
               placeholder="Enter your email"
               required
               disabled={loading}
             />
+            {emailError && (
+              <p className="text-red-600 text-sm mt-1">{emailError}</p>
+            )}
           </div>
 
           <button

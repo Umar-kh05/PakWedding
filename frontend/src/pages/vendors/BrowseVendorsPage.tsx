@@ -295,7 +295,7 @@ export default function BrowseVendorsPage() {
   return (
     <div className={`min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 ${isAuthed ? 'flex' : ''}`}>
       {isAuthed && <Sidebar items={sidebarItems} title="User Dashboard" />}
-      <div className="flex-1 flex flex-col overflow-y-auto">
+      <div className={`flex-1 flex flex-col overflow-y-auto ${isAuthed ? 'pt-16 lg:pt-0' : ''}`}>
       {/* Header Section */}
       <div className="container mx-auto max-w-6xl px-6 sm:px-8 py-10 sm:py-12 relative">
         {/* Decorative background */}

@@ -118,7 +118,7 @@ export default function BookingHistoryPage() {
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
       <Sidebar items={sidebarItems} title="User Dashboard" />
-      <div className="flex-1 flex flex-col overflow-y-auto">
+      <div className="flex-1 flex flex-col overflow-y-auto pt-16 lg:pt-0">
         <div className="py-6 sm:py-8 px-6 sm:px-8">
           <div className="max-w-6xl mx-auto">
         {/* Header */}

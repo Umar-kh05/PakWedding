@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import api from '../../services/api'
+import PasswordStrengthMeter from '../../components/PasswordStrengthMeter'
 
 export default function ResetPasswordPage() {
   const [searchParams] = useSearchParams()
@@ -22,19 +23,32 @@ export default function ResetPasswordPage() {
     }
   }, [searchParams])
 
+  const validatePasswordStrength = (pwd: string) => {
+    const errors = []
+    if (pwd.length < 8) errors.push('At least 8 characters')
+    if (!/[A-Z]/.test(pwd)) errors.push('One uppercase letter')
+    if (!/[a-z]/.test(pwd)) errors.push('One lowercase letter')
+    if (!/\d/.test(pwd)) errors.push('One number')
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(pwd)) errors.push('One special character')
+    return errors
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
 
-    
-    if (password.length < 8) {
-      setError('Password must be at least 8 characters long')
+    // Validate password strength
+    const passwordErrors = validatePasswordStrength(password)
+    if (passwordErrors.length > 0) {
+      setError(`Password must contain: ${passwordErrors.join(', ')}`)
+      toast.error('Password is too weak')
       return
     }
 
-    
+    // Check if passwords match
     if (password !== confirmPassword) {
       setError('Passwords do not match')
+      toast.error('Passwords do not match')
       return
     }
 
@@ -118,7 +132,7 @@ export default function ResetPasswordPage() {
               minLength={8}
               disabled={loading || !token}
             />
-            <p className="text-sm text-gray-500 mt-1">Minimum 8 characters</p>
+            <PasswordStrengthMeter password={password} />
           </div>
 
           <div>

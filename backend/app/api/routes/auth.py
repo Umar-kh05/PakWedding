@@ -226,8 +226,25 @@ async def reset_password(
                 detail="Invalid reset token"
             )
         
+        # Validate password strength
+        from app.core.password_validator import validate_password_strength
+        strength, issues, is_valid = validate_password_strength(request.new_password)
+        if not is_valid:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Password is too weak: {', '.join(issues)}"
+            )
+        
+        # Check if new password is same as old password
+        from app.core.security import hash_password, verify_password
+        old_hashed_password = user.get("hashed_password")
+        if old_hashed_password and verify_password(request.new_password, old_hashed_password):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="New password cannot be the same as your previous password"
+            )
+        
         # Hash new password
-        from app.core.security import hash_password
         hashed_password = hash_password(request.new_password)
         
         # Update password and clear reset token
