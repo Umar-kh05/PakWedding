@@ -7,6 +7,8 @@ from datetime import datetime
 from app.repositories.user_repository import UserRepository
 from app.models.user import UserCreate, UserUpdate, UserResponse
 from app.core.security import hash_password, verify_password
+from app.core.password_validator import validate_password_strength
+from app.core.exceptions import ValidationException
 
 
 class UserService:
@@ -21,6 +23,12 @@ class UserService:
         existing_user = await self.user_repo.get_by_email(user_data.email)
         if existing_user:
             raise ValueError("User with this email already exists")
+        
+        # Validate password strength
+        strength, issues, is_valid = validate_password_strength(user_data.password)
+        if not is_valid:
+            error_message = "Password is too weak. " + "; ".join(issues)
+            raise ValidationException(detail=error_message)
         
         # Hash password
         hashed_password = hash_password(user_data.password)

@@ -8,6 +8,8 @@ from app.repositories.vendor_repository import VendorRepository
 from app.repositories.user_repository import UserRepository
 from app.models.vendor import VendorCreate, VendorUpdate
 from app.core.security import hash_password
+from app.core.password_validator import validate_password_strength
+from app.core.exceptions import ValidationException
 
 
 class VendorService:
@@ -23,6 +25,12 @@ class VendorService:
         existing_user = await self.user_repo.get_by_email(vendor_data.email)
         if existing_user:
             raise ValueError("User with this email already exists")
+        
+        # Validate password strength
+        strength, issues, is_valid = validate_password_strength(vendor_data.password)
+        if not is_valid:
+            error_message = "Password is too weak. " + "; ".join(issues)
+            raise ValidationException(detail=error_message)
         
         # Create user account first
         user_dict = {
@@ -218,6 +226,12 @@ class VendorService:
         if existing_user:
             print(f"[VENDOR_SERVICE] ERROR: User with email {vendor_data.email} already exists")
             raise ValueError("User with this email already exists")
+        
+        # Validate password strength
+        strength, issues, is_valid = validate_password_strength(vendor_data.password)
+        if not is_valid:
+            error_message = "Password is too weak. " + "; ".join(issues)
+            raise ValidationException(detail=error_message)
         
         print(f"[VENDOR_SERVICE] Creating user account...")
         # Create user account first

@@ -1,3 +1,0 @@
-// Favorite Model
-// Demonstrates: SRP
-

@@ -1,11 +1,58 @@
+# Python
 venv/
 __pycache__/
 *.pyc
-.env
-.DS_Store
-node_modules/
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
 dist/
 build/
+.pytest_cache/
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# IDEs
 .vscode/
 .idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
 *.log
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# Uploads (local storage)
+backend/uploads/users/*
+backend/uploads/vendors/*
+!backend/uploads/users/.gitkeep
+!backend/uploads/vendors/.gitkeep
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Misc
+*.bak
+*.tmp
+*.temp
+.cache/

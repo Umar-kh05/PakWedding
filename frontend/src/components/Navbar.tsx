@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import { useState } from 'react'
+import { showSuccess } from '../utils/toast'
 
 export default function Navbar() {
   const location = useLocation()
@@ -11,6 +12,7 @@ export default function Navbar() {
 
   const handleLogout = () => {
     logout()
+    showSuccess('Logged out successfully. See you soon!')
     navigate('/')
     setMobileMenuOpen(false)
   }

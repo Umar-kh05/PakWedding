@@ -1,2 +1,0 @@
-// ReviewRepository - extends BaseRepository
-
