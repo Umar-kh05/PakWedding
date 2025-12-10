@@ -112,7 +112,7 @@ export default function BudgetPlannerPage() {
   return (
     <div className={`min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 ${isAuthed ? 'flex' : ''}`}>
       {isAuthed && <Sidebar items={sidebarItems} title="User Dashboard" />}
-      <div className="flex-1 flex flex-col overflow-y-auto">
+      <div className={`flex-1 flex flex-col overflow-y-auto ${isAuthed ? 'pt-16 lg:pt-0' : ''}`}>
         <div className="py-6 sm:py-8 md:py-10 px-4 sm:px-6">
           <div className="max-w-6xl mx-auto space-y-6">
         <div className="mb-8 space-y-2 text-left">

@@ -55,7 +55,7 @@ export default function VendorDashboard() {
     <div className="flex min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
       <Sidebar items={sidebarItems} title="Vendor Dashboard" />
       
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col pt-16 lg:pt-0">
         {/* Header */}
         <div className="bg-gradient-to-r from-white via-amber-50/60 to-white shadow-lg border-b-2 border-primary-100">
           <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-6 text-left">

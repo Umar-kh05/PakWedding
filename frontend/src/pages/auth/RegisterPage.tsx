@@ -4,6 +4,72 @@ import api from '../../services/api'
 import { showSuccess, showError, showWarning } from '../../utils/toast'
 import PasswordStrengthMeter from '../../components/PasswordStrengthMeter'
 
+// Email validation function
+const validateEmail = (email: string): { isValid: boolean; error: string } => {
+  // Remove spaces
+  email = email.trim()
+  
+  // Basic format check
+  const emailRegex = /^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+  if (!emailRegex.test(email)) {
+    return { isValid: false, error: 'Please enter a valid email address' }
+  }
+  
+  // Check for double dots
+  if (email.includes('..')) {
+    return { isValid: false, error: 'Email cannot contain consecutive dots' }
+  }
+  
+  // Check for spaces
+  if (email.includes(' ')) {
+    return { isValid: false, error: 'Email cannot contain spaces' }
+  }
+  
+  // Check domain part
+  const [localPart, domainPart] = email.split('@')
+  
+  // Validate local part (before @)
+  if (!localPart || localPart.length === 0) {
+    return { isValid: false, error: 'Email must have content before @' }
+  }
+  
+  if (localPart.startsWith('.') || localPart.endsWith('.')) {
+    return { isValid: false, error: 'Email cannot start or end with a dot' }
+  }
+  
+  // Validate domain part (after @)
+  if (!domainPart || domainPart.length === 0) {
+    return { isValid: false, error: 'Email must have a valid domain' }
+  }
+  
+  // Check for multiple @ symbols
+  if (email.split('@').length > 2) {
+    return { isValid: false, error: 'Email can only contain one @ symbol' }
+  }
+  
+  // Check for double extensions (e.g., .com.com)
+  const domainParts = domainPart.split('.')
+  const extensions = domainParts.slice(1) // Get all parts after the domain name
+  const uniqueExtensions = new Set(extensions)
+  
+  if (extensions.length !== uniqueExtensions.size) {
+    return { isValid: false, error: 'Email has duplicate extensions (e.g., .com.com)' }
+  }
+  
+  // Check for valid TLD (top-level domain)
+  const tld = domainParts[domainParts.length - 1]
+  if (tld.length < 2) {
+    return { isValid: false, error: 'Email must have a valid domain extension' }
+  }
+  
+  // Check if domain has at least one dot
+  if (!domainPart.includes('.')) {
+    return { isValid: false, error: 'Email must have a valid domain (e.g., example.com)' }
+  }
+  
+  return { isValid: true, error: '' }
+}
+
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
     full_name: '',
@@ -16,17 +82,30 @@ export default function RegisterPage() {
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isPasswordValid, setIsPasswordValid] = useState(false)
+  const [emailError, setEmailError] = useState('')
   const navigate = useNavigate()
 
   const checkEmail = async (email: string) => {
     if (!email) return
+    
+    // First validate email format
+    const validation = validateEmail(email)
+    if (!validation.isValid) {
+      setEmailError(validation.error)
+      setError(validation.error)
+      return
+    }
+    
+    setEmailError('')
 
     try {
       const response = await api.post('/auth/check-email', { email })
       if (response.data.exists) {
         setError('This email is already registered. Please login instead.')
+        setEmailError('This email is already registered')
       } else {
         setError('')
+        setEmailError('')
       }
     } catch (err) {
       console.error('Error checking email:', err)
@@ -36,14 +115,24 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
-
-    if (formData.password !== formData.confirm_password) {
-      showError('Passwords do not match')
-      return
-    }
+    setEmailError('')
 
     if (!formData.full_name || !formData.email || !formData.password) {
       showWarning('Please fill in all required fields')
+      return
+    }
+    
+    // Validate email format
+    const emailValidation = validateEmail(formData.email)
+    if (!emailValidation.isValid) {
+      showError(emailValidation.error)
+      setEmailError(emailValidation.error)
+      setError(emailValidation.error)
+      return
+    }
+
+    if (formData.password !== formData.confirm_password) {
+      showError('Passwords do not match')
       return
     }
 
@@ -52,6 +141,7 @@ export default function RegisterPage() {
       const checkResponse = await api.post('/auth/check-email', { email: formData.email })
       if (checkResponse.data.exists) {
         showError('This email is already registered. Please login instead.')
+        setEmailError('This email is already registered')
         return
       }
     } catch (err) {
@@ -118,12 +208,23 @@ export default function RegisterPage() {
             <input
               type="email"
               value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent text-sm sm:text-base"
+              onChange={(e) => {
+                setFormData({ ...formData, email: e.target.value })
+                setEmailError('')
+                setError('')
+              }}
+              className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-lg focus:outline-none focus:ring-2 text-sm sm:text-base ${
+                emailError 
+                  ? 'border-red-500 focus:ring-red-500 focus:border-red-500' 
+                  : 'border-gray-300 focus:ring-primary-600 focus:border-transparent'
+              }`}
               placeholder="Enter your email"
               required
               onBlur={(e) => checkEmail(e.target.value)}
             />
+            {emailError && (
+              <p className="text-red-600 text-sm mt-1">{emailError}</p>
+            )}
           </div>
 
           <div>

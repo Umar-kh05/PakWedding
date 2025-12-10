@@ -195,6 +195,47 @@ async def forgot_password(
         )
 
 
+@router.post("/verify-reset-token")
+async def verify_reset_token(
+    request: dict,
+    user_service: UserService = Depends(get_user_service)
+):
+    """Verify if a reset token is valid (for debugging)"""
+    try:
+        token = request.get("token")
+        if not token:
+            return {"valid": False, "reason": "No token provided"}
+        
+        # Find user with this reset token
+        user = await user_service.user_repo.collection.find_one({
+            "reset_token": token
+        })
+        
+        if not user:
+            return {"valid": False, "reason": "Token not found in database"}
+        
+        # Check if token is expired
+        if user.get("reset_token_expiry"):
+            if datetime.utcnow() > user["reset_token_expiry"]:
+                return {
+                    "valid": False, 
+                    "reason": "Token expired",
+                    "expiry": user["reset_token_expiry"].isoformat(),
+                    "current_time": datetime.utcnow().isoformat()
+                }
+        else:
+            return {"valid": False, "reason": "No expiry time set"}
+        
+        return {
+            "valid": True, 
+            "email": user.get("email"),
+            "expiry": user["reset_token_expiry"].isoformat()
+        }
+    
+    except Exception as e:
+        return {"valid": False, "reason": f"Error: {str(e)}"}
+
+
 @router.post("/reset-password")
 async def reset_password(
     request: ResetPasswordRequest,
@@ -202,12 +243,25 @@ async def reset_password(
 ):
     """Reset password using token"""
     try:
+        logger.info(f"[RESET PASSWORD] Received token: {request.token[:20]}...")
+        
         # Find user with this reset token
         user = await user_service.user_repo.collection.find_one({
             "reset_token": request.token
         })
         
+        logger.info(f"[RESET PASSWORD] User found: {user is not None}")
+        
         if not user:
+            # Log all users with reset tokens for debugging
+            all_users_with_tokens = await user_service.user_repo.collection.find(
+                {"reset_token": {"$exists": True}},
+                {"email": 1, "reset_token": 1, "reset_token_expiry": 1}
+            ).to_list(length=10)
+            logger.info(f"[RESET PASSWORD] Users with reset tokens: {len(all_users_with_tokens)}")
+            for u in all_users_with_tokens:
+                logger.info(f"[RESET PASSWORD] - Email: {u.get('email')}, Token: {u.get('reset_token', '')[:20]}..., Expiry: {u.get('reset_token_expiry')}")
+            
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Invalid or expired reset token"
@@ -215,19 +269,42 @@ async def reset_password(
         
         # Check if token is expired
         if user.get("reset_token_expiry"):
-            if datetime.utcnow() > user["reset_token_expiry"]:
+            expiry_time = user["reset_token_expiry"]
+            current_time = datetime.utcnow()
+            logger.info(f"[RESET PASSWORD] Current time: {current_time}, Expiry time: {expiry_time}")
+            
+            if current_time > expiry_time:
+                logger.info(f"[RESET PASSWORD] Token expired")
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
                     detail="Reset token has expired. Please request a new one"
                 )
         else:
+            logger.info(f"[RESET PASSWORD] No expiry time found")
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Invalid reset token"
             )
         
+        # Validate password strength
+        from app.core.password_validator import validate_password_strength
+        strength, issues, is_valid = validate_password_strength(request.new_password)
+        if not is_valid:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Password is too weak: {', '.join(issues)}"
+            )
+        
+        # Check if new password is same as old password
+        from app.core.security import hash_password, verify_password
+        old_hashed_password = user.get("hashed_password")
+        if old_hashed_password and verify_password(request.new_password, old_hashed_password):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="New password cannot be the same as your previous password"
+            )
+        
         # Hash new password
-        from app.core.security import hash_password
         hashed_password = hash_password(request.new_password)
         
         # Update password and clear reset token

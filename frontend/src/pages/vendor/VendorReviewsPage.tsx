@@ -94,7 +94,7 @@ export default function VendorReviewsPage() {
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20">
       <Sidebar items={sidebarItems} title="Vendor Dashboard" />
-      <div className="flex-1 flex flex-col overflow-y-auto">
+      <div className="flex-1 flex flex-col overflow-y-auto pt-16 lg:pt-0">
         <div className="container mx-auto px-6 py-8">
         {/* Header */}
         <div className="mb-8">

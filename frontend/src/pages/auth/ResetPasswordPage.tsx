@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import api from '../../services/api'
+import PasswordStrengthMeter from '../../components/PasswordStrengthMeter'
 
 export default function ResetPasswordPage() {
   const [searchParams] = useSearchParams()
@@ -12,29 +13,71 @@ export default function ResetPasswordPage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [verifyingToken, setVerifyingToken] = useState(true)
 
   useEffect(() => {
     const tokenParam = searchParams.get('token')
     if (tokenParam) {
       setToken(tokenParam)
+      // Verify token immediately
+      verifyToken(tokenParam)
     } else {
       setError('Invalid reset link. Please request a new password reset.')
+      setVerifyingToken(false)
     }
   }, [searchParams])
+
+  const verifyToken = async (tokenToVerify: string) => {
+    try {
+      const response = await api.post('/auth/verify-reset-token', {
+        token: tokenToVerify
+      })
+
+      if (!response.data.valid) {
+        const reason = response.data.reason || 'Invalid token'
+        if (reason.includes('expired')) {
+          setError('This reset link has expired. Please request a new password reset.')
+        } else if (reason.includes('not found')) {
+          setError('Invalid reset link. Please request a new password reset.')
+        } else {
+          setError(`Reset link is invalid: ${reason}`)
+        }
+      }
+    } catch (err: any) {
+      console.error('Token verification error:', err)
+      setError('Unable to verify reset link. Please try again.')
+    } finally {
+      setVerifyingToken(false)
+    }
+  }
+
+
+  const validatePasswordStrength = (pwd: string) => {
+    const errors = []
+    if (pwd.length < 8) errors.push('At least 8 characters')
+    if (!/[A-Z]/.test(pwd)) errors.push('One uppercase letter')
+    if (!/[a-z]/.test(pwd)) errors.push('One lowercase letter')
+    if (!/\d/.test(pwd)) errors.push('One number')
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(pwd)) errors.push('One special character')
+    return errors
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
 
-    
-    if (password.length < 8) {
-      setError('Password must be at least 8 characters long')
+    // Validate password strength
+    const passwordErrors = validatePasswordStrength(password)
+    if (passwordErrors.length > 0) {
+      setError(`Password must contain: ${passwordErrors.join(', ')}`)
+      toast.error('Password is too weak')
       return
     }
 
-    
+    // Check if passwords match
     if (password !== confirmPassword) {
       setError('Passwords do not match')
+      toast.error('Passwords do not match')
       return
     }
 
@@ -47,7 +90,7 @@ export default function ResetPasswordPage() {
       })
       setSuccess(true)
       toast.success('Password reset successful! You can now login 🎉')
-      
+
       setTimeout(() => {
         navigate('/login')
       }, 3000)
@@ -89,6 +132,22 @@ export default function ResetPasswordPage() {
     )
   }
 
+  if (verifyingToken) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 flex items-center justify-center py-12 px-4">
+        <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8">
+          <div className="text-center">
+            <div className="w-16 h-16 border-4 border-[#D72626] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Verifying Reset Link</h2>
+            <p className="text-gray-600">
+              Please wait while we verify your password reset link...
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-red-50/20 flex items-center justify-center py-12 px-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8">
@@ -100,8 +159,16 @@ export default function ResetPasswordPage() {
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm">
-            {error}
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+            <p className="text-sm mb-2">{error}</p>
+            {(error.includes('expired') || error.includes('Invalid')) && (
+              <Link
+                to="/forgot-password"
+                className="text-sm font-semibold text-[#D72626] hover:text-red-700 underline"
+              >
+                Request a new password reset →
+              </Link>
+            )}
           </div>
         )}
 
@@ -118,7 +185,7 @@ export default function ResetPasswordPage() {
               minLength={8}
               disabled={loading || !token}
             />
-            <p className="text-sm text-gray-500 mt-1">Minimum 8 characters</p>
+            <PasswordStrengthMeter password={password} />
           </div>
 
           <div>
